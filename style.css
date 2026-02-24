@@ -1,0 +1,23 @@
+/*
+Theme Name: ScreenFix Paris Theme
+Theme URI: https://screenfix.fr
+Author: ScreenFix
+Author URI: https://screenfix.fr
+Description: Thème officiel React pour ScreenFix Paris.
+Version: 1.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Tags: react, tailwind, booking
+Text Domain: screenfix-theme
+*/
+
+/* 
+  CSS mặc định của WP, React App sẽ ghi đè phần lớn 
+  nhưng cần reset cơ bản.
+*/
+body {
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    font-family: 'Inter', sans-serif;
+}
