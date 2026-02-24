@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Phone, MessageCircle, Instagram, Facebook, Smartphone } from 'lucide-react';
+import { MapPin, Phone, Smartphone } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   return (
@@ -20,8 +20,18 @@ export const Footer: React.FC = () => {
               L'expert parisien de la rénovation d'écrans Apple. Qualité d'origine, écologie et économie.
             </p>
             <div className="flex gap-4">
-               <a href="#" className="p-3 bg-white border border-slate-200 rounded-2xl hover:bg-blue-50 hover:border-blue-100 transition-colors shadow-sm"><Instagram className="w-6 h-6 text-slate-600 hover:text-blue-600" /></a>
-               <a href="#" className="p-3 bg-white border border-slate-200 rounded-2xl hover:bg-blue-50 hover:border-blue-100 transition-colors shadow-sm"><Facebook className="w-6 h-6 text-slate-600 hover:text-blue-600" /></a>
+               <a href="https://www.instagram.com/screenfix_ivry/" target="_blank" rel="noopener noreferrer" title="Instagram" className="p-3 bg-slate-900 rounded-2xl hover:bg-slate-800 transition-colors shadow-sm">
+                 <img src="/icones/instagram.png" alt="Instagram" className="w-6 h-6 brightness-0 invert" />
+               </a>
+               <a href="https://www.tiktok.com/@screenfix75" target="_blank" rel="noopener noreferrer" title="TikTok" className="p-3 bg-slate-900 rounded-2xl hover:bg-slate-800 transition-colors shadow-sm">
+                 <img src="/icones/tik-tok.png" alt="TikTok" className="w-6 h-6 brightness-0 invert" />
+               </a>
+               <a href="https://www.facebook.com/profile.php?id=61578196187566" target="_blank" rel="noopener noreferrer" title="Facebook" className="p-3 bg-slate-900 rounded-2xl hover:bg-slate-800 transition-colors shadow-sm">
+                 <img src="/icones/facebook.png" alt="Facebook" className="w-6 h-6 brightness-0 invert" />
+               </a>
+               <a href="https://youtube.com/@screenfix-y4b?si=ydIahqQmFs62MJfG" target="_blank" rel="noopener noreferrer" title="YouTube" className="p-3 bg-slate-900 rounded-2xl hover:bg-slate-800 transition-colors shadow-sm">
+                 <img src="/icones/youtube.png" alt="YouTube" className="w-6 h-6 brightness-0 invert" />
+               </a>
             </div>
           </div>
 
@@ -37,7 +47,7 @@ export const Footer: React.FC = () => {
                 <span className="font-medium text-[15px]">+33 6 22 18 85 74</span>
               </li>
               <li className="flex items-center gap-4 group cursor-pointer">
-                <div className="p-2 bg-green-50 rounded-lg group-hover:bg-green-100 transition-colors"><MessageCircle className="w-5 h-5 text-green-600" /></div>
+                <div className="p-2 bg-white rounded-lg group-hover:bg-green-50 transition-colors"><img src="/icones/whatsapp.png" alt="WhatsApp" className="w-5 h-5" /></div>
                 <span className="font-medium text-[15px]">WhatsApp Disponible</span>
               </li>
             </ul>
@@ -65,7 +75,12 @@ export const Footer: React.FC = () => {
         <div className="border-t border-slate-200/60 pt-10 flex flex-col md:flex-row justify-between items-center gap-6 text-[14px] font-semibold text-slate-500">
             <p>&copy; {new Date().getFullYear()} ScreenFix Paris. Tous droits réservés.</p>
             <div className="flex gap-8">
-                <a href="#" className="hover:text-blue-600 transition-colors">Mentions Légales</a>
+                <button 
+                  onClick={() => (window as any).showLegalNotice?.()}
+                  className="hover:text-blue-600 transition-colors cursor-pointer"
+                >
+                  Mentions Légales
+                </button>
                 <a href="#" className="hover:text-blue-600 transition-colors">CGV</a>
                 <a href="#" className="hover:text-blue-600 transition-colors">Politique de Confidentialité</a>
             </div>

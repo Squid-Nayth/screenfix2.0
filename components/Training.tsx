@@ -2,16 +2,6 @@ import React from 'react';
 import { GraduationCap, ArrowRight } from 'lucide-react';
 
 export const Training: React.FC = () => {
-  // Helper to get correct asset path whether in Dev or WordPress
-  const getAssetUrl = (path: string) => {
-    // @ts-ignore - variable injected by WordPress wp_localize_script
-    const baseUrl = typeof window !== 'undefined' && window.SCREENFIX_ASSETS_URL 
-      // @ts-ignore
-      ? window.SCREENFIX_ASSETS_URL 
-      : '';
-    return `${baseUrl}${path}`;
-  };
-
   return (
     <section id="formation" className="py-24 relative overflow-hidden bg-transparent">
         {/* Pro Background Removed - using global glass */}
@@ -48,19 +38,24 @@ export const Training: React.FC = () => {
                 </button>
             </div>
             
-            <div className="flex-1 w-full relative group perspective-1000">
+            <div className="flex-1 w-full relative perspective-1000">
                  {/* Visual */}
-                 <div className="aspect-video rounded-[2.5rem] overflow-hidden border border-white/60 shadow-2xl relative transform group-hover:rotate-1 transition-all duration-500">
-                    <img 
-                        src={getAssetUrl('/atelier.jpg')}
-                        alt="Atelier Formation ScreenFix Paris 13" 
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                 <div className="aspect-video rounded-[2.5rem] overflow-hidden border border-white/60 shadow-2xl relative">
+                    <video 
+                        src="/video/processus-separation-verre.mp4"
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="w-full h-full object-cover"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-white/90 via-transparent to-transparent flex items-end p-10">
-                        <div className="bg-white/80 backdrop-blur-md border border-white/60 p-6 rounded-2xl shadow-lg">
-                             <p className="text-slate-900 font-bold text-[16px]">Session Pratique</p>
-                             <p className="text-purple-600 font-medium text-[14px] mt-1">Atelier Paris 13</p>
-                        </div>
+                 </div>
+                 
+                 {/* Card below video */}
+                 <div className="mt-6">
+                    <div className="bg-white/80 backdrop-blur-md border border-white/60 p-6 rounded-2xl shadow-lg">
+                         <p className="text-slate-900 font-bold text-[16px]">Session Pratique</p>
+                         <p className="text-purple-600 font-medium text-[14px] mt-1">Atelier Paris 13</p>
                     </div>
                  </div>
                  

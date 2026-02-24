@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Check, Smartphone, Calendar, Clock, ChevronRight, ChevronLeft, AlertCircle, Loader2, Percent, Tag, Plus, Zap, Info } from 'lucide-react';
+import { sendScreenfixEmails } from '../services/emailService';
 
 // --- DATABASE PRICES (Based on OCR) ---
 const SERVICES = [
@@ -155,34 +156,53 @@ export const BookingWizard: React.FC = () => {
     
     setIsSubmitting(true);
 
+    // Liste des services sélectionnés (comme tableau de strings)
+    const serviceLabels = selectedServices
+      .map(id => SERVICES.find(s => s.id === id)?.label)
+      .filter(Boolean) as string[];
+
     const serviceNames = isOther 
         ? `Autre: ${customIssue}` 
-        : selectedServices.map(id => SERVICES.find(s => s.id === id)?.label).join(', ');
+        : serviceLabels;
 
     const priceDisplay = isOther 
         ? 'Sur devis' 
-        : `${pricingSummary.final}€ (dont -${pricingSummary.percent}%)`;
+        : `${pricingSummary.final}€`;
 
-    const formData = {
-      date: new Date().toISOString(),
-      appointmentDate: selectedDate,
-      appointmentTime: selectedTime,
-      model: selectedModel,
-      service: serviceNames,
+    // Préparer les données pour EmailJS
+    const evaluation = {
+      brand: 'Apple',
+      model: selectedModel || '',
+      repair: serviceNames, // Tableau de strings ou string unique
       price: priceDisplay,
+      totalSansReduc: isOther ? 'Sur devis' : `${pricingSummary.total}€`,
+      reductionPercent: isOther ? '0' : `${pricingSummary.percent}`,
+    };
+
+    const rdv = {
       name: contact.name,
       email: contact.email,
       phone: contact.phone,
+      date: selectedDate ? new Date(selectedDate).toLocaleDateString('fr-FR', { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      }) : '',
+      time: selectedTime || '',
     };
 
+    console.log('=== Données envoyées à EmailJS ===');
+    console.log('Evaluation:', evaluation);
+    console.log('RDV:', rdv);
+
     try {
-      // SIMULATION
-      console.log("Submitting to backend:", formData);
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // Envoi des emails via EmailJS
+      await sendScreenfixEmails(evaluation, rdv);
       setStep(4);
     } catch (error) {
-      console.error("Error submitting form", error);
-      alert("Une erreur est survenue. Veuillez nous contacter par téléphone.");
+      console.error("Erreur lors de l'envoi des emails:", error);
+      alert("Une erreur est survenue lors de l'envoi de la confirmation. Veuillez nous contacter par téléphone au +33 6 22 18 85 74.");
     } finally {
       setIsSubmitting(false);
     }
