@@ -2,13 +2,18 @@ import React from 'react';
 import { Briefcase, Package, Zap, ShieldCheck, UserPlus } from 'lucide-react';
 
 export const BoutiquePro: React.FC = () => {
+  const handleOpenSignup = (e: React.MouseEvent) => {
+    e.preventDefault();
+    (window as any).showB2BSignup?.();
+  };
+
   return (
     <section id="boutique-pro" className="py-20 md:py-32 bg-transparent relative overflow-hidden">
       {/* Background Decor Removed - Using Global App BG */}
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Main Glass Container */}
-        <div className="bg-white/70 rounded-[3rem] p-8 md:p-16 border border-white/60 shadow-2xl backdrop-blur-xl">
+        <div className="bg-white/70 rounded-2xl md:rounded-[3rem] p-6 sm:p-8 md:p-16 border border-white/60 shadow-2xl backdrop-blur-xl">
           <div className="lg:grid lg:grid-cols-2 lg:gap-20 items-center">
             
             {/* Left Column */}
@@ -45,16 +50,16 @@ export const BoutiquePro: React.FC = () => {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                <a href="#contact" className="bg-blue-600 text-white py-4 px-8 rounded-full hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/20 flex items-center justify-center group text-base font-medium">
+                <button onClick={handleOpenSignup} className="bg-blue-600 text-white py-4 px-8 rounded-full hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/20 flex items-center justify-center group text-base font-medium cursor-pointer">
                   OUVRIR UN COMPTE
                   <UserPlus className="ml-2 group-hover:scale-110 transition-transform" size={18} />
-                </a>
+                </button>
               </div>
             </div>
 
             {/* Right Column - Preview Card */}
             <div className="relative perspective-1000">
-              <div className="bg-white/90 backdrop-blur-sm p-8 md:p-10 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/50 relative overflow-hidden group transform rotate-1 hover:rotate-0 transition-all duration-500">
+              <div className="bg-white/90 backdrop-blur-sm p-8 md:p-10 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/50 relative overflow-hidden transform rotate-1 transition-all duration-500">
                 {/* Decoration Icon */}
                 <div className="absolute top-[-40px] right-[-40px] p-20 opacity-[0.03] text-blue-600 transform rotate-45 pointer-events-none">
                   <Briefcase size={200} />
@@ -72,7 +77,7 @@ export const BoutiquePro: React.FC = () => {
                       { item: 'Écran iPhone 15 Pro Max (Original Reconditionné)', stock: '20+ pcs', price: 'Voir Prix' },
                       { item: 'Écran iPhone 14 Pro Max (Original Reconditionné)', stock: 'Dispo', price: 'Voir Prix' }
                     ].map((row, idx) => (
-                      <div key={idx} className="flex items-center justify-between p-4 bg-slate-50/50 rounded-2xl border border-slate-100 hover:bg-blue-50/50 hover:border-blue-100 transition-colors group/item">
+                      <div key={idx} className="flex items-center justify-between p-4 bg-slate-50/50 rounded-2xl border border-slate-100 transition-colors">
                         <div>
                           <p className="text-slate-900 font-semibold text-[15px]">{row.item}</p>
                           <div className="flex items-center gap-2 mt-1">
@@ -80,7 +85,7 @@ export const BoutiquePro: React.FC = () => {
                             <p className="text-slate-500 text-[13px] font-medium">État: {row.stock}</p>
                           </div>
                         </div>
-                        <div className="text-blue-600 font-semibold text-[13px] flex items-center bg-white px-3 py-2 rounded-xl border border-slate-100 group-hover/item:border-blue-200 shadow-sm">
+                        <div className="text-blue-600 font-semibold text-[13px] flex items-center bg-white px-3 py-2 rounded-xl border border-slate-100 shadow-sm">
                           <ShieldCheck size={14} className="mr-2" />
                           {row.price}
                         </div>

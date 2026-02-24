@@ -6,15 +6,15 @@ export const Services: React.FC = () => {
     <section id="services" className="py-24 relative overflow-hidden bg-transparent">
        {/* Background gradient spot removed - relying on global App bg */}
 
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 lg:gap-20 items-center">
           
           <div>
             <span className="text-blue-600 font-semibold tracking-wide text-[14px] uppercase block mb-6">Notre Spécialité</span>
-            <h2 className="text-4xl sm:text-5xl md:text-[64px] font-bold text-slate-900 mb-8 leading-[1.1] tracking-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[64px] font-bold text-slate-900 mb-6 md:mb-8 leading-[1.1] tracking-tight">
               Reconditionnement <br/> <span className="text-slate-400">VS</span> <br/> Remplacement
             </h2>
-            <p className="text-slate-600 text-base md:text-[20px] mb-10 leading-relaxed font-normal">
+            <p className="text-slate-600 text-sm sm:text-base md:text-[20px] mb-8 md:mb-10 leading-relaxed font-normal">
               La plupart des réparateurs jettent votre écran Apple cassé pour installer une copie de moindre qualité. 
               <br/><br/>
               Chez <strong className="text-slate-900">ScreenFix</strong>, nous séparons le verre cassé de votre écran LCD/OLED grâce à des machines industrielles. Nous posons ensuite une vitre neuve sur <strong className="text-blue-600">votre</strong> écran d'origine.
@@ -37,7 +37,7 @@ export const Services: React.FC = () => {
           </div>
 
           {/* Comparison Card - Pro Inventory Style */}
-          <div className="bg-white/70 backdrop-blur-xl rounded-[3rem] p-8 md:p-10 shadow-2xl border border-white/60 relative overflow-hidden">
+          <div className="bg-white/70 backdrop-blur-xl rounded-2xl md:rounded-[3rem] p-5 sm:p-6 md:p-10 shadow-2xl border border-white/60 relative overflow-hidden">
              <div className="absolute top-0 right-0 w-64 h-64 bg-slate-50/50 rounded-full mix-blend-multiply filter blur-3xl opacity-70"></div>
             
             <div className="flex justify-between items-end mb-10 relative z-10">
@@ -52,10 +52,10 @@ export const Services: React.FC = () => {
             
             <div className="space-y-4 relative z-10">
               {/* Header */}
-              <div className="grid grid-cols-3 gap-4 pb-4 border-b border-slate-100">
+              <div className="grid grid-cols-3 gap-2 sm:gap-4 pb-3 md:pb-4 border-b border-slate-100">
                   <div className="col-span-1"></div>
-                  <div className="col-span-1 text-center font-semibold text-xs md:text-[14px] text-slate-400">Boutique X</div>
-                  <div className="col-span-1 text-center font-semibold text-xs md:text-[14px] text-blue-600">ScreenFix</div>
+                  <div className="col-span-1 text-center font-semibold text-[10px] sm:text-xs md:text-[14px] text-slate-400">Boutique X</div>
+                  <div className="col-span-1 text-center font-semibold text-[10px] sm:text-xs md:text-[14px] text-blue-600">ScreenFix</div>
               </div>
 
               {/* Rows */}
@@ -66,13 +66,13 @@ export const Services: React.FC = () => {
                   { label: "Message Erreur", bad: "Oui Souvent", good: "Aucun" },
                   { label: "Prix", bad: "Élevé", good: "-60% Éco" },
               ].map((row, idx) => (
-                  <div key={idx} className="grid grid-cols-3 gap-2 md:gap-4 items-center py-3 border-b border-slate-50/50 last:border-0 hover:bg-white/50 rounded-xl transition-colors px-2">
-                      <div className="font-bold text-xs md:text-[15px] text-slate-700 uppercase">{row.label}</div>
-                      <div className="flex justify-center items-center gap-2 text-slate-400 font-semibold text-xs md:text-[14px]">
-                          <X size={16} className="text-red-400" /> {row.bad}
+                  <div key={idx} className="grid grid-cols-3 gap-1 sm:gap-2 md:gap-4 items-center py-2 md:py-3 border-b border-slate-50/50 last:border-0 hover:bg-white/50 rounded-xl transition-colors px-1 sm:px-2">
+                      <div className="font-bold text-[10px] sm:text-xs md:text-[15px] text-slate-700 uppercase">{row.label}</div>
+                      <div className="flex justify-center items-center gap-1 text-slate-400 font-semibold text-[9px] sm:text-xs md:text-[14px]">
+                          <X size={12} className="text-red-400 hidden sm:block" /> <span className="truncate">{row.bad}</span>
                       </div>
-                      <div className="flex justify-center items-center gap-2 text-slate-900 font-bold text-xs md:text-[14px] bg-white/80 border border-slate-100 py-2 rounded-lg shadow-sm">
-                          <Check size={16} className="text-green-500" /> {row.good}
+                      <div className="flex justify-center items-center gap-1 text-slate-900 font-bold text-[9px] sm:text-xs md:text-[14px] bg-white/80 border border-slate-100 py-1.5 md:py-2 rounded-lg shadow-sm">
+                          <Check size={12} className="text-green-500 hidden sm:block" /> <span className="truncate">{row.good}</span>
                       </div>
                   </div>
               ))}

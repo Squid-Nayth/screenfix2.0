@@ -1,13 +1,49 @@
-import React from 'react';
-import { GraduationCap, ArrowRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { GraduationCap, ArrowRight, Info, X } from 'lucide-react';
 
 export const Training: React.FC = () => {
+  const [showDevMessage, setShowDevMessage] = useState(false);
+
+  const handleDevClick = () => {
+    setShowDevMessage(true);
+    setTimeout(() => setShowDevMessage(false), 4000);
+  };
+
   return (
     <section id="formation" className="py-24 relative overflow-hidden bg-transparent">
         {/* Pro Background Removed - using global glass */}
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="bg-white/70 border border-white/60 rounded-[3rem] p-10 md:p-20 backdrop-blur-2xl shadow-2xl">
+      {/* Development Message Notification - Centered */}
+      {showDevMessage && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm animate-fade-in">
+          <div className="bg-white border border-blue-200 rounded-2xl shadow-2xl p-8 max-w-md mx-4 relative">
+            <button 
+              onClick={() => setShowDevMessage(false)}
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors"
+            >
+              <X size={20} />
+            </button>
+            <div className="flex flex-col items-center text-center gap-4">
+              <div className="bg-blue-100 p-4 rounded-full">
+                <Info className="text-blue-600" size={32} />
+              </div>
+              <div>
+                <h4 className="font-bold text-slate-900 text-xl mb-2">En développement</h4>
+                <p className="text-slate-600">Cette partie du site est en développement, elle sera bientôt disponible.</p>
+              </div>
+              <button
+                onClick={() => setShowDevMessage(false)}
+                className="mt-2 px-6 py-2 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition-colors"
+              >
+                Compris
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+        <div className="bg-white/70 border border-white/60 rounded-2xl md:rounded-[3rem] p-6 sm:p-8 md:p-12 lg:p-20 backdrop-blur-2xl shadow-2xl">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-16">
             
             <div className="flex-1 space-y-10">
@@ -16,11 +52,11 @@ export const Training: React.FC = () => {
                     <span className="text-[14px] font-semibold tracking-wide">Formation Pro</span>
                 </div>
                 
-                <h2 className="text-4xl sm:text-5xl md:text-[64px] font-bold leading-[1.1] tracking-tight text-slate-900">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[64px] font-bold leading-[1.1] tracking-tight text-slate-900">
                     Devenez <span className="text-purple-600">Expert</span>
                 </h2>
                 
-                <p className="text-slate-600 text-base md:text-[20px] leading-relaxed font-normal max-w-lg">
+                <p className="text-slate-600 text-sm sm:text-base md:text-[20px] leading-relaxed font-normal max-w-lg">
                     Apprenez les techniques de reconditionnement industriel.
                 </p>
                 
@@ -33,7 +69,7 @@ export const Training: React.FC = () => {
                     ))}
                 </div>
 
-                <button className="px-10 py-5 bg-slate-900 text-white font-medium text-base rounded-full hover:bg-black transition-all flex items-center gap-3 shadow-xl">
+                <button onClick={handleDevClick} className="px-10 py-5 bg-slate-900 text-white font-medium text-base rounded-full hover:bg-black transition-all flex items-center gap-3 shadow-xl cursor-pointer">
                     Télécharger le programme <ArrowRight size={20} />
                 </button>
             </div>

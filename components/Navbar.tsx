@@ -13,6 +13,25 @@ export const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleLogoClick = () => {
+    // Masquer toutes les pages spéciales
+    (window as any).hideLegalNotice?.();
+    (window as any).hidePrivacyPolicy?.();
+    (window as any).hideB2BSignup?.();
+    
+    // Scroller en haut de la page
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault();
+    const element = document.getElementById(targetId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    setIsOpen(false);
+  };
+
   return (
     <nav 
       className={`fixed w-full z-50 transition-all duration-300 ${
@@ -23,7 +42,7 @@ export const Navbar: React.FC = () => {
         <div className="flex items-center justify-between">
           
           {/* Logo */}
-          <div className="flex items-center gap-2 cursor-pointer">
+          <div onClick={handleLogoClick} className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity">
             <div className="bg-blue-600 p-2 rounded-xl shadow-lg shadow-blue-500/20">
               <Smartphone className="w-5 h-5 text-white" />
             </div>
@@ -34,9 +53,9 @@ export const Navbar: React.FC = () => {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-8">
-            <a href="#boutique-pro" className="text-slate-600 hover:text-blue-600 transition-colors text-[15px] font-semibold">Boutique Pro</a>
-            <a href="#services" className="text-slate-600 hover:text-blue-600 transition-colors text-[15px] font-semibold">Reconditionnement</a>
-            <a href="#formation" className="text-slate-600 hover:text-blue-600 transition-colors text-[15px] font-semibold">Formation</a>
+            <a href="#boutique-pro" onClick={(e) => handleSmoothScroll(e, 'boutique-pro')} className="text-slate-600 hover:text-blue-600 transition-colors text-[15px] font-semibold cursor-pointer">Boutique Pro</a>
+            <a href="#services" onClick={(e) => handleSmoothScroll(e, 'services')} className="text-slate-600 hover:text-blue-600 transition-colors text-[15px] font-semibold cursor-pointer">Reconditionnement</a>
+            <a href="#formation" onClick={(e) => handleSmoothScroll(e, 'formation')} className="text-slate-600 hover:text-blue-600 transition-colors text-[15px] font-semibold cursor-pointer">Formation</a>
             
             <a 
               href="https://wa.me/33622188574" 
@@ -62,12 +81,16 @@ export const Navbar: React.FC = () => {
       {/* Mobile Menu Overlay */}
       {isOpen && (
         <div className="md:hidden absolute top-full left-0 w-full bg-white border-b border-gray-100 p-6 flex flex-col gap-6 shadow-xl">
-            <a href="#boutique-pro" onClick={() => setIsOpen(false)} className="text-slate-900 font-semibold text-lg">Boutique Pro</a>
-            <a href="#services" onClick={() => setIsOpen(false)} className="text-slate-900 font-semibold text-lg">Reconditionnement</a>
-            <a href="#formation" onClick={() => setIsOpen(false)} className="text-slate-900 font-semibold text-lg">Formation</a>
-            <button className="w-full py-4 rounded-xl bg-blue-600 font-medium text-white shadow-lg text-base">
+            <a href="#boutique-pro" onClick={(e) => handleSmoothScroll(e, 'boutique-pro')} className="text-slate-900 font-semibold text-lg cursor-pointer hover:text-blue-600 transition-colors">Boutique Pro</a>
+            <a href="#services" onClick={(e) => handleSmoothScroll(e, 'services')} className="text-slate-900 font-semibold text-lg cursor-pointer hover:text-blue-600 transition-colors">Reconditionnement</a>
+            <a href="#formation" onClick={(e) => handleSmoothScroll(e, 'formation')} className="text-slate-900 font-semibold text-lg cursor-pointer hover:text-blue-600 transition-colors">Formation</a>
+            <a 
+              href="https://wa.me/33622188574" 
+              className="w-full py-4 rounded-xl bg-blue-600 font-medium text-white shadow-lg text-base text-center flex items-center justify-center gap-2 hover:bg-blue-700 transition-colors"
+            >
+              <Phone size={18} />
               Prendre Rendez-vous
-            </button>
+            </a>
         </div>
       )}
     </nav>

@@ -35,13 +35,13 @@ const features = [
 export const Features: React.FC = () => {
   return (
     <section id="expertise" className="py-24 relative overflow-hidden bg-transparent">
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-20">
             <span className="text-blue-600 font-semibold tracking-wide text-[14px] uppercase block mb-4">Pourquoi Nous ?</span>
-          <h2 className="text-4xl sm:text-5xl md:text-[64px] font-bold text-slate-900 mb-6 tracking-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[64px] font-bold text-slate-900 mb-4 md:mb-6 tracking-tight">
             L'EXCELLENCE <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">SCREENFIX</span>
           </h2>
-          <p className="text-slate-500 max-w-2xl mx-auto font-normal text-base md:text-[20px] leading-relaxed">
+          <p className="text-slate-500 max-w-2xl mx-auto font-normal text-sm sm:text-base md:text-[20px] leading-relaxed">
             Stop aux écrans compatibles de mauvaise qualité. Optez pour le reconditionnement constructeur.
           </p>
         </div>

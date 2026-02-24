@@ -47,6 +47,16 @@ const MODELS = [
   { name: 'iPhone SE 2022', recond: 50, screen: 65, back: 65, battery: 45, camera: 70, charge: 50 },
 ];
 
+// Function to get iPhone image based on model name
+const getIphoneImage = (modelName: string): string => {
+  if (modelName.includes('17') || modelName.includes('16')) return '/iphones/Iphone-15.png';
+  if (modelName.includes('15') || modelName.includes('14')) return '/iphones/Iphone-15.png';
+  if (modelName.includes('13') || modelName.includes('12') || modelName.includes('11')) return '/iphones/iphone13_12_11.png';
+  if (modelName.includes('X')) return '/iphones/iphone-X.png';
+  if (modelName.includes('SE')) return '/iphones/iphone-SE-2022.png';
+  return '/iphones/chassis-iphone-12-removebg-preview.png'; // default
+};
+
 export const BookingWizard: React.FC = () => {
   const [step, setStep] = useState(1);
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
@@ -64,6 +74,9 @@ export const BookingWizard: React.FC = () => {
   const [contact, setContact] = useState({ name: '', email: '', phone: '' });
   const [errors, setErrors] = useState({ email: false, phone: false });
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Track first render to avoid auto-scroll on page load
+  const isFirstRender = React.useRef(true);
 
   // Constants
   const timeSlots = ['10:00', '11:00', '12:00', '14:00', '15:00', '16:00', '17:00', '18:00'];
@@ -208,8 +221,12 @@ export const BookingWizard: React.FC = () => {
     }
   };
 
-  // Scroll to top when step changes
+  // Scroll to top when step changes (but not on first render)
   React.useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
     const element = document.getElementById('booking-card');
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }, [step]);
@@ -280,22 +297,27 @@ export const BookingWizard: React.FC = () => {
       </div>
 
       {/* Main Card */}
-      <div id="booking-card" className="bg-white/80 backdrop-blur-xl border border-white/60 rounded-[2rem] md:rounded-[3rem] p-6 md:p-12 shadow-2xl relative overflow-hidden min-h-[500px]">
+      <div id="booking-card" className="bg-white/80 backdrop-blur-xl border border-white/60 rounded-2xl md:rounded-[3rem] p-5 sm:p-6 md:p-12 shadow-2xl relative overflow-hidden min-h-[500px]">
         
         {/* Step 1: Select Model */}
         {step === 1 && (
           <div className="animate-fade-in">
-             <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-8 text-center tracking-tight">
+             <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-slate-900 mb-6 md:mb-8 text-center tracking-tight">
               Quel est votre <span className="text-blue-600">iPhone</span> ?
             </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
               {MODELS.map((m) => (
                 <button
                   key={m.name}
                   onClick={() => { setSelectedModel(m.name); setStep(2); }}
-                  className="p-4 rounded-2xl border bg-white border-slate-100 hover:border-blue-500 hover:bg-blue-50 hover:shadow-md transition-all text-sm md:text-base font-bold text-slate-700 hover:text-blue-700 text-center"
+                  className="p-4 rounded-2xl border bg-white border-slate-100 hover:border-blue-500 hover:bg-blue-50 hover:shadow-md transition-all text-sm md:text-base font-bold text-slate-700 hover:text-blue-700 flex flex-col items-center gap-2"
                 >
-                  {m.name}
+                  <img 
+                    src={getIphoneImage(m.name)} 
+                    alt={m.name} 
+                    className="w-8 h-8 md:w-10 md:h-10 object-contain"
+                  />
+                  <span className="text-center">{m.name}</span>
                 </button>
               ))}
             </div>
@@ -311,10 +333,10 @@ export const BookingWizard: React.FC = () => {
             <div className="flex items-center gap-2 mb-8 justify-center">
                 <span className="px-4 py-1 bg-slate-100 rounded-full text-xs font-bold text-slate-500 uppercase tracking-wide">{selectedModel}</span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2 text-center tracking-tight">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-2 text-center tracking-tight">
               Quelle est la <span className="text-blue-600">Panne</span> ?
             </h2>
-            <p className="text-center text-slate-400 mb-8 text-sm">Sélectionnez plusieurs services pour augmenter votre réduction</p>
+            <p className="text-center text-slate-400 mb-6 md:mb-8 text-xs sm:text-sm">Sélectionnez plusieurs services pour augmenter votre réduction</p>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {SERVICES.map((s) => {
@@ -372,10 +394,13 @@ export const BookingWizard: React.FC = () => {
                         </div>
                         <div className="flex flex-col items-start text-left">
                             <span className={`font-bold text-lg ${isOther ? 'text-white' : 'text-slate-800'}`}>Autre problème ?</span>
-                             <span className={`text-xs font-medium mt-1 ${isOther ? 'text-blue-200' : 'text-slate-400'}`}>Je ne trouve pas ma panne</span>
+                             <span className={`text-xs font-medium mt-1 ${isOther ? 'text-blue-200' : 'text-slate-400'}`}>Diagnostic personnalisé</span>
                         </div>
                     </div>
-                    <span className={`text-sm ${isOther ? 'text-gray-300' : 'text-gray-400'}`}>Sur devis</span>
+                    <div className="flex flex-col items-end">
+                        <span className={`font-bold text-xl ${isOther ? 'text-blue-400' : 'text-blue-600'}`}>35€</span>
+                        <span className={`text-xs font-medium ${isOther ? 'text-gray-300' : 'text-gray-400'}`}>Sur devis</span>
+                    </div>
                  </div>
                  {isOther && (
                      <div className="w-full mt-4" onClick={(e) => e.stopPropagation()}>
@@ -450,7 +475,7 @@ export const BookingWizard: React.FC = () => {
                  {selectedDate && (
                      <div className="animate-fade-in">
                         <p className="text-sm font-semibold text-slate-400 mb-3 uppercase tracking-wide">Heure</p>
-                        <div className="grid grid-cols-4 gap-2">
+                        <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                             {timeSlots.map(t => (
                                 <button
                                     key={t}
@@ -548,6 +573,19 @@ export const BookingWizard: React.FC = () => {
                         />
                         {errors.phone && <p className="text-red-500 text-xs mt-1 font-semibold flex items-center gap-1"><AlertCircle size={12}/> Numéro requis</p>}
                     </div>
+                 </div>
+                 
+                 {/* Privacy Policy Notice */}
+                 <div className="mt-6 p-4 bg-blue-50/50 border border-blue-100 rounded-xl">
+                    <p className="text-xs text-slate-600 text-center">
+                        En remplissant notre formulaire, vous acceptez notre{' '}
+                        <button 
+                            onClick={() => (window as any).showPrivacyPolicy?.()}
+                            className="text-blue-600 font-semibold hover:underline"
+                        >
+                            politique de confidentialité
+                        </button>.
+                    </p>
                  </div>
             </div>
           </div>

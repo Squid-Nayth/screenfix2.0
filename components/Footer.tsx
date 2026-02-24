@@ -3,9 +3,9 @@ import { MapPin, Phone, Smartphone } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   return (
-    <footer id="contact" className="bg-white/40 backdrop-blur-xl border-t border-white/60 pt-20 pb-10 relative z-20">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-16">
+    <footer id="contact" className="bg-white/40 backdrop-blur-xl border-t border-white/60 pt-12 md:pt-20 pb-10 relative z-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-16 mb-12 md:mb-16">
           
           <div className="col-span-1 md:col-span-2 space-y-8">
              <div className="flex items-center gap-2">
@@ -38,17 +38,36 @@ export const Footer: React.FC = () => {
           <div>
             <h4 className="text-slate-900 font-bold text-[16px] mb-8">Contact</h4>
             <ul className="space-y-6 text-slate-600">
-              <li className="flex items-start gap-4 group cursor-pointer">
-                <div className="p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors"><MapPin className="w-5 h-5 text-blue-600" /></div>
-                <span className="font-medium text-[15px]">27 Boulevard de Port Royal,<br/>75013 Paris, France</span>
+              <li>
+                <a 
+                  href="https://www.google.com/maps/search/?api=1&query=27+Boulevard+de+Port+Royal+75013+Paris" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-start gap-4 group cursor-pointer hover:text-blue-600 transition-colors"
+                >
+                  <div className="p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors"><MapPin className="w-5 h-5 text-blue-600" /></div>
+                  <span className="font-medium text-[15px]">27 Boulevard de Port Royal,<br/>75013 Paris, France</span>
+                </a>
               </li>
-              <li className="flex items-center gap-4 group cursor-pointer">
-                <div className="p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors"><Phone className="w-5 h-5 text-blue-600" /></div>
-                <span className="font-medium text-[15px]">+33 6 22 18 85 74</span>
+              <li>
+                <a 
+                  href="tel:+33622188574" 
+                  className="flex items-center gap-4 group cursor-pointer hover:text-blue-600 transition-colors"
+                >
+                  <div className="p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors"><Phone className="w-5 h-5 text-blue-600" /></div>
+                  <span className="font-medium text-[15px]">+33 6 22 18 85 74</span>
+                </a>
               </li>
-              <li className="flex items-center gap-4 group cursor-pointer">
-                <div className="p-2 bg-white rounded-lg group-hover:bg-green-50 transition-colors"><img src="/icones/whatsapp.png" alt="WhatsApp" className="w-5 h-5" /></div>
-                <span className="font-medium text-[15px]">WhatsApp Disponible</span>
+              <li>
+                <a 
+                  href="https://wa.me/33622188574" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-4 group cursor-pointer hover:text-green-600 transition-colors"
+                >
+                  <div className="p-2 bg-white rounded-lg group-hover:bg-green-50 transition-colors"><img src="/icones/whatsapp.png" alt="WhatsApp" className="w-5 h-5" /></div>
+                  <span className="font-medium text-[15px]">WhatsApp Disponible</span>
+                </a>
               </li>
             </ul>
           </div>
@@ -81,8 +100,12 @@ export const Footer: React.FC = () => {
                 >
                   Mentions Légales
                 </button>
-                <a href="#" className="hover:text-blue-600 transition-colors">CGV</a>
-                <a href="#" className="hover:text-blue-600 transition-colors">Politique de Confidentialité</a>
+                <button 
+                  onClick={() => (window as any).showPrivacyPolicy?.()}
+                  className="hover:text-blue-600 transition-colors cursor-pointer"
+                >
+                  Politique de Confidentialité
+                </button>
             </div>
         </div>
       </div>
