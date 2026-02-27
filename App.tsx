@@ -11,6 +11,7 @@ import { BookingWizard } from './components/BookingWizard';
 import { LegalNotice } from './components/LegalNotice';
 import { PrivacyPolicy } from './components/PrivacyPolicy';
 import { B2BSignup } from './components/B2BSignup';
+import { guardCurrentBoutiqueAccess } from './lib/proAccess';
 
 const App: React.FC = () => {
   const [showLegalNotice, setShowLegalNotice] = useState(false);
@@ -49,6 +50,10 @@ const App: React.FC = () => {
       setShowB2BSignup(false);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     };
+  }, []);
+
+  React.useEffect(() => {
+    void guardCurrentBoutiqueAccess();
   }, []);
 
   if (showB2BSignup) {
