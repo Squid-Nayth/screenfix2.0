@@ -163,6 +163,37 @@ npm run build
 
 4. Si vous déployez sur Vercel / Netlify / Cloudflare Pages, ajoutez aussi cette variable dans les paramètres du projet, puis relancez un déploiement.
 
+### Google Calendar automatique
+
+Si vous voulez que chaque rendez-vous pris sur le site crée automatiquement un événement dans Google Calendar :
+
+1. Déployez le script :
+   - [scripts/google-apps-script/calendar-booking-webapp.gs](/Users/nkombelasseninathanmichel/Documents/GitHub/screenfix2.0/scripts/google-apps-script/calendar-booking-webapp.gs)
+2. Dans Google Apps Script :
+   - remplacez la clé de `setCalendarApiKeyOnce()`
+   - exécutez `setCalendarApiKeyOnce()`
+   - remplacez `primary` dans `setCalendarIdOnce()` si vous voulez viser un autre agenda
+   - exécutez `setCalendarIdOnce()`
+3. Déployez en `Application Web` :
+   - `Exécuter en tant que : Moi`
+   - `Qui a accès : Tout le monde avec le lien`
+4. Récupérez l'URL `/exec`
+5. Ajoutez ces variables d'environnement :
+
+```bash
+VITE_GCAL_BOOKING_WEBAPP_URL=https://script.google.com/macros/s/AKFYCB.../exec
+VITE_GCAL_BOOKING_API_KEY=votre_cle_longue_et_aleatoire
+VITE_GCAL_BOOKING_DURATION_MINUTES=60
+```
+
+6. Relancez un build :
+
+```bash
+npm run build
+```
+
+7. Redéployez la version statique `dist/`
+
 ## ✅ Test Local de la Version de Production
 
 ```bash

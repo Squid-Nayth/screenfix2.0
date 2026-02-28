@@ -65,6 +65,7 @@ function sendScreenfixEmails(evaluation, rdv, onSuccess, onError) {
     phone_number: rdv.phone || 'Non fourni',
     user_phone: rdv.phone || 'Non fourni',
     rdv_date: rdv.date,
+    rdv_time: rdv.time || '',
     hours_arrived: rdv.time || '',
     eval_brand: evaluation.brand,
     eval_model: evaluation.model,

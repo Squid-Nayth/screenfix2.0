@@ -211,6 +211,7 @@ const translations = {
       next: 'Suivant',
       confirm: 'Confirmer le RDV',
       confirming: 'Envoi en cours...',
+      calendarSyncError: "Impossible de créer automatiquement le rendez-vous dans l'agenda. Merci de réessayer.",
       namePlaceholder: 'Jean Dupont',
       emailPlaceholder: 'jean@example.com',
       services: [
@@ -492,6 +493,7 @@ const translations = {
       next: 'Next',
       confirm: 'Confirm booking',
       confirming: 'Sending...',
+      calendarSyncError: 'Unable to create the appointment in Google Calendar. Please try again.',
       namePlaceholder: 'John Doe',
       emailPlaceholder: 'john@example.com',
       services: [

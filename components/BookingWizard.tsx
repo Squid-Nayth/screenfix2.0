@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Check, Smartphone, Calendar, ChevronRight, ChevronLeft, AlertCircle, Loader2, Tag, Zap } from 'lucide-react';
 import { sendScreenfixEmails } from '../services/emailService';
+import { buildBookingWindow, createCalendarBooking, isCalendarBookingConfigured } from '../lib/calendarBooking';
 import { fetchSheetPriceMap, normalizeModelKey } from '../lib/sheetPrices';
 import { InternationalPhoneInput } from './ui/InternationalPhoneInput';
 import { useI18n } from '../lib/i18n';
@@ -199,6 +200,13 @@ export const BookingWizard: React.FC = () => {
         ? t('booking.quote') 
         : `${pricingSummary.final}€`;
 
+    const bookingWindow = buildBookingWindow(selectedDate, selectedTime);
+    if (!bookingWindow) {
+      alert(t('booking.calendarSyncError', t('b2b.technicalError')));
+      setIsSubmitting(false);
+      return;
+    }
+
     // Préparer les données pour EmailJS
     const evaluation = {
       brand: 'Apple',
@@ -227,12 +235,33 @@ export const BookingWizard: React.FC = () => {
     console.log('RDV:', rdv);
 
     try {
-      // Envoi des emails via EmailJS
-      await sendScreenfixEmails(evaluation, rdv);
+      if (isCalendarBookingConfigured()) {
+        await createCalendarBooking({
+          customerName: contact.name,
+          customerEmail: contact.email,
+          customerPhone: buildInternationalPhone(phoneCountryIso, contact.phone),
+          model: selectedModel || '',
+          repairSummary: Array.isArray(serviceNames) ? serviceNames.join(' + ') : serviceNames,
+          priceDisplay: priceDisplay,
+          bookingDateLabel: rdv.date,
+          bookingTimeLabel: selectedTime || '',
+          startIso: bookingWindow.startIso,
+          endIso: bookingWindow.endIso
+        });
+      } else {
+        console.warn('[CALENDAR] Réservation Google Calendar non configurée.');
+      }
+
+      try {
+        await sendScreenfixEmails(evaluation, rdv);
+      } catch (emailError) {
+        console.error("Erreur lors de l'envoi des emails après création agenda:", emailError);
+      }
+
       setStep(4);
     } catch (error) {
-      console.error("Erreur lors de l'envoi des emails:", error);
-      alert(t('b2b.technicalError'));
+      console.error("Erreur lors de la création du rendez-vous Google Calendar:", error);
+      alert(t('booking.calendarSyncError', t('b2b.technicalError')));
     } finally {
       setIsSubmitting(false);
     }

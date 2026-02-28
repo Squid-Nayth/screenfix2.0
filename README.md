@@ -72,3 +72,33 @@ If `VITE_GA_MEASUREMENT_ID` is missing, Google Analytics is disabled automatical
 
 The booking form (`Prendre rendez-vous`) auto-refreshes model prices every 60 seconds.
 The Google Sheet `prix` value overrides the `Écran Original Reconditionné` price for each iPhone model.
+
+## Automatic booking sync (Website -> Google Calendar)
+
+1. Open Google Apps Script:
+   - [scripts/google-apps-script/calendar-booking-webapp.gs](scripts/google-apps-script/calendar-booking-webapp.gs)
+2. Create a new standalone Apps Script project and paste this file.
+3. In Apps Script:
+   - Run `setCalendarApiKeyOnce()` once after replacing the placeholder key
+   - Run `setCalendarIdOnce()` once
+4. In `setCalendarIdOnce()`:
+   - keep `primary` if the calendar owner is the Google account running the script
+   - or replace it with a real Google Calendar ID if you want to target another calendar
+5. Deploy as Web App:
+   - `Execute as: Me`
+   - `Who has access: Anyone with the link`
+6. Copy the `/exec` URL.
+7. Create `.env.local` at the project root and add:
+
+```bash
+VITE_GCAL_BOOKING_WEBAPP_URL=https://script.google.com/macros/s/AKFYCB.../exec
+VITE_GCAL_BOOKING_API_KEY=your_long_random_secret
+VITE_GCAL_BOOKING_DURATION_MINUTES=60
+```
+
+8. Restart the app:
+   - `npm run dev`
+9. For production:
+   - `npm run build`
+
+The booking form will then create a Google Calendar event automatically before confirming the appointment.
