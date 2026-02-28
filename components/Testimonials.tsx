@@ -14,7 +14,7 @@ export const Testimonials: React.FC = () => {
   }, []);
 
   return (
-    <section id="avis" className="py-24 relative bg-transparent">
+    <section id="avis" data-anim-section className="py-24 relative bg-transparent">
       <div className="max-w-7xl mx-auto px-6">
         <h2 className="text-3xl sm:text-5xl md:text-[64px] font-bold text-center mb-6 text-slate-900 tracking-tight">
           CLIENTS <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-orange-600">VÉRIFIÉS</span>

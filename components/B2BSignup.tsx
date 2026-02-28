@@ -56,10 +56,11 @@ export const B2BSignup: React.FC<B2BSignupProps> = ({ onClose }) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^(\+33|0)[1-9](\d{2}){4}$/;
     const siretRegex = /^\d{14}$/;
+    const normalizedPhone = formData.phone.replace(/\s/g, '');
 
     const newErrors = {
       email: !emailRegex.test(formData.email),
-      phone: formData.phone.length < 8 || !phoneRegex.test(formData.phone.replace(/\s/g, '')),
+      phone: normalizedPhone.length > 0 && !phoneRegex.test(normalizedPhone),
       siret: !siretRegex.test(formData.siret.replace(/\s/g, ''))
     };
 
@@ -180,10 +181,10 @@ export const B2BSignup: React.FC<B2BSignupProps> = ({ onClose }) => {
         });
       }
     } catch (error) {
-      console.error('Erreur verification acces pro:', error);
+      console.error('Erreur vérification accès pro :', error);
       setAccessFeedback({
         type: 'error',
-        message: 'Erreur technique de verification. Merci de reessayer.'
+        message: 'Erreur technique de vérification. Merci de réessayer.'
       });
     } finally {
       setIsCheckingAccess(false);
@@ -191,9 +192,9 @@ export const B2BSignup: React.FC<B2BSignupProps> = ({ onClose }) => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto px-6 py-12">
-      <div className="bg-white/80 backdrop-blur-xl border border-white/60 rounded-[3rem] p-8 md:p-12 shadow-2xl">
-        <div className="text-center mb-10">
+    <div data-anim-section className="max-w-3xl mx-auto px-6 pt-28 md:pt-32 pb-20 md:pb-24">
+      <div data-anim-stagger className="bg-white/80 backdrop-blur-xl border border-white/60 rounded-[3rem] p-8 md:p-12 shadow-2xl">
+        <div data-anim-item className="text-center mb-10">
           <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-blue-50 text-blue-600 border border-blue-100 mb-6">
             <Building2 size={20} />
             <span className="text-sm font-semibold tracking-wide">Espace Professionnel</span>
@@ -204,11 +205,11 @@ export const B2BSignup: React.FC<B2BSignupProps> = ({ onClose }) => {
           </h1>
 
           <p className="text-slate-600 text-lg">
-            Accedez a notre catalogue de pieces detachees aux tarifs revendeurs
+            Accédez à notre catalogue de pièces détachées aux tarifs revendeurs
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form data-anim-item onSubmit={handleSubmit} className="space-y-6">
           <input
             type="text"
             tabIndex={-1}
@@ -222,7 +223,7 @@ export const B2BSignup: React.FC<B2BSignupProps> = ({ onClose }) => {
           <div>
             <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">
               <User className="inline mr-2" size={16} />
-              Nom Complet <span className="text-red-500">*</span>
+              Nom complet <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -278,11 +279,10 @@ export const B2BSignup: React.FC<B2BSignupProps> = ({ onClose }) => {
             <div>
               <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">
                 <Phone className="inline mr-2" size={16} />
-                Téléphone <span className="text-red-500">*</span>
+                Téléphone <span className="text-slate-500 font-medium">(facultatif)</span>
               </label>
               <input
                 type="tel"
-                required
                 value={formData.phone}
                 onChange={(e) => {
                   setFormData({ ...formData, phone: e.target.value });
@@ -345,9 +345,13 @@ export const B2BSignup: React.FC<B2BSignupProps> = ({ onClose }) => {
               {submitFeedback.message}
             </p>
           )}
+
+          <p className="text-xs text-slate-500 text-center">
+            Le symbole <span className="text-red-500 font-bold">*</span> indique un champ obligatoire.
+          </p>
         </form>
 
-        <div className="mt-8 pt-8 border-t border-slate-200 text-center">
+        <div data-anim-item className="mt-8 pt-8 border-t border-slate-200 text-center">
           <p className="text-slate-600 mb-4">Vous êtes déjà inscrit chez nous ?</p>
           <form onSubmit={handleAccessShop} className="max-w-xl mx-auto space-y-3">
             <input

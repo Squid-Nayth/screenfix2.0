@@ -47,6 +47,7 @@ function sendScreenfixEmails(evaluation, rdv, onSuccess, onError) {
   const userParams = {
     to_email: rdv.email,
     user_name: rdv.name,
+    phone_number: rdv.phone || 'Non fourni',
     rdv_date: rdv.date,
     eval_brand: evaluation.brand,
     eval_model: evaluation.model,
@@ -59,6 +60,8 @@ function sendScreenfixEmails(evaluation, rdv, onSuccess, onError) {
     to_email: ADMIN_EMAIL,
     user_name: rdv.name,
     user_email: rdv.email,
+    phone_number: rdv.phone || 'Non fourni',
+    user_phone: rdv.phone || 'Non fourni',
     rdv_date: rdv.date,
     eval_brand: evaluation.brand,
     eval_model: evaluation.model,

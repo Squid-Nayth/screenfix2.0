@@ -3,11 +3,11 @@ import { MapPin, Phone, Smartphone } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   return (
-    <footer id="contact" className="bg-white/40 backdrop-blur-xl border-t border-white/60 pt-12 md:pt-20 pb-10 relative z-20">
+    <footer id="contact" data-anim-section className="bg-white/40 backdrop-blur-xl border-t border-white/60 pt-12 md:pt-20 pb-10 relative z-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-16 mb-12 md:mb-16">
+        <div data-anim-stagger className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-16 mb-12 md:mb-16">
           
-          <div className="col-span-1 md:col-span-2 space-y-8">
+          <div data-anim-item className="col-span-1 md:col-span-2 space-y-8">
              <div className="flex items-center gap-2">
                 <div className="bg-blue-600 p-2 rounded-xl shadow-md">
                   <Smartphone className="w-5 h-5 text-white" />
@@ -35,7 +35,7 @@ export const Footer: React.FC = () => {
             </div>
           </div>
 
-          <div>
+          <div data-anim-item>
             <h4 className="text-slate-900 font-bold text-[16px] mb-8">Contact</h4>
             <ul className="space-y-6 text-slate-600">
               <li>
@@ -72,7 +72,7 @@ export const Footer: React.FC = () => {
             </ul>
           </div>
 
-          <div>
+          <div data-anim-item>
             <h4 className="text-slate-900 font-bold text-[16px] mb-8">Horaires</h4>
             <ul className="space-y-4 text-slate-600 font-medium text-[15px]">
               <li className="flex justify-between p-3 bg-white/60 rounded-xl border border-slate-200/60 shadow-sm">

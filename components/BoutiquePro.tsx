@@ -8,28 +8,28 @@ export const BoutiquePro: React.FC = () => {
   };
 
   return (
-    <section id="boutique-pro" className="py-20 md:py-32 bg-transparent relative overflow-hidden">
+    <section id="boutique-pro" data-anim-section className="py-20 md:py-32 bg-transparent relative overflow-hidden">
       {/* Background Decor Removed - Using Global App BG */}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Main Glass Container */}
         <div className="bg-white/70 rounded-2xl md:rounded-[3rem] p-6 sm:p-8 md:p-16 border border-white/60 shadow-2xl backdrop-blur-xl">
-          <div className="lg:grid lg:grid-cols-2 lg:gap-20 items-center">
+          <div data-anim-stagger className="lg:grid lg:grid-cols-2 lg:gap-20 items-center">
             
             {/* Left Column */}
-            <div className="space-y-10 mb-12 lg:mb-0">
+            <div data-anim-item className="space-y-10 mb-12 lg:mb-0">
               <div>
                 <span className="text-blue-600 font-semibold text-[14px] tracking-wide block mb-4">Solution pour Boutiques & Techniciens</span>
                 <h2 className="text-4xl sm:text-5xl md:text-[64px] font-bold text-slate-900 leading-[1.1] tracking-tight mb-6">
                   ESPACE <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">PRO</span>
                 </h2>
                 <p className="text-slate-600 text-base md:text-[20px] font-normal leading-relaxed max-w-lg">
-                  Vous êtes un professionnel de la réparation ? Accédez à notre stock de pièces <span className="text-slate-900 font-bold">Originales Reconditionné</span> exclusives aux meilleurs tarifs du marché.
+                  Vous êtes un professionnel de la réparation ? Accédez à notre stock de pièces <span className="text-slate-900 font-bold">originales reconditionnées</span> exclusives aux meilleurs tarifs du marché.
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                <div className="flex items-start space-x-5">
+              <div data-anim-stagger className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                <div data-anim-item className="flex items-start space-x-5">
                   <div className="bg-blue-50 p-4 rounded-2xl text-blue-600 shrink-0 border border-blue-100">
                     <Package size={28} />
                   </div>
@@ -38,7 +38,7 @@ export const BoutiquePro: React.FC = () => {
                     <p className="text-slate-500 text-sm md:text-[14px] font-normal leading-relaxed">Visibilité directe sur notre inventaire et livraison coursier Paris IM.</p>
                   </div>
                 </div>
-                <div className="flex items-start space-x-5">
+                <div data-anim-item className="flex items-start space-x-5">
                   <div className="bg-blue-50 p-4 rounded-2xl text-blue-600 shrink-0 border border-blue-100">
                     <Zap size={28} />
                   </div>
@@ -58,7 +58,7 @@ export const BoutiquePro: React.FC = () => {
             </div>
 
             {/* Right Column - Preview Card */}
-            <div className="relative perspective-1000">
+            <div data-anim-item className="relative perspective-1000">
               <div className="bg-white/90 backdrop-blur-sm p-8 md:p-10 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/50 relative overflow-hidden transform rotate-1 transition-all duration-500">
                 {/* Decoration Icon */}
                 <div className="absolute top-[-40px] right-[-40px] p-20 opacity-[0.03] text-blue-600 transform rotate-45 pointer-events-none">

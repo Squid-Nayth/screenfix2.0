@@ -125,20 +125,20 @@ export const redirectToShop = () => {
 export const getProStatusMessage = (status: ProStatus) => {
   switch (status) {
     case 'approved':
-      return 'Compte approuve.';
+      return 'Compte approuvé.';
     case 'pending':
       return 'Votre compte est en attente de validation.';
     case 'rejected':
-      return 'Votre demande a ete refusee. Contactez le support.';
+      return 'Votre demande a été refusée. Contactez le support.';
     case 'not_found':
-      return "Aucune demande trouvee pour cet email.";
+      return "Aucune demande trouvée pour cet email.";
     case 'unauthorized':
-      return 'Acces API non autorise. Verifiez la cle API.';
+      return 'Accès API non autorisé. Vérifiez la clé API.';
     case 'invalid_email':
       return 'Email invalide.';
     case 'error':
     default:
-      return 'Verification impossible pour le moment. Reessayez.';
+      return 'Vérification impossible pour le moment. Réessayez.';
   }
 };
 

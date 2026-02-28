@@ -3,7 +3,7 @@ import { Scale, Building2, Mail, Phone, Globe, AlertCircle } from 'lucide-react'
 
 export const LegalNotice: React.FC = () => {
   return (
-    <section className="py-24 relative bg-transparent min-h-screen">
+    <section data-anim-section className="py-24 relative bg-transparent min-h-screen">
       <div className="max-w-4xl mx-auto px-6">
         
         {/* Header */}
@@ -18,10 +18,10 @@ export const LegalNotice: React.FC = () => {
         </div>
 
         {/* Content Card */}
-        <div className="bg-white/80 backdrop-blur-xl border border-white/60 rounded-[3rem] p-8 md:p-12 shadow-2xl space-y-10">
+        <div data-anim-stagger className="bg-white/80 backdrop-blur-xl border border-white/60 rounded-[3rem] p-8 md:p-12 shadow-2xl space-y-10">
           
           {/* Éditeur du site */}
-          <div className="space-y-4">
+          <div data-anim-item className="space-y-4">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
                 <Building2 className="w-5 h-5 text-blue-600" />
@@ -49,7 +49,7 @@ export const LegalNotice: React.FC = () => {
           </div>
 
           {/* Responsable de la publication */}
-          <div className="space-y-4">
+          <div data-anim-item className="space-y-4">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center">
                 <Globe className="w-5 h-5 text-purple-600" />
@@ -70,7 +70,7 @@ export const LegalNotice: React.FC = () => {
           </div>
 
           {/* Hébergement */}
-          <div className="space-y-4">
+          <div data-anim-item className="space-y-4">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center">
                 <Globe className="w-5 h-5 text-green-600" />
@@ -92,7 +92,7 @@ export const LegalNotice: React.FC = () => {
           </div>
 
           {/* Disclaimer Apple */}
-          <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6 md:p-8">
+          <div data-anim-item className="bg-blue-50 border border-blue-200 rounded-2xl p-6 md:p-8">
             <div className="flex items-start gap-3 mb-4">
               <AlertCircle className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
               <h3 className="text-xl font-bold text-slate-900">À propos des marques citées</h3>
@@ -104,7 +104,7 @@ export const LegalNotice: React.FC = () => {
               </p>
               <p>
                 Les noms <strong>iPhone</strong>, <strong>Apple</strong>, <strong>iOS</strong>, <strong>MacBook</strong>, 
-                le logo  et toutes les autres marques citées sur ce site sont la propriété exclusive d'Apple Inc. 
+                le logo Apple et toutes les autres marques citées sur ce site sont la propriété exclusive d'Apple Inc. 
                 et servent uniquement à désigner clairement les appareils sur lesquels nous intervenons ou pour lesquels 
                 nous proposons des formations.
               </p>

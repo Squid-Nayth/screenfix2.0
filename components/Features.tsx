@@ -14,7 +14,7 @@ const features = [
     bg: "bg-purple-50",
     title: "Précision Laser",
     subtitle: "Décollage Micronique",
-    desc: "Machines Laser de dernière génération réduite du temps seulement 1h"
+    desc: "Machines laser de dernière génération : temps réduit à seulement 1h."
   },
   {
     icon: <Clock className="w-8 h-8 text-pink-600" />,
@@ -28,27 +28,27 @@ const features = [
     bg: "bg-green-50",
     title: "Garantie jusqu'à 12 Mois",
     subtitle: "Sérénité Totale",
-    desc: "Toutes nos réparations pièces et main d'œuvre sont couvertes de base 3 mois."
+    desc: "Toutes nos réparations pièces et main d'œuvre sont couvertes pendant 3 mois."
   }
 ];
 
 export const Features: React.FC = () => {
   return (
-    <section id="expertise" className="py-24 relative overflow-hidden bg-transparent">
+    <section id="expertise" data-anim-section className="py-24 relative overflow-hidden bg-transparent">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-20">
+        <div className="text-center mb-20" data-anim-stagger>
             <span className="text-blue-600 font-semibold tracking-wide text-[14px] uppercase block mb-4">Pourquoi Nous ?</span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[64px] font-bold text-slate-900 mb-4 md:mb-6 tracking-tight">
+          <h2 data-anim-item className="text-3xl sm:text-4xl md:text-5xl lg:text-[64px] font-bold text-slate-900 mb-4 md:mb-6 tracking-tight">
             L'EXCELLENCE <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">SCREENFIX</span>
           </h2>
-          <p className="text-slate-500 max-w-2xl mx-auto font-normal text-sm sm:text-base md:text-[20px] leading-relaxed">
+          <p data-anim-item className="text-slate-500 max-w-2xl mx-auto font-normal text-sm sm:text-base md:text-[20px] leading-relaxed">
             Stop aux écrans compatibles de mauvaise qualité. Optez pour le reconditionnement constructeur.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div data-anim-stagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature, idx) => (
-            <div key={idx} className="group relative bg-white/60 backdrop-blur-xl border border-white/60 rounded-[2.5rem] p-8 hover:shadow-2xl hover:shadow-blue-900/5 transition-all duration-300 hover:-translate-y-2 overflow-hidden">
+            <div data-anim-item key={idx} className="group relative bg-white/60 backdrop-blur-xl border border-white/60 rounded-[2.5rem] p-8 hover:shadow-2xl hover:shadow-blue-900/5 transition-all duration-300 hover:-translate-y-2 overflow-hidden">
               {/* Hover Gradient */}
               <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
               

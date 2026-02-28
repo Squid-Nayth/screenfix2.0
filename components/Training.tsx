@@ -10,7 +10,7 @@ export const Training: React.FC = () => {
   };
 
   return (
-    <section id="formation" className="py-24 relative overflow-hidden bg-transparent">
+    <section id="formation" data-anim-section className="py-24 relative overflow-hidden bg-transparent">
         {/* Pro Background Removed - using global glass */}
 
       {/* Development Message Notification - Centered */}
@@ -44,9 +44,9 @@ export const Training: React.FC = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         <div className="bg-white/70 border border-white/60 rounded-2xl md:rounded-[3rem] p-6 sm:p-8 md:p-12 lg:p-20 backdrop-blur-2xl shadow-2xl">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-16">
+          <div data-anim-stagger className="flex flex-col lg:flex-row items-center justify-between gap-16">
             
-            <div className="flex-1 space-y-10">
+            <div data-anim-item className="flex-1 space-y-10">
                 <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-purple-50 text-purple-600 border border-purple-100">
                     <GraduationCap size={20} />
                     <span className="text-[14px] font-semibold tracking-wide">Formation Pro</span>
@@ -60,9 +60,9 @@ export const Training: React.FC = () => {
                     Apprenez les techniques de reconditionnement industriel.
                 </p>
                 
-                <div className="space-y-4">
+                <div data-anim-stagger className="space-y-4">
                     {['Niveau 1 : Séries iPhone XR & 11', 'Niveau 2 : Séries iPhone X à 11 Pro Max', 'Niveau 3 : Séries iPhone 12 à 14 Pro Max', 'Niveau 4 : Séries iPhone 15 à 17 Pro Max'].map((item, idx) => (
-                        <div key={idx} className="flex items-center gap-4">
+                        <div data-anim-item key={idx} className="flex items-center gap-4">
                             <div className="w-2 h-2 bg-purple-600 rounded-full"></div>
                             <span className="font-bold text-base md:text-[18px] text-slate-800">{item}</span>
                         </div>
@@ -74,7 +74,7 @@ export const Training: React.FC = () => {
                 </button>
             </div>
             
-            <div className="flex-1 w-full relative perspective-1000">
+            <div data-anim-item className="flex-1 w-full relative perspective-1000">
                  {/* Visual */}
                  <div className="aspect-video rounded-[2.5rem] overflow-hidden border border-white/60 shadow-2xl relative">
                     <video 

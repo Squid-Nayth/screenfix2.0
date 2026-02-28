@@ -3,13 +3,13 @@ import { Check, X } from 'lucide-react';
 
 export const Services: React.FC = () => {
   return (
-    <section id="services" className="py-24 relative overflow-hidden bg-transparent">
+    <section id="services" data-anim-section className="py-24 relative overflow-hidden bg-transparent">
        {/* Background gradient spot removed - relying on global App bg */}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 lg:gap-20 items-center">
+        <div data-anim-stagger className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 lg:gap-20 items-center">
           
-          <div>
+          <div data-anim-item>
             <span className="text-blue-600 font-semibold tracking-wide text-[14px] uppercase block mb-6">Notre Spécialité</span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[64px] font-bold text-slate-900 mb-6 md:mb-8 leading-[1.1] tracking-tight">
               Reconditionnement <br/> <span className="text-slate-400">VS</span> <br/> Remplacement
@@ -20,13 +20,13 @@ export const Services: React.FC = () => {
               Chez <strong className="text-slate-900">ScreenFix</strong>, nous séparons le verre cassé de votre écran LCD/OLED grâce à des machines industrielles. Nous posons ensuite une vitre neuve sur <strong className="text-blue-600">votre</strong> écran d'origine.
             </p>
             
-            <div className="space-y-6">
+            <div data-anim-stagger className="space-y-6">
                {[
                  { id: '01', text: "Diagnostic tactile et affichage" },
                  { id: '02', text: "Séparation cryogénique de la vitre" },
                  { id: '03', text: "Laminage vitre neuve en salle blanche" }
                ].map((step) => (
-               <div key={step.id} className="flex items-center gap-6 group">
+               <div data-anim-item key={step.id} className="flex items-center gap-6 group">
                  <div className="w-14 h-14 rounded-2xl bg-white/60 border border-slate-200/60 backdrop-blur-sm flex items-center justify-center text-blue-600 shadow-sm group-hover:scale-110 transition-transform">
                     <span className="font-bold text-xl">{step.id}</span>
                  </div>
@@ -37,7 +37,7 @@ export const Services: React.FC = () => {
           </div>
 
           {/* Comparison Card - Pro Inventory Style */}
-          <div className="bg-white/70 backdrop-blur-xl rounded-2xl md:rounded-[3rem] p-5 sm:p-6 md:p-10 shadow-2xl border border-white/60 relative overflow-hidden">
+          <div data-anim-item className="bg-white/70 backdrop-blur-xl rounded-2xl md:rounded-[3rem] p-5 sm:p-6 md:p-10 shadow-2xl border border-white/60 relative overflow-hidden">
              <div className="absolute top-0 right-0 w-64 h-64 bg-slate-50/50 rounded-full mix-blend-multiply filter blur-3xl opacity-70"></div>
             
             <div className="flex justify-between items-end mb-10 relative z-10">
@@ -61,9 +61,9 @@ export const Services: React.FC = () => {
               {/* Rows */}
               {[
                   { label: "Type d'écran", bad: "Copie LCD", good: "Original OLED" },
-                  { label: "Couleurs", bad: "Ternes", good: "Retina Vives" },
+                  { label: "Couleurs", bad: "Ternes", good: "Retina vives" },
                   { label: "Tactile", bad: "Imprécis", good: "Original" },
-                  { label: "Message Erreur", bad: "Oui Souvent", good: "Aucun" },
+                  { label: "Message d'erreur", bad: "Oui, souvent", good: "Aucun" },
                   { label: "Prix", bad: "Élevé", good: "-60% Éco" },
               ].map((row, idx) => (
                   <div key={idx} className="grid grid-cols-3 gap-1 sm:gap-2 md:gap-4 items-center py-2 md:py-3 border-b border-slate-50/50 last:border-0 hover:bg-white/50 rounded-xl transition-colors px-1 sm:px-2">

@@ -12,53 +12,72 @@ import { LegalNotice } from './components/LegalNotice';
 import { PrivacyPolicy } from './components/PrivacyPolicy';
 import { B2BSignup } from './components/B2BSignup';
 import { guardCurrentBoutiqueAccess } from './lib/proAccess';
+import { initSiteAnimations } from './lib/siteAnimations';
 
 const App: React.FC = () => {
   const [showLegalNotice, setShowLegalNotice] = useState(false);
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
   const [showB2BSignup, setShowB2BSignup] = useState(false);
+  const appRootRef = React.useRef<HTMLDivElement | null>(null);
+  const scrollToPageTop = React.useCallback(() => {
+    if (typeof window === 'undefined') return;
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  }, []);
 
   // Expose function to window for Footer to use
   React.useEffect(() => {
     (window as any).showLegalNotice = () => {
+      scrollToPageTop();
       setShowLegalNotice(true);
       setShowPrivacyPolicy(false);
       setShowB2BSignup(false);
-      setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
     };
     (window as any).hideLegalNotice = () => {
       setShowLegalNotice(false);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      scrollToPageTop();
     };
     (window as any).showPrivacyPolicy = () => {
+      scrollToPageTop();
       setShowPrivacyPolicy(true);
       setShowLegalNotice(false);
       setShowB2BSignup(false);
-      setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
     };
     (window as any).hidePrivacyPolicy = () => {
       setShowPrivacyPolicy(false);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      scrollToPageTop();
     };
     (window as any).showB2BSignup = () => {
+      scrollToPageTop();
       setShowB2BSignup(true);
       setShowLegalNotice(false);
       setShowPrivacyPolicy(false);
-      setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
     };
     (window as any).hideB2BSignup = () => {
       setShowB2BSignup(false);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      scrollToPageTop();
     };
-  }, []);
+  }, [scrollToPageTop]);
 
   React.useEffect(() => {
     void guardCurrentBoutiqueAccess();
   }, []);
 
+  React.useEffect(() => {
+    if (!appRootRef.current) return;
+    return initSiteAnimations(appRootRef.current);
+  }, [showLegalNotice, showPrivacyPolicy, showB2BSignup]);
+
+  React.useEffect(() => {
+    scrollToPageTop();
+  }, [showLegalNotice, showPrivacyPolicy, showB2BSignup, scrollToPageTop]);
+
   if (showB2BSignup) {
     return (
-      <div className="bg-white text-slate-900 selection:bg-blue-200 min-h-screen font-sans relative overflow-hidden">
+      <div
+        ref={appRootRef}
+        data-anim-root
+        className="bg-white text-slate-900 selection:bg-blue-200 min-h-screen font-sans relative overflow-hidden"
+      >
         {/* GLOBAL LIQUID BACKGROUND - FIXED */}
         <div className="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
           <div className="absolute top-[-10%] left-[50%] -translate-x-1/2 w-[50rem] h-[50rem] bg-blue-100/60 rounded-full mix-blend-multiply filter blur-[80px] opacity-60 animate-blob"></div>
@@ -75,6 +94,7 @@ const App: React.FC = () => {
           href="https://wa.me/33622188574" 
           target="_blank" 
           rel="noopener noreferrer"
+          data-anim-float
           className="fixed bottom-6 right-6 z-50 hover:scale-110 transition-transform cursor-pointer group"
         >
           <img src="/icones/whatsapp.png" alt="WhatsApp" className="w-16 h-16 drop-shadow-lg" />
@@ -88,7 +108,11 @@ const App: React.FC = () => {
 
   if (showPrivacyPolicy) {
     return (
-      <div className="bg-white text-slate-900 selection:bg-blue-200 min-h-screen font-sans relative overflow-hidden">
+      <div
+        ref={appRootRef}
+        data-anim-root
+        className="bg-white text-slate-900 selection:bg-blue-200 min-h-screen font-sans relative overflow-hidden"
+      >
         {/* GLOBAL LIQUID BACKGROUND - FIXED */}
         <div className="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
           <div className="absolute top-[-10%] left-[50%] -translate-x-1/2 w-[50rem] h-[50rem] bg-blue-100/60 rounded-full mix-blend-multiply filter blur-[80px] opacity-60 animate-blob"></div>
@@ -105,6 +129,7 @@ const App: React.FC = () => {
           href="https://wa.me/33622188574" 
           target="_blank" 
           rel="noopener noreferrer"
+          data-anim-float
           className="fixed bottom-6 right-6 z-50 hover:scale-110 transition-transform cursor-pointer group"
         >
           <img src="/icones/whatsapp.png" alt="WhatsApp" className="w-16 h-16 drop-shadow-lg" />
@@ -118,7 +143,11 @@ const App: React.FC = () => {
 
   if (showLegalNotice) {
     return (
-      <div className="bg-white text-slate-900 selection:bg-blue-200 min-h-screen font-sans relative overflow-hidden">
+      <div
+        ref={appRootRef}
+        data-anim-root
+        className="bg-white text-slate-900 selection:bg-blue-200 min-h-screen font-sans relative overflow-hidden"
+      >
         {/* GLOBAL LIQUID BACKGROUND - FIXED */}
         <div className="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
           <div className="absolute top-[-10%] left-[50%] -translate-x-1/2 w-[50rem] h-[50rem] bg-blue-100/60 rounded-full mix-blend-multiply filter blur-[80px] opacity-60 animate-blob"></div>
@@ -135,6 +164,7 @@ const App: React.FC = () => {
           href="https://wa.me/33622188574" 
           target="_blank" 
           rel="noopener noreferrer"
+          data-anim-float
           className="fixed bottom-6 right-6 z-50 hover:scale-110 transition-transform cursor-pointer group"
         >
           <img src="/icones/whatsapp.png" alt="WhatsApp" className="w-16 h-16 drop-shadow-lg" />
@@ -147,7 +177,11 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="bg-white text-slate-900 selection:bg-blue-200 min-h-screen font-sans relative overflow-hidden">
+    <div
+      ref={appRootRef}
+      data-anim-root
+      className="bg-white text-slate-900 selection:bg-blue-200 min-h-screen font-sans relative overflow-hidden"
+    >
       
       {/* GLOBAL LIQUID BACKGROUND - FIXED */}
       <div className="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
@@ -163,7 +197,7 @@ const App: React.FC = () => {
         <Hero />
         
         {/* Booking Section */}
-        <section id="booking" className="py-12 px-4">
+        <section id="booking" data-anim-section className="py-12 px-4">
             <BookingWizard />
         </section>
 
@@ -183,6 +217,7 @@ const App: React.FC = () => {
         href="https://wa.me/33622188574" 
         target="_blank" 
         rel="noopener noreferrer"
+        data-anim-float
         className="fixed bottom-6 right-6 z-50 hover:scale-110 transition-transform cursor-pointer group"
       >
         <img src="/icones/whatsapp.png" alt="WhatsApp" className="w-16 h-16 drop-shadow-lg" />

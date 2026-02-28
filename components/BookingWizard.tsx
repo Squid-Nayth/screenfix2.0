@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Check, Smartphone, Calendar, Clock, ChevronRight, ChevronLeft, AlertCircle, Loader2, Percent, Tag, Plus, Zap, Info } from 'lucide-react';
 import { sendScreenfixEmails } from '../services/emailService';
+import { fetchSheetPriceMap, normalizeModelKey } from '../lib/sheetPrices';
 
 // --- DATABASE PRICES (Based on OCR) ---
 const SERVICES = [
@@ -74,6 +75,7 @@ export const BookingWizard: React.FC = () => {
   const [contact, setContact] = useState({ name: '', email: '', phone: '' });
   const [errors, setErrors] = useState({ email: false, phone: false });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [sheetModelPrices, setSheetModelPrices] = useState<Record<string, number>>({});
 
   // Track first render to avoid auto-scroll on page load
   const isFirstRender = React.useRef(true);
@@ -97,6 +99,11 @@ export const BookingWizard: React.FC = () => {
   const currentModelData = MODELS.find(m => m.name === selectedModel);
   const getPrice = (serviceKey: string) => {
     if (!currentModelData) return 0;
+    // Remote Google Sheet prices override the "screen" service for each model.
+    if (serviceKey === 'screen') {
+      const remotePrice = sheetModelPrices[normalizeModelKey(currentModelData.name)];
+      if (typeof remotePrice === 'number') return remotePrice;
+    }
     // @ts-ignore - dynamic key access
     return currentModelData[serviceKey] || 0;
   };
@@ -231,11 +238,32 @@ export const BookingWizard: React.FC = () => {
     if (element) element.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }, [step]);
 
+  React.useEffect(() => {
+    let cancelled = false;
+
+    const loadPrices = async () => {
+      const map = await fetchSheetPriceMap();
+      if (!cancelled && Object.keys(map).length > 0) {
+        setSheetModelPrices(map);
+      }
+    };
+
+    void loadPrices();
+    const intervalId = window.setInterval(() => {
+      void loadPrices();
+    }, 60000);
+
+    return () => {
+      cancelled = true;
+      window.clearInterval(intervalId);
+    };
+  }, []);
+
   return (
-    <div className="w-full max-w-5xl mx-auto relative z-20">
+    <div data-anim-stagger className="w-full max-w-5xl mx-auto relative z-20">
       
       {/* Promo Banner Enhanced */}
-      <div className="bg-gradient-to-r from-rose-500 via-pink-600 to-rose-500 bg-[length:200%_auto] animate-gradient text-white p-6 md:p-8 rounded-[2rem] mb-10 shadow-2xl shadow-rose-500/30 relative overflow-hidden border border-white/10">
+      <div data-anim-item className="bg-gradient-to-r from-rose-500 via-pink-600 to-rose-500 bg-[length:200%_auto] animate-gradient text-white p-6 md:p-8 rounded-[2rem] mb-10 shadow-2xl shadow-rose-500/30 relative overflow-hidden border border-white/10">
          {/* Decorative Background Pattern */}
          <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
          <div className="absolute bottom-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 pointer-events-none"></div>
@@ -249,7 +277,7 @@ export const BookingWizard: React.FC = () => {
                          <Zap size={24} className="text-yellow-300 fill-yellow-300" />
                      </span>
                      <h3 className="font-bold text-2xl md:text-3xl tracking-tight leading-none">
-                        Offre Web <span className="text-white/80">Exclusive</span>
+                        Offre Web <span className="text-white/80">Exclusif</span>
                      </h3>
                 </div>
                 <p className="text-white/90 text-sm md:text-base font-medium max-w-lg leading-relaxed">
@@ -282,7 +310,7 @@ export const BookingWizard: React.FC = () => {
       </div>
 
       {/* Progress Bar */}
-      <div className="mb-8 md:mb-12 px-6 max-w-3xl mx-auto">
+      <div data-anim-item className="mb-8 md:mb-12 px-6 max-w-3xl mx-auto">
         <div className="flex justify-between text-[12px] md:text-[14px] font-semibold text-gray-400 mb-4 tracking-wide uppercase">
           <span className={step >= 1 ? 'text-blue-600' : ''}>01. Modèle</span>
           <span className={step >= 2 ? 'text-blue-600' : ''}>02. Panne</span>
@@ -297,7 +325,7 @@ export const BookingWizard: React.FC = () => {
       </div>
 
       {/* Main Card */}
-      <div id="booking-card" className="bg-white/80 backdrop-blur-xl border border-white/60 rounded-2xl md:rounded-[3rem] p-5 sm:p-6 md:p-12 shadow-2xl relative overflow-hidden min-h-[500px]">
+      <div data-anim-item id="booking-card" className="bg-white/80 backdrop-blur-xl border border-white/60 rounded-2xl md:rounded-[3rem] p-5 sm:p-6 md:p-12 shadow-2xl relative overflow-hidden min-h-[500px]">
         
         {/* Step 1: Select Model */}
         {step === 1 && (
@@ -530,7 +558,7 @@ export const BookingWizard: React.FC = () => {
 
                  <div className="space-y-4">
                     <div>
-                        <label className="block text-xs font-bold text-slate-500 uppercase mb-1 ml-1">Nom Complet</label>
+                        <label className="block text-xs font-bold text-slate-500 uppercase mb-1 ml-1">Nom complet</label>
                         <input 
                             type="text" 
                             value={contact.name}

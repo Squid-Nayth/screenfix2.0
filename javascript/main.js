@@ -397,6 +397,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // Récupérer les infos du formulaire
     const nom = rdvForm.querySelector('#name').value;
     const email = rdvForm.querySelector('#email').value;
+    const phoneInput = rdvForm.querySelector('#phone, [name="phone"], input[type="tel"]');
+    const phone = phoneInput ? phoneInput.value : '';
     const date = rdvForm.querySelector('#date').value;
     // Récupérer les infos d'évaluation
     const marque = document.getElementById('brand')?.value || '';
@@ -446,7 +448,7 @@ document.addEventListener('DOMContentLoaded', function () {
           price: totalAvecReduc,
           totalSansReduc: totalSansReduc,
         },
-        { name: nom, email: email, date: date },
+        { name: nom, email: email, phone: phone, date: date },
         function() {
           afficherMessageConfirmation('Votre demande a bien été envoyée. Vous recevrez un email de confirmation.');
           rdvForm.reset();

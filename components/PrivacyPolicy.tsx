@@ -3,7 +3,7 @@ import { Shield, Database, Lock, Eye, FileText, Mail } from 'lucide-react';
 
 export const PrivacyPolicy: React.FC = () => {
   return (
-    <section className="py-24 relative bg-transparent min-h-screen">
+    <section data-anim-section className="py-24 relative bg-transparent min-h-screen">
       <div className="max-w-4xl mx-auto px-6">
         
         {/* Header */}
@@ -18,10 +18,10 @@ export const PrivacyPolicy: React.FC = () => {
         </div>
 
         {/* Content Card */}
-        <div className="bg-white/80 backdrop-blur-xl border border-white/60 rounded-[3rem] p-8 md:p-12 shadow-2xl space-y-10">
+        <div data-anim-stagger className="bg-white/80 backdrop-blur-xl border border-white/60 rounded-[3rem] p-8 md:p-12 shadow-2xl space-y-10">
           
           {/* 1. Données collectées */}
-          <div className="space-y-4">
+          <div data-anim-item className="space-y-4">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
                 <Database className="w-5 h-5 text-blue-600" />
@@ -48,7 +48,7 @@ export const PrivacyPolicy: React.FC = () => {
           </div>
 
           {/* 2. Finalité de la collecte */}
-          <div className="space-y-4">
+          <div data-anim-item className="space-y-4">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center">
                 <FileText className="w-5 h-5 text-purple-600" />
@@ -61,7 +61,7 @@ export const PrivacyPolicy: React.FC = () => {
           </div>
 
           {/* 3. Conservation des données */}
-          <div className="space-y-4">
+          <div data-anim-item className="space-y-4">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center">
                 <Database className="w-5 h-5 text-orange-600" />
@@ -74,7 +74,7 @@ export const PrivacyPolicy: React.FC = () => {
           </div>
 
           {/* 4. Confidentialité */}
-          <div className="space-y-4">
+          <div data-anim-item className="space-y-4">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center">
                 <Lock className="w-5 h-5 text-red-600" />
@@ -87,7 +87,7 @@ export const PrivacyPolicy: React.FC = () => {
           </div>
 
           {/* 5. Vos droits */}
-          <div className="space-y-4">
+          <div data-anim-item className="space-y-4">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center">
                 <Eye className="w-5 h-5 text-green-600" />
@@ -108,7 +108,7 @@ export const PrivacyPolicy: React.FC = () => {
           </div>
 
           {/* 6. Services utilisés */}
-          <div className="space-y-4">
+          <div data-anim-item className="space-y-4">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center">
                 <Shield className="w-5 h-5 text-indigo-600" />
@@ -117,7 +117,7 @@ export const PrivacyPolicy: React.FC = () => {
             </div>
             <div className="bg-slate-50 rounded-2xl p-6 text-slate-700 font-medium">
               <p>
-                Le formulaire utilise un service externe pour l'envoi des messages du nom d'<strong>EmailJS</strong>, conforme au RGPD.
+                Le formulaire utilise un service externe d'envoi d'emails nommé <strong>EmailJS</strong>, conforme au RGPD.
               </p>
             </div>
           </div>

@@ -35,3 +35,27 @@ View your app in AI Studio: https://ai.studio/apps/drive/1Z6giUgGlMC8esnXkyyLwIN
    - `pending`
    - `approved`
    - `rejected`
+
+## Dynamic iPhone prices (Google Sheets -> Website)
+
+1. In your Google Sheet, create a sheet named `PRIX`.
+2. Add headers in row 1:
+   - `modele`
+   - `prix`
+3. Add rows like:
+   - `iPhone 13 | 399`
+   - `iPhone 14 | 499`
+4. Create a separate Apps Script project for prices (recommended, to avoid `doGet` conflict with pro access endpoint):
+   - https://script.google.com -> New project
+5. In Apps Script, paste:
+   - [scripts/google-apps-script/prix-webapp.gs](scripts/google-apps-script/prix-webapp.gs)
+6. In `PRICE_CONFIG`, set `SPREADSHEET_ID` with your Google Sheet ID.
+7. Deploy as Web App (`Execute as: Me`, `Who has access: Anyone with the link`) and copy the `/exec` URL.
+8. Verify the frontend API URL in:
+   - [lib/sheetPrices.ts](lib/sheetPrices.ts)
+   - `apiUrl` must match your prices Web App `/exec` URL.
+9. Run:
+   - `npm run dev`
+
+The booking form (`Prendre rendez-vous`) auto-refreshes model prices every 60 seconds.
+The Google Sheet `prix` value overrides the `Écran Original Reconditionné` price for each iPhone model.

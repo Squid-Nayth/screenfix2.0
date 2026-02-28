@@ -34,6 +34,7 @@ export const Navbar: React.FC = () => {
 
   return (
     <nav 
+      data-anim-navbar
       className={`fixed w-full z-50 transition-all duration-300 ${
         isScrolled ? 'bg-white/80 backdrop-blur-xl border-b border-white/20 py-4 shadow-sm' : 'bg-transparent py-6'
       }`}
