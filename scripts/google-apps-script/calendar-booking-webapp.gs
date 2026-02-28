@@ -77,7 +77,7 @@ function doPost(e) {
 }
 
 function setCalendarApiKeyOnce() {
-  const key = 'CHANGE_ME_WITH_A_LONG_RANDOM_SECRET';
+  const key = 'screenfix_gcal_4f9a2c7d1e8b6a3c9d5f0b2e7a1c4d8f6b3a9e2c7d1f5a8b4c6e9d2f7a3b1c5';
   PropertiesService.getScriptProperties().setProperty(CALENDAR_CONFIG.API_KEY_PROPERTY, key);
   Logger.log('Calendar API key saved.');
 }
@@ -185,4 +185,3 @@ function isAuthorized_(providedKey) {
 function json_(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
 }
-

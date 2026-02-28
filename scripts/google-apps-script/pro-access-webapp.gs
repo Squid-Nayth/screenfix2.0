@@ -45,7 +45,7 @@ function doGet(e) {
     return json_({
       ok: true,
       approved: result.status === 'approved',
-      status: result.status,
+      status: result.status,    
       requestId
     });
   } catch (error) {

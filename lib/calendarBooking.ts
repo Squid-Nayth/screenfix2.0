@@ -4,6 +4,18 @@ const CALENDAR_BOOKING_CONFIG = {
   durationMinutes: Number(import.meta.env.VITE_GCAL_BOOKING_DURATION_MINUTES || '60')
 };
 
+export class CalendarBookingError extends Error {
+  code: string;
+  details?: string;
+
+  constructor(code: string, details?: string) {
+    super(code);
+    this.name = 'CalendarBookingError';
+    this.code = code;
+    this.details = details;
+  }
+}
+
 export interface CalendarBookingPayload {
   customerName: string;
   customerEmail: string;
@@ -80,10 +92,17 @@ export const createCalendarBooking = async (payload: CalendarBookingPayload) => 
     end_iso: payload.endIso
   });
 
-  const response = await fetch(CALENDAR_BOOKING_CONFIG.webAppUrl, {
-    method: 'POST',
-    body
-  });
+  let response: Response;
+
+  try {
+    response = await fetch(CALENDAR_BOOKING_CONFIG.webAppUrl, {
+      method: 'POST',
+      body
+    });
+  } catch (error) {
+    console.error('[CALENDAR] Erreur réseau Apps Script:', error);
+    throw new CalendarBookingError('calendar_network_error');
+  }
 
   const raw = await response.text();
   let parsed: CalendarBookingResponse;
@@ -92,14 +111,13 @@ export const createCalendarBooking = async (payload: CalendarBookingPayload) => 
     parsed = JSON.parse(raw) as CalendarBookingResponse;
   } catch (error) {
     console.error('[CALENDAR] Réponse non JSON:', raw, error);
-    throw new Error('invalid_calendar_response');
+    throw new CalendarBookingError('invalid_calendar_response', raw.slice(0, 200));
   }
 
   if (!parsed.ok) {
-    throw new Error(parsed.error || 'calendar_booking_failed');
+    throw new CalendarBookingError(parsed.error || 'calendar_booking_failed');
   }
 
   console.log('[CALENDAR] Réservation Google Calendar créée:', parsed);
   return parsed;
 };
-

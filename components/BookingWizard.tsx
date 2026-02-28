@@ -1,7 +1,12 @@
 import React, { useState, useMemo } from 'react';
 import { Check, Smartphone, Calendar, ChevronRight, ChevronLeft, AlertCircle, Loader2, Tag, Zap } from 'lucide-react';
 import { sendScreenfixEmails } from '../services/emailService';
-import { buildBookingWindow, createCalendarBooking, isCalendarBookingConfigured } from '../lib/calendarBooking';
+import {
+  buildBookingWindow,
+  CalendarBookingError,
+  createCalendarBooking,
+  isCalendarBookingConfigured
+} from '../lib/calendarBooking';
 import { fetchSheetPriceMap, normalizeModelKey } from '../lib/sheetPrices';
 import { InternationalPhoneInput } from './ui/InternationalPhoneInput';
 import { useI18n } from '../lib/i18n';
@@ -182,6 +187,39 @@ export const BookingWizard: React.FC = () => {
     return isEmailValid && isPhoneValid && contact.name.length > 0 && Boolean(fullPhone);
   };
 
+  const getCalendarErrorMessage = (error: unknown) => {
+    const code =
+      error instanceof CalendarBookingError
+        ? error.code
+        : error instanceof Error
+          ? error.message
+          : 'calendar_booking_failed';
+
+    switch (code) {
+      case 'unauthorized':
+        return "La clé de connexion Google Calendar est invalide ou non enregistrée dans Apps Script.";
+      case 'calendar_not_found':
+        return "L'agenda Google cible est introuvable. Vérifie l'ID du calendrier configuré dans Apps Script.";
+      case 'invalid_start_date':
+      case 'invalid_end_date':
+      case 'invalid_date_range':
+        return "La date ou l'heure envoyée à Google Calendar est invalide.";
+      case 'missing_customer_name':
+      case 'missing_customer_email':
+      case 'invalid_customer_email':
+      case 'missing_model':
+      case 'missing_repair_summary':
+      case 'missing_booking_id':
+        return "Certaines données du rendez-vous sont manquantes avant l'envoi vers Google Calendar.";
+      case 'invalid_calendar_response':
+        return "Le script Google Calendar a répondu avec un format invalide. Vérifie le déploiement /exec et que le Web App retourne bien du JSON.";
+      case 'calendar_network_error':
+        return "Le navigateur n'a pas pu joindre le script Google Calendar. Vérifie l'URL /exec et le déploiement public du Web App.";
+      default:
+        return `Erreur Google Calendar: ${code}`;
+    }
+  };
+
   const submitToGoogleSheets = async () => {
     if (!validateContact()) return;
     
@@ -261,7 +299,7 @@ export const BookingWizard: React.FC = () => {
       setStep(4);
     } catch (error) {
       console.error("Erreur lors de la création du rendez-vous Google Calendar:", error);
-      alert(t('booking.calendarSyncError', t('b2b.technicalError')));
+      alert(getCalendarErrorMessage(error));
     } finally {
       setIsSubmitting(false);
     }
