@@ -1,5 +1,6 @@
 import React from 'react';
 import { Layers, Clock, ShieldCheck, Zap } from 'lucide-react';
+import { useI18n } from '../lib/i18n';
 
 const features = [
   {
@@ -33,16 +34,19 @@ const features = [
 ];
 
 export const Features: React.FC = () => {
+  const { t, raw } = useI18n();
+  const cards = raw<Array<{ title: string; subtitle: string; desc: string }>>('features.cards', []);
+
   return (
     <section id="expertise" data-anim-section className="py-24 relative overflow-hidden bg-transparent">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-20" data-anim-stagger>
-            <span className="text-blue-600 font-semibold tracking-wide text-[14px] uppercase block mb-4">Pourquoi Nous ?</span>
+            <span className="text-blue-600 font-semibold tracking-wide text-[14px] uppercase block mb-4">{t('features.eyebrow')}</span>
           <h2 data-anim-item className="text-3xl sm:text-4xl md:text-5xl lg:text-[64px] font-bold text-slate-900 mb-4 md:mb-6 tracking-tight">
-            L'EXCELLENCE <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">SCREENFIX</span>
+            {t('features.headingLead').toUpperCase()} <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">{t('features.headingAccent').toUpperCase()}</span>
           </h2>
           <p data-anim-item className="text-slate-500 max-w-2xl mx-auto font-normal text-sm sm:text-base md:text-[20px] leading-relaxed">
-            Stop aux écrans compatibles de mauvaise qualité. Optez pour le reconditionnement constructeur.
+            {t('features.description')}
           </p>
         </div>
 
@@ -57,11 +61,11 @@ export const Features: React.FC = () => {
                     {feature.icon}
                 </div>
                 
-                <h3 className="text-xl md:text-[24px] font-bold text-slate-900 mb-2">{feature.title}</h3>
-                <span className="text-sm md:text-[14px] font-semibold text-blue-600 mb-4 block">{feature.subtitle}</span>
+                <h3 className="text-xl md:text-[24px] font-bold text-slate-900 mb-2">{cards[idx]?.title || feature.title}</h3>
+                <span className="text-sm md:text-[14px] font-semibold text-blue-600 mb-4 block">{cards[idx]?.subtitle || feature.subtitle}</span>
                 
                 <p className="text-slate-500 text-sm md:text-[16px] leading-relaxed font-normal mt-auto">
-                    {feature.desc}
+                    {cards[idx]?.desc || feature.desc}
                 </p>
               </div>
             </div>

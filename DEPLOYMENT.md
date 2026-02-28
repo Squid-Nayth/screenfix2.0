@@ -144,6 +144,25 @@ Ces fichiers redirigent toutes les routes vers `index.html` pour que React Route
 
 Le site utilise EmailJS pour l'envoi d'emails. Les credentials sont déjà intégrés dans le code (fichier `services/emailService.ts`), donc aucune configuration supplémentaire n'est nécessaire.
 
+### Google Analytics 4
+
+Si vous voulez activer Google Analytics :
+
+1. Ajoutez la variable d'environnement suivante :
+
+```bash
+VITE_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+```
+
+2. Remplacez `G-XXXXXXXXXX` par votre identifiant de mesure GA4.
+3. Rebuild :
+
+```bash
+npm run build
+```
+
+4. Si vous déployez sur Vercel / Netlify / Cloudflare Pages, ajoutez aussi cette variable dans les paramètres du projet, puis relancez un déploiement.
+
 ## ✅ Test Local de la Version de Production
 
 ```bash

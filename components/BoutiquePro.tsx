@@ -1,11 +1,15 @@
 import React from 'react';
 import { Briefcase, Package, Zap, ShieldCheck, UserPlus } from 'lucide-react';
+import { useI18n } from '../lib/i18n';
 
 export const BoutiquePro: React.FC = () => {
+  const { t, raw } = useI18n();
   const handleOpenSignup = (e: React.MouseEvent) => {
     e.preventDefault();
     (window as any).showB2BSignup?.();
   };
+
+  const previewRows = raw<Array<{ item: string; stock: string }>>('boutique.previewRows', []);
 
   return (
     <section id="boutique-pro" data-anim-section className="py-20 md:py-32 bg-transparent relative overflow-hidden">
@@ -19,12 +23,12 @@ export const BoutiquePro: React.FC = () => {
             {/* Left Column */}
             <div data-anim-item className="space-y-10 mb-12 lg:mb-0">
               <div>
-                <span className="text-blue-600 font-semibold text-[14px] tracking-wide block mb-4">Solution pour Boutiques & Techniciens</span>
+                <span className="text-blue-600 font-semibold text-[14px] tracking-wide block mb-4">{t('boutique.eyebrow')}</span>
                 <h2 className="text-4xl sm:text-5xl md:text-[64px] font-bold text-slate-900 leading-[1.1] tracking-tight mb-6">
-                  ESPACE <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">PRO</span>
+                  {t('boutique.heading')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">{t('boutique.accent')}</span>
                 </h2>
                 <p className="text-slate-600 text-base md:text-[20px] font-normal leading-relaxed max-w-lg">
-                  Vous êtes un professionnel de la réparation ? Accédez à notre stock de pièces <span className="text-slate-900 font-bold">originales reconditionnées</span> exclusives aux meilleurs tarifs du marché.
+                  {t('boutique.description')}
                 </p>
               </div>
 
@@ -34,8 +38,8 @@ export const BoutiquePro: React.FC = () => {
                     <Package size={28} />
                   </div>
                   <div>
-                    <h4 className="text-slate-900 font-bold text-lg md:text-[18px] mb-2">Stock en Temps Réel</h4>
-                    <p className="text-slate-500 text-sm md:text-[14px] font-normal leading-relaxed">Visibilité directe sur notre inventaire et livraison coursier Paris IM.</p>
+                    <h4 className="text-slate-900 font-bold text-lg md:text-[18px] mb-2">{t('boutique.stockTitle')}</h4>
+                    <p className="text-slate-500 text-sm md:text-[14px] font-normal leading-relaxed">{t('boutique.stockDesc')}</p>
                   </div>
                 </div>
                 <div data-anim-item className="flex items-start space-x-5">
@@ -43,15 +47,15 @@ export const BoutiquePro: React.FC = () => {
                     <Zap size={28} />
                   </div>
                   <div>
-                    <h4 className="text-slate-900 font-bold text-lg md:text-[18px] mb-2">Tarifs Revendeur</h4>
-                    <p className="text-slate-500 text-sm md:text-[14px] font-normal leading-relaxed">Grilles tarifaires dégressives et conditions de paiement flexibles.</p>
+                    <h4 className="text-slate-900 font-bold text-lg md:text-[18px] mb-2">{t('boutique.resellerTitle')}</h4>
+                    <p className="text-slate-500 text-sm md:text-[14px] font-normal leading-relaxed">{t('boutique.resellerDesc')}</p>
                   </div>
                 </div>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
                 <button onClick={handleOpenSignup} className="bg-blue-600 text-white py-4 px-8 rounded-full hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/20 flex items-center justify-center group text-base font-medium cursor-pointer">
-                  OUVRIR UN COMPTE
+                  {t('boutique.openAccount').toUpperCase()}
                   <UserPlus className="ml-2 group-hover:scale-110 transition-transform" size={18} />
                 </button>
               </div>
@@ -67,27 +71,23 @@ export const BoutiquePro: React.FC = () => {
                 
                 <div className="space-y-6 relative z-10">
                   <div className="flex items-center justify-between border-b border-slate-100 pb-6">
-                    <span className="text-slate-500 font-semibold text-[14px] uppercase tracking-wide">Aperçu B2B</span>
-                    <span className="bg-blue-50 border border-blue-100 text-blue-600 px-3 py-1 rounded-full text-[12px] font-bold tracking-wide">ACCÈS PRO</span>
+                    <span className="text-slate-500 font-semibold text-[14px] uppercase tracking-wide">{t('boutique.previewTitle')}</span>
+                    <span className="bg-blue-50 border border-blue-100 text-blue-600 px-3 py-1 rounded-full text-[12px] font-bold tracking-wide">{t('boutique.previewBadge').toUpperCase()}</span>
                   </div>
                   
                   <div className="space-y-4">
-                    {[
-                      { item: 'Écran iPhone 16 Pro Max (Original Reconditionné)', stock: 'En Stock', price: 'Voir Prix' },
-                      { item: 'Écran iPhone 15 Pro Max (Original Reconditionné)', stock: '20+ pcs', price: 'Voir Prix' },
-                      { item: 'Écran iPhone 14 Pro Max (Original Reconditionné)', stock: 'Dispo', price: 'Voir Prix' }
-                    ].map((row, idx) => (
+                    {previewRows.map((row, idx) => (
                       <div key={idx} className="flex items-center justify-between p-4 bg-slate-50/50 rounded-2xl border border-slate-100 transition-colors">
                         <div>
                           <p className="text-slate-900 font-semibold text-[15px]">{row.item}</p>
                           <div className="flex items-center gap-2 mt-1">
                             <span className="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
-                            <p className="text-slate-500 text-[13px] font-medium">État: {row.stock}</p>
+                            <p className="text-slate-500 text-[13px] font-medium">{t('boutique.stateLabel')}: {row.stock}</p>
                           </div>
                         </div>
                         <div className="text-blue-600 font-semibold text-[13px] flex items-center bg-white px-3 py-2 rounded-xl border border-slate-100 shadow-sm">
                           <ShieldCheck size={14} className="mr-2" />
-                          {row.price}
+                          {t('boutique.seePrice')}
                         </div>
                       </div>
                     ))}
@@ -95,7 +95,7 @@ export const BoutiquePro: React.FC = () => {
                   
                   <div className="pt-4 flex items-center justify-center gap-2 text-slate-400 text-[13px] font-semibold">
                     <span className="w-2 h-2 bg-slate-300 rounded-full animate-pulse"></span>
-                    Connexion requise
+                    {t('boutique.connectionRequired')}
                   </div>
                 </div>
               </div>

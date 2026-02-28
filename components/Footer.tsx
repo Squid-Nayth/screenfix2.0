@@ -1,7 +1,10 @@
 import React from 'react';
 import { MapPin, Phone, Smartphone } from 'lucide-react';
+import { useI18n } from '../lib/i18n';
 
 export const Footer: React.FC = () => {
+  const { t } = useI18n();
+
   return (
     <footer id="contact" data-anim-section className="bg-white/40 backdrop-blur-xl border-t border-white/60 pt-12 md:pt-20 pb-10 relative z-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -17,7 +20,7 @@ export const Footer: React.FC = () => {
                 </span>
               </div>
             <p className="text-slate-600 text-base md:text-[18px] font-normal max-w-sm leading-relaxed">
-              L'expert parisien de la rénovation d'écrans Apple. Qualité d'origine, écologie et économie.
+              {t('footer.tagline')}
             </p>
             <div className="flex gap-4">
                <a href="https://www.instagram.com/screenfix_ivry/" target="_blank" rel="noopener noreferrer" title="Instagram" className="p-3 bg-slate-900 rounded-2xl hover:bg-slate-800 transition-colors shadow-sm">
@@ -36,7 +39,7 @@ export const Footer: React.FC = () => {
           </div>
 
           <div data-anim-item>
-            <h4 className="text-slate-900 font-bold text-[16px] mb-8">Contact</h4>
+            <h4 className="text-slate-900 font-bold text-[16px] mb-8">{t('footer.contact')}</h4>
             <ul className="space-y-6 text-slate-600">
               <li>
                 <a 
@@ -66,45 +69,45 @@ export const Footer: React.FC = () => {
                   className="flex items-center gap-4 group cursor-pointer hover:text-green-600 transition-colors"
                 >
                   <div className="p-2 bg-white rounded-lg group-hover:bg-green-50 transition-colors"><img src="/icones/whatsapp.png" alt="WhatsApp" className="w-5 h-5" /></div>
-                  <span className="font-medium text-[15px]">WhatsApp Disponible</span>
+                  <span className="font-medium text-[15px]">{t('footer.whatsapp')}</span>
                 </a>
               </li>
             </ul>
           </div>
 
           <div data-anim-item>
-            <h4 className="text-slate-900 font-bold text-[16px] mb-8">Horaires</h4>
+            <h4 className="text-slate-900 font-bold text-[16px] mb-8">{t('footer.hours')}</h4>
             <ul className="space-y-4 text-slate-600 font-medium text-[15px]">
               <li className="flex justify-between p-3 bg-white/60 rounded-xl border border-slate-200/60 shadow-sm">
-                  <span>Lun - Ven</span> 
+                  <span>{t('footer.weekdays')}</span> 
                   <span className="text-slate-900 font-bold">10h - 19h</span>
               </li>
               <li className="flex justify-between p-3 bg-white/60 rounded-xl border border-slate-200/60 shadow-sm">
-                  <span>Samedi</span> 
+                  <span>{t('footer.saturday')}</span> 
                   <span className="text-slate-900 font-bold">10h - 19h</span>
               </li>
               <li className="flex justify-between p-3 bg-slate-50 rounded-xl border border-slate-100 opacity-70">
-                  <span>Dimanche</span> 
-                  <span>Fermé</span>
+                  <span>{t('footer.sunday')}</span> 
+                  <span>{t('footer.closed')}</span>
               </li>
             </ul>
           </div>
         </div>
 
         <div className="border-t border-slate-200/60 pt-10 flex flex-col md:flex-row justify-between items-center gap-6 text-[14px] font-semibold text-slate-500">
-            <p>&copy; {new Date().getFullYear()} ScreenFix Paris. Tous droits réservés.</p>
+            <p>&copy; {new Date().getFullYear()} ScreenFix Paris. {t('footer.rights')}</p>
             <div className="flex gap-8">
                 <button 
                   onClick={() => (window as any).showLegalNotice?.()}
                   className="hover:text-blue-600 transition-colors cursor-pointer"
                 >
-                  Mentions Légales
+                  {t('footer.legal')}
                 </button>
                 <button 
                   onClick={() => (window as any).showPrivacyPolicy?.()}
                   className="hover:text-blue-600 transition-colors cursor-pointer"
                 >
-                  Politique de Confidentialité
+                  {t('footer.privacy')}
                 </button>
             </div>
         </div>

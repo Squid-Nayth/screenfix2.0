@@ -1,7 +1,14 @@
 import React, { useState, useMemo } from 'react';
-import { Check, Smartphone, Calendar, Clock, ChevronRight, ChevronLeft, AlertCircle, Loader2, Percent, Tag, Plus, Zap, Info } from 'lucide-react';
+import { Check, Smartphone, Calendar, ChevronRight, ChevronLeft, AlertCircle, Loader2, Tag, Zap } from 'lucide-react';
 import { sendScreenfixEmails } from '../services/emailService';
 import { fetchSheetPriceMap, normalizeModelKey } from '../lib/sheetPrices';
+import { InternationalPhoneInput } from './ui/InternationalPhoneInput';
+import { useI18n } from '../lib/i18n';
+import {
+  DEFAULT_PHONE_COUNTRY,
+  buildInternationalPhone,
+  isInternationalPhoneValid
+} from '../lib/phoneUtils';
 
 // --- DATABASE PRICES (Based on OCR) ---
 const SERVICES = [
@@ -59,8 +66,11 @@ const getIphoneImage = (modelName: string): string => {
 };
 
 export const BookingWizard: React.FC = () => {
+  const { t, raw, dateLocale } = useI18n();
   const [step, setStep] = useState(1);
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
+  const [phoneCountryIso, setPhoneCountryIso] = useState(DEFAULT_PHONE_COUNTRY);
+  const bookingServices = raw<typeof SERVICES>('booking.services', SERVICES);
   
   // Multi-select state
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
@@ -158,17 +168,17 @@ export const BookingWizard: React.FC = () => {
 
   const validateContact = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^(\+33|0)[1-9](\d{2}){4}$/; // Basic French format
+    const fullPhone = buildInternationalPhone(phoneCountryIso, contact.phone);
     
     const isEmailValid = emailRegex.test(contact.email);
-    const isPhoneValid = contact.phone.length > 8; // Simple length check for international compatibility
+    const isPhoneValid = isInternationalPhoneValid(phoneCountryIso, contact.phone, true);
 
     setErrors({
       email: !isEmailValid,
       phone: !isPhoneValid
     });
 
-    return isEmailValid && isPhoneValid && contact.name.length > 0;
+    return isEmailValid && isPhoneValid && contact.name.length > 0 && Boolean(fullPhone);
   };
 
   const submitToGoogleSheets = async () => {
@@ -178,15 +188,15 @@ export const BookingWizard: React.FC = () => {
 
     // Liste des services sélectionnés (comme tableau de strings)
     const serviceLabels = selectedServices
-      .map(id => SERVICES.find(s => s.id === id)?.label)
+      .map(id => bookingServices.find(s => s.id === id)?.label)
       .filter(Boolean) as string[];
 
     const serviceNames = isOther 
-        ? `Autre: ${customIssue}` 
+        ? `${t('booking.otherProblem')}: ${customIssue}` 
         : serviceLabels;
 
     const priceDisplay = isOther 
-        ? 'Sur devis' 
+        ? t('booking.quote') 
         : `${pricingSummary.final}€`;
 
     // Préparer les données pour EmailJS
@@ -195,15 +205,15 @@ export const BookingWizard: React.FC = () => {
       model: selectedModel || '',
       repair: serviceNames, // Tableau de strings ou string unique
       price: priceDisplay,
-      totalSansReduc: isOther ? 'Sur devis' : `${pricingSummary.total}€`,
+      totalSansReduc: isOther ? t('booking.quote') : `${pricingSummary.total}€`,
       reductionPercent: isOther ? '0' : `${pricingSummary.percent}`,
     };
 
     const rdv = {
       name: contact.name,
       email: contact.email,
-      phone: contact.phone,
-      date: selectedDate ? new Date(selectedDate).toLocaleDateString('fr-FR', { 
+      phone: buildInternationalPhone(phoneCountryIso, contact.phone),
+      date: selectedDate ? new Date(selectedDate).toLocaleDateString(dateLocale, { 
         weekday: 'long', 
         year: 'numeric', 
         month: 'long', 
@@ -222,7 +232,7 @@ export const BookingWizard: React.FC = () => {
       setStep(4);
     } catch (error) {
       console.error("Erreur lors de l'envoi des emails:", error);
-      alert("Une erreur est survenue lors de l'envoi de la confirmation. Veuillez nous contacter par téléphone au +33 6 22 18 85 74.");
+      alert(t('b2b.technicalError'));
     } finally {
       setIsSubmitting(false);
     }
@@ -277,31 +287,31 @@ export const BookingWizard: React.FC = () => {
                          <Zap size={24} className="text-yellow-300 fill-yellow-300" />
                      </span>
                      <h3 className="font-bold text-2xl md:text-3xl tracking-tight leading-none">
-                        Offre Web <span className="text-white/80">Exclusif</span>
+                        {t('booking.promoTitle')} <span className="text-white/80">{t('booking.promoAccent')}</span>
                      </h3>
                 </div>
                 <p className="text-white/90 text-sm md:text-base font-medium max-w-lg leading-relaxed">
-                   Réservez en ligne et cumulez les réparations pour débloquer des réductions immédiates. <span className="opacity-75 block mt-1 text-xs md:inline md:mt-0">*La remise s'applique automatiquement au panier.</span>
+                   {t('booking.promoText')} <span className="opacity-75 block mt-1 text-xs md:inline md:mt-0">*{t('booking.promoNote')}</span>
                 </p>
             </div>
 
             {/* Right Tiers */}
             <div className="flex flex-wrap justify-center gap-3 w-full md:w-auto">
                 <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-3 flex flex-col items-center min-w-[100px] transition-transform hover:scale-105">
-                    <span className="text-[11px] font-bold text-white/80 uppercase tracking-wider mb-1">1 Service</span>
+                    <span className="text-[11px] font-bold text-white/80 uppercase tracking-wider mb-1">{t('booking.oneService')}</span>
                     <span className="text-2xl font-bold text-white">-10%</span>
                 </div>
                 
                 <div className="bg-white/20 backdrop-blur-md border border-white/40 rounded-2xl p-3 flex flex-col items-center min-w-[100px] relative transition-transform hover:scale-105">
-                    <span className="text-[11px] font-bold text-white uppercase tracking-wider mb-1">2 Services</span>
+                    <span className="text-[11px] font-bold text-white uppercase tracking-wider mb-1">{t('booking.twoServices')}</span>
                     <span className="text-2xl font-bold text-white">-15%</span>
                 </div>
 
                  <div className="bg-white text-rose-600 rounded-2xl p-3 flex flex-col items-center min-w-[110px] shadow-xl transform scale-105 border-2 border-white/50 relative">
                     <div className="absolute -top-3 bg-yellow-400 text-rose-900 text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wide shadow-sm">
-                        Best Deal
+                        {t('booking.bestDeal')}
                     </div>
-                    <span className="text-[11px] font-bold text-rose-500 uppercase tracking-wider mb-1">3+ Services</span>
+                    <span className="text-[11px] font-bold text-rose-500 uppercase tracking-wider mb-1">{t('booking.threeServices')}</span>
                     <span className="text-3xl font-extrabold">-25%</span>
                 </div>
             </div>
@@ -312,9 +322,9 @@ export const BookingWizard: React.FC = () => {
       {/* Progress Bar */}
       <div data-anim-item className="mb-8 md:mb-12 px-6 max-w-3xl mx-auto">
         <div className="flex justify-between text-[12px] md:text-[14px] font-semibold text-gray-400 mb-4 tracking-wide uppercase">
-          <span className={step >= 1 ? 'text-blue-600' : ''}>01. Modèle</span>
-          <span className={step >= 2 ? 'text-blue-600' : ''}>02. Panne</span>
-          <span className={step >= 3 ? 'text-blue-600' : ''}>03. Infos</span>
+          <span className={step >= 1 ? 'text-blue-600' : ''}>{t('booking.progressModel')}</span>
+          <span className={step >= 2 ? 'text-blue-600' : ''}>{t('booking.progressIssue')}</span>
+          <span className={step >= 3 ? 'text-blue-600' : ''}>{t('booking.progressInfo')}</span>
         </div>
         <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
           <div 
@@ -330,8 +340,8 @@ export const BookingWizard: React.FC = () => {
         {/* Step 1: Select Model */}
         {step === 1 && (
           <div className="animate-fade-in">
-             <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-slate-900 mb-6 md:mb-8 text-center tracking-tight">
-              Quel est votre <span className="text-blue-600">iPhone</span> ?
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-slate-900 mb-6 md:mb-8 text-center tracking-tight">
+              {t('booking.modelQuestion')}
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
               {MODELS.map((m) => (
@@ -350,7 +360,7 @@ export const BookingWizard: React.FC = () => {
               ))}
             </div>
             <div className="mt-8 text-center">
-               <p className="text-slate-400 text-sm">Vous ne trouvez pas votre modèle ? <a href="tel:+33622188574" className="text-blue-600 underline font-semibold">Appelez-nous</a></p>
+               <p className="text-slate-400 text-sm">{t('booking.missingModel')} <a href="tel:+33622188574" className="text-blue-600 underline font-semibold">{t('booking.callUs')}</a></p>
             </div>
           </div>
         )}
@@ -362,12 +372,12 @@ export const BookingWizard: React.FC = () => {
                 <span className="px-4 py-1 bg-slate-100 rounded-full text-xs font-bold text-slate-500 uppercase tracking-wide">{selectedModel}</span>
             </div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-2 text-center tracking-tight">
-              Quelle est la <span className="text-blue-600">Panne</span> ?
+              {t('booking.issueQuestion')}
             </h2>
-            <p className="text-center text-slate-400 mb-6 md:mb-8 text-xs sm:text-sm">Sélectionnez plusieurs services pour augmenter votre réduction</p>
+            <p className="text-center text-slate-400 mb-6 md:mb-8 text-xs sm:text-sm">{t('booking.issueHint')}</p>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {SERVICES.map((s) => {
+              {bookingServices.map((s) => {
                 const price = getPrice(s.key);
                 const isSelected = selectedServices.includes(s.id);
                 // HIGHLIGHT LOGIC: Identify if it is the service to highlight
@@ -388,7 +398,7 @@ export const BookingWizard: React.FC = () => {
                     {/* RECOMMENDED BADGE */}
                     {isRecommended && (
                          <div className={`absolute top-0 right-0 px-3 py-1 rounded-bl-xl text-[10px] font-bold uppercase tracking-wider ${isSelected ? 'bg-blue-500 text-white' : 'bg-blue-100 text-blue-700'}`}>
-                             Recommandé
+                             {t('booking.recommended')}
                          </div>
                     )}
 
@@ -421,13 +431,13 @@ export const BookingWizard: React.FC = () => {
                             {isOther && <Check size={14} className="text-white" />}
                         </div>
                         <div className="flex flex-col items-start text-left">
-                            <span className={`font-bold text-lg ${isOther ? 'text-white' : 'text-slate-800'}`}>Autre problème ?</span>
-                             <span className={`text-xs font-medium mt-1 ${isOther ? 'text-blue-200' : 'text-slate-400'}`}>Diagnostic personnalisé</span>
+                            <span className={`font-bold text-lg ${isOther ? 'text-white' : 'text-slate-800'}`}>{t('booking.otherProblem')}</span>
+                             <span className={`text-xs font-medium mt-1 ${isOther ? 'text-blue-200' : 'text-slate-400'}`}>{t('booking.otherSubtitle')}</span>
                         </div>
                     </div>
                     <div className="flex flex-col items-end">
                         <span className={`font-bold text-xl ${isOther ? 'text-blue-400' : 'text-blue-600'}`}>35€</span>
-                        <span className={`text-xs font-medium ${isOther ? 'text-gray-300' : 'text-gray-400'}`}>Sur devis</span>
+                        <span className={`text-xs font-medium ${isOther ? 'text-gray-300' : 'text-gray-400'}`}>{t('booking.quote')}</span>
                     </div>
                  </div>
                  {isOther && (
@@ -435,7 +445,7 @@ export const BookingWizard: React.FC = () => {
                          <textarea 
                             value={customIssue}
                             onChange={(e) => setCustomIssue(e.target.value)}
-                            placeholder="Veuillez décrire brièvement le problème..."
+                            placeholder={t('booking.customIssuePlaceholder')}
                             className="w-full p-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                             rows={2}
                          />
@@ -452,7 +462,7 @@ export const BookingWizard: React.FC = () => {
                             <Tag size={20} />
                         </div>
                         <div>
-                            <p className="text-slate-500 text-sm font-medium">Réduction appliquée ({pricingSummary.percent}%)</p>
+                            <p className="text-slate-500 text-sm font-medium">{t('booking.reductionApplied')} ({pricingSummary.percent}%)</p>
                             <p className="text-slate-900 font-bold text-lg">
                                 <span className="line-through text-slate-400 mr-2">{pricingSummary.total}€</span>
                                 <span className="text-green-600">-{pricingSummary.discount}€</span>
@@ -460,7 +470,7 @@ export const BookingWizard: React.FC = () => {
                         </div>
                     </div>
                     <div className="text-center sm:text-right">
-                        <p className="text-slate-500 text-sm font-medium">Total Estimé</p>
+                        <p className="text-slate-500 text-sm font-medium">{t('booking.totalEstimated')}</p>
                         <p className="text-3xl font-bold text-blue-700">{pricingSummary.final}€</p>
                     </div>
                 </div>
@@ -476,11 +486,11 @@ export const BookingWizard: React.FC = () => {
             <div>
                  <h3 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-2">
                     <Calendar className="w-6 h-6 text-blue-600" />
-                    Choisissez votre créneau
+                    {t('booking.scheduleTitle')}
                  </h3>
                  
                  <div className="mb-6">
-                    <p className="text-sm font-semibold text-slate-400 mb-3 uppercase tracking-wide">Jour</p>
+                    <p className="text-sm font-semibold text-slate-400 mb-3 uppercase tracking-wide">{t('booking.day')}</p>
                     <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
                         {days.map((d, i) => {
                             const isSelected = selectedDate === d.toDateString();
@@ -492,7 +502,7 @@ export const BookingWizard: React.FC = () => {
                                         isSelected ? 'bg-blue-600 text-white border-blue-600 shadow-lg' : 'bg-white border-slate-200 text-slate-600 hover:border-blue-400'
                                     }`}
                                 >
-                                    <span className="text-xs font-bold uppercase opacity-70">{d.toLocaleDateString('fr-FR', { weekday: 'short' })}</span>
+                                    <span className="text-xs font-bold uppercase opacity-70">{d.toLocaleDateString(dateLocale, { weekday: 'short' })}</span>
                                     <span className="text-xl font-bold">{d.getDate()}</span>
                                 </button>
                             )
@@ -502,7 +512,7 @@ export const BookingWizard: React.FC = () => {
 
                  {selectedDate && (
                      <div className="animate-fade-in">
-                        <p className="text-sm font-semibold text-slate-400 mb-3 uppercase tracking-wide">Heure</p>
+                        <p className="text-sm font-semibold text-slate-400 mb-3 uppercase tracking-wide">{t('booking.hour')}</p>
                         <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                             {timeSlots.map(t => (
                                 <button
@@ -521,16 +531,16 @@ export const BookingWizard: React.FC = () => {
 
                  {/* Order Summary Recap */}
                  <div className="mt-8 bg-slate-50 rounded-2xl p-6 border border-slate-100">
-                    <h4 className="font-bold text-slate-900 mb-4">Récapitulatif</h4>
+                    <h4 className="font-bold text-slate-900 mb-4">{t('booking.summary')}</h4>
                     <ul className="space-y-2 mb-4">
                         {isOther ? (
                             <li className="text-sm text-slate-600 font-medium flex justify-between">
-                                <span>Demande spécifique</span>
-                                <span>Sur devis</span>
+                                <span>{t('booking.specificRequest')}</span>
+                                <span>{t('booking.quote')}</span>
                             </li>
                         ) : (
                             selectedServices.map(id => {
-                                const s = SERVICES.find(x => x.id === id);
+                                const s = bookingServices.find(x => x.id === id);
                                 return (
                                     <li key={id} className="text-sm text-slate-600 font-medium flex justify-between">
                                         <span>{s?.label}</span>
@@ -542,7 +552,7 @@ export const BookingWizard: React.FC = () => {
                     </ul>
                     {!isOther && (
                         <div className="border-t border-slate-200 pt-3 flex justify-between items-center">
-                             <span className="text-sm font-bold text-slate-500">Total avec remise (-{pricingSummary.percent}%)</span>
+                             <span className="text-sm font-bold text-slate-500">{t('booking.discountedTotal')} (-{pricingSummary.percent}%)</span>
                              <span className="text-xl font-bold text-blue-600">{pricingSummary.final}€</span>
                         </div>
                     )}
@@ -553,23 +563,23 @@ export const BookingWizard: React.FC = () => {
             <div className={`transition-opacity duration-500 ${selectedDate && selectedTime ? 'opacity-100' : 'opacity-50 pointer-events-none'}`}>
                 <h3 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-2">
                     <Smartphone className="w-6 h-6 text-blue-600" />
-                    Vos Coordonnées
+                    {t('booking.contactTitle')}
                  </h3>
 
                  <div className="space-y-4">
                     <div>
-                        <label className="block text-xs font-bold text-slate-500 uppercase mb-1 ml-1">Nom complet</label>
+                        <label className="block text-xs font-bold text-slate-500 uppercase mb-1 ml-1">{t('booking.fullName')}</label>
                         <input 
                             type="text" 
                             value={contact.name}
                             onChange={(e) => setContact({...contact, name: e.target.value})}
-                            placeholder="Jean Dupont"
+                            placeholder={t('booking.namePlaceholder')}
                             className="w-full p-4 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all font-medium"
                         />
                     </div>
                     
                     <div>
-                        <label className="block text-xs font-bold text-slate-500 uppercase mb-1 ml-1">Email <span className="text-red-500">*</span></label>
+                        <label className="block text-xs font-bold text-slate-500 uppercase mb-1 ml-1">{t('booking.email')} <span className="text-red-500">*</span></label>
                         <input 
                             type="email" 
                             value={contact.email}
@@ -577,41 +587,41 @@ export const BookingWizard: React.FC = () => {
                                 setContact({...contact, email: e.target.value});
                                 if (errors.email) setErrors({...errors, email: false});
                             }}
-                            placeholder="jean@example.com"
+                            placeholder={t('booking.emailPlaceholder')}
                             className={`w-full p-4 rounded-xl bg-slate-50 border focus:bg-white outline-none transition-all font-medium ${
                                 errors.email ? 'border-red-400 focus:border-red-500 bg-red-50' : 'border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10'
                             }`}
                         />
-                        {errors.email && <p className="text-red-500 text-xs mt-1 font-semibold flex items-center gap-1"><AlertCircle size={12}/> Email invalide</p>}
+                        {errors.email && <p className="text-red-500 text-xs mt-1 font-semibold flex items-center gap-1"><AlertCircle size={12}/> {t('booking.invalidEmail')}</p>}
                     </div>
 
                     <div>
-                        <label className="block text-xs font-bold text-slate-500 uppercase mb-1 ml-1">Téléphone <span className="text-red-500">*</span></label>
-                        <input 
-                            type="tel" 
-                            value={contact.phone}
-                            onChange={(e) => {
-                                setContact({...contact, phone: e.target.value});
+                        <label className="block text-xs font-bold text-slate-500 uppercase mb-1 ml-1">{t('booking.phone')} <span className="text-red-500">*</span></label>
+                        <InternationalPhoneInput
+                            countryIso={phoneCountryIso}
+                            localNumber={contact.phone}
+                            onCountryIsoChange={setPhoneCountryIso}
+                            onLocalNumberChange={(value) => {
+                                setContact({...contact, phone: value});
                                 if (errors.phone) setErrors({...errors, phone: false});
                             }}
-                            placeholder="06 12 34 56 78"
-                            className={`w-full p-4 rounded-xl bg-slate-50 border focus:bg-white outline-none transition-all font-medium ${
-                                errors.phone ? 'border-red-400 focus:border-red-500 bg-red-50' : 'border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10'
-                            }`}
+                            required
+                            error={errors.phone}
+                            placeholder={t('phoneInput.localPlaceholder')}
                         />
-                        {errors.phone && <p className="text-red-500 text-xs mt-1 font-semibold flex items-center gap-1"><AlertCircle size={12}/> Numéro requis</p>}
+                        {errors.phone && <p className="text-red-500 text-xs mt-1 font-semibold flex items-center gap-1"><AlertCircle size={12}/> {t('booking.invalidPhone')}</p>}
                     </div>
                  </div>
                  
                  {/* Privacy Policy Notice */}
                  <div className="mt-6 p-4 bg-blue-50/50 border border-blue-100 rounded-xl">
                     <p className="text-xs text-slate-600 text-center">
-                        En remplissant notre formulaire, vous acceptez notre{' '}
+                        {t('booking.privacyPrefix')}{' '}
                         <button 
                             onClick={() => (window as any).showPrivacyPolicy?.()}
                             className="text-blue-600 font-semibold hover:underline"
                         >
-                            politique de confidentialité
+                            {t('booking.privacyLink')}
                         </button>.
                     </p>
                  </div>
@@ -625,34 +635,34 @@ export const BookingWizard: React.FC = () => {
                 <div className="w-24 h-24 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-10 shadow-2xl shadow-green-500/30 animate-bounce-slow">
                     <Check className="w-12 h-12 text-white" />
                 </div>
-                <h2 className="text-4xl font-bold text-slate-900 mb-4 tracking-tight">Merci, {contact.name.split(' ')[0]} !</h2>
+                <h2 className="text-4xl font-bold text-slate-900 mb-4 tracking-tight">{t('booking.successThanks')}, {contact.name.split(' ')[0]} !</h2>
                 <p className="text-slate-600 mb-6 text-lg font-normal">
-                    Votre rendez-vous pour <span className="text-slate-900 font-bold">{selectedModel}</span> est confirmé le <br/>
-                    <span className="text-blue-600 font-bold text-xl">{selectedDate && new Date(selectedDate).toLocaleDateString('fr-FR', {day: 'numeric', month: 'long'})} à {selectedTime}</span>.
+                    {t('booking.successConfirmed')} <span className="text-slate-900 font-bold">{selectedModel}</span> {t('booking.successConfirmed2')} <br/>
+                    <span className="text-blue-600 font-bold text-xl">{selectedDate && new Date(selectedDate).toLocaleDateString(dateLocale, {day: 'numeric', month: 'long'})} {t('booking.hour').toLowerCase()} {selectedTime}</span>.
                 </p>
                 
                 {/* Services Recap */}
                 <div className="bg-slate-50 rounded-xl p-4 text-left max-w-md mx-auto mb-8 border border-slate-100">
-                    <p className="text-xs font-bold text-slate-400 uppercase mb-2">Prestations choisies</p>
+                    <p className="text-xs font-bold text-slate-400 uppercase mb-2">{t('booking.chosenServices')}</p>
                     {isOther ? (
-                        <p className="font-semibold text-slate-900">Demande spécifique sur devis</p>
+                        <p className="font-semibold text-slate-900">{t('booking.specificRequest')} {t('booking.quote').toLowerCase()}</p>
                     ) : (
                         <div className="space-y-1">
                             {selectedServices.map(id => (
                                 <p key={id} className="text-sm font-semibold text-slate-700 flex items-center gap-2">
                                     <Check size={14} className="text-green-500" />
-                                    {SERVICES.find(s => s.id === id)?.label}
+                                    {bookingServices.find(s => s.id === id)?.label}
                                 </p>
                             ))}
-                            <p className="pt-2 mt-2 border-t border-slate-200 font-bold text-blue-600 text-right">Total: {pricingSummary.final}€</p>
+                            <p className="pt-2 mt-2 border-t border-slate-200 font-bold text-blue-600 text-right">{t('booking.totalLabel')}: {pricingSummary.final}€</p>
                         </div>
                     )}
                 </div>
 
                 <div className="bg-blue-50 text-blue-800 p-4 rounded-xl text-sm font-medium border border-blue-100">
-                    Un email de confirmation a été envoyé à <strong>{contact.email}</strong>.
+                    {t('booking.confirmationEmail')} <strong>{contact.email}</strong>.
                 </div>
-                <button onClick={() => window.location.reload()} className="mt-8 text-slate-400 font-semibold hover:text-slate-600 underline">Retour à l'accueil</button>
+                <button onClick={() => window.location.reload()} className="mt-8 text-slate-400 font-semibold hover:text-slate-600 underline">{t('booking.backHome')}</button>
              </div>
         )}
 
@@ -664,7 +674,7 @@ export const BookingWizard: React.FC = () => {
                         onClick={() => setStep(step - 1)}
                         className="px-6 py-3 rounded-full hover:bg-slate-50 text-slate-500 font-bold text-sm transition-colors flex items-center gap-2"
                     >
-                        <ChevronLeft size={18} /> Retour
+                        <ChevronLeft size={18} /> {t('booking.back')}
                     </button>
                 ) : <div></div>}
                 
@@ -674,7 +684,7 @@ export const BookingWizard: React.FC = () => {
                      disabled={!selectedModel}
                      className="px-8 py-4 bg-slate-900 hover:bg-black disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-full font-bold text-base shadow-lg flex items-center gap-2 transition-all"
                  >
-                     Suivant <ChevronRight size={18} />
+                     {t('booking.next')} <ChevronRight size={18} />
                  </button>
                 )}
 
@@ -684,7 +694,7 @@ export const BookingWizard: React.FC = () => {
                      disabled={(!isOther && selectedServices.length === 0) || (isOther && customIssue.length < 3)}
                      className="px-8 py-4 bg-slate-900 hover:bg-black disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-full font-bold text-base shadow-lg flex items-center gap-2 transition-all"
                  >
-                     Suivant <ChevronRight size={18} />
+                     {t('booking.next')} <ChevronRight size={18} />
                  </button>
                 )}
 
@@ -694,7 +704,7 @@ export const BookingWizard: React.FC = () => {
                         disabled={!selectedDate || !selectedTime || !contact.email || !contact.phone || isSubmitting}
                         className="px-10 py-4 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-full font-bold text-base shadow-lg shadow-blue-600/30 flex items-center gap-3 transition-all transform hover:-translate-y-1"
                     >
-                        {isSubmitting ? <Loader2 className="animate-spin" /> : 'Confirmer le RDV'} 
+                        {isSubmitting ? <Loader2 className="animate-spin" /> : t('booking.confirm')} 
                     </button>
                 )}
              </div>

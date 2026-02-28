@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
-import { Building2, User, Mail, Phone, FileText, Store, AlertCircle } from 'lucide-react';
+import { Building2, User, Mail, Phone, FileText, Store, AlertCircle, Info } from 'lucide-react';
 import {
   checkProAccess,
   clearProAccessToken,
-  getProStatusMessage,
   isProAccessConfigured,
   redirectToShop,
   saveApprovedProAccess
 } from '../lib/proAccess';
+import { type ProStatus } from '../lib/proAccess';
+import { InternationalPhoneInput } from './ui/InternationalPhoneInput';
+import {
+  DEFAULT_PHONE_COUNTRY,
+  buildInternationalPhone,
+  isInternationalPhoneValid
+} from '../lib/phoneUtils';
+import { useI18n } from '../lib/i18n';
 
 interface B2BSignupProps {
   onClose: () => void;
@@ -25,6 +32,8 @@ const GOOGLE_FORM_CONFIG = {
 };
 
 export const B2BSignup: React.FC<B2BSignupProps> = ({ onClose }) => {
+  const { t } = useI18n();
+  const [phoneCountryIso, setPhoneCountryIso] = useState(DEFAULT_PHONE_COUNTRY);
   const [formData, setFormData] = useState({
     name: '',
     company: '',
@@ -54,15 +63,18 @@ export const B2BSignup: React.FC<B2BSignupProps> = ({ onClose }) => {
 
   const validateForm = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^(\+33|0)[1-9](\d{2}){4}$/;
     const siretRegex = /^\d{14}$/;
-    const normalizedPhone = formData.phone.replace(/\s/g, '');
+    const fullPhone = buildInternationalPhone(phoneCountryIso, formData.phone);
 
     const newErrors = {
       email: !emailRegex.test(formData.email),
-      phone: normalizedPhone.length > 0 && !phoneRegex.test(normalizedPhone),
+      phone: !isInternationalPhoneValid(phoneCountryIso, formData.phone, false),
       siret: !siretRegex.test(formData.siret.replace(/\s/g, ''))
     };
+
+    if (!fullPhone) {
+      newErrors.phone = false;
+    }
 
     setErrors(newErrors);
     return !Object.values(newErrors).some((error) => error);
@@ -75,7 +87,7 @@ export const B2BSignup: React.FC<B2BSignupProps> = ({ onClose }) => {
     if (!validateForm()) {
       setSubmitFeedback({
         type: 'error',
-        message: 'Merci de corriger les champs en erreur avant de valider.'
+        message: t('b2b.formError')
       });
       return;
     }
@@ -84,13 +96,13 @@ export const B2BSignup: React.FC<B2BSignupProps> = ({ onClose }) => {
     if (formData.website.trim()) {
       setSubmitFeedback({
         type: 'success',
-        message: 'Demande envoyée. Votre compte est en attente de validation.'
+        message: t('b2b.formSuccess')
       });
       return;
     }
 
     const sanitizedSiret = formData.siret.replace(/\s+/g, '').trim();
-    const sanitizedPhone = formData.phone.replace(/\s+/g, '').trim();
+    const sanitizedPhone = buildInternationalPhone(phoneCountryIso, formData.phone);
 
     const payload: Record<string, string> = {
       [GOOGLE_FORM_CONFIG.entries.email]: formData.email.trim(),
@@ -111,7 +123,7 @@ export const B2BSignup: React.FC<B2BSignupProps> = ({ onClose }) => {
 
       setSubmitFeedback({
         type: 'success',
-        message: 'Demande envoyée. Votre compte est en attente de validation.'
+        message: t('b2b.formSuccess')
       });
       setAccessEmail(formData.email.trim().toLowerCase());
       setFormData({
@@ -131,7 +143,7 @@ export const B2BSignup: React.FC<B2BSignupProps> = ({ onClose }) => {
       console.error('Erreur soumission Google Forms:', error);
       setSubmitFeedback({
         type: 'error',
-        message: 'Erreur réseau. Merci de réessayer dans quelques secondes.'
+        message: t('b2b.technicalError')
       });
     } finally {
       setIsSubmitting(false);
@@ -148,7 +160,7 @@ export const B2BSignup: React.FC<B2BSignupProps> = ({ onClose }) => {
     if (!emailRegex.test(normalizedEmail)) {
       setAccessFeedback({
         type: 'error',
-        message: 'Merci de saisir une adresse email valide.'
+        message: t('b2b.invalidAccessEmail')
       });
       return;
     }
@@ -156,7 +168,7 @@ export const B2BSignup: React.FC<B2BSignupProps> = ({ onClose }) => {
     if (!isProAccessConfigured()) {
       setAccessFeedback({
         type: 'error',
-        message: "Configuration incomplète: ajoute l'URL /exec et la clé API dans lib/proAccess.ts."
+        message: t('b2b.configError')
       });
       return;
     }
@@ -168,7 +180,7 @@ export const B2BSignup: React.FC<B2BSignupProps> = ({ onClose }) => {
         saveApprovedProAccess(normalizedEmail);
         setAccessFeedback({
           type: 'success',
-          message: 'Compte approuvé. Redirection vers la boutique...'
+          message: t('b2b.approved')
         });
         window.setTimeout(() => {
           redirectToShop();
@@ -177,14 +189,14 @@ export const B2BSignup: React.FC<B2BSignupProps> = ({ onClose }) => {
         clearProAccessToken();
         setAccessFeedback({
           type: 'error',
-          message: getProStatusMessage(result.status)
+          message: getLocalizedAccessMessage(result.status, t)
         });
       }
     } catch (error) {
       console.error('Erreur vérification accès pro :', error);
       setAccessFeedback({
         type: 'error',
-        message: 'Erreur technique de vérification. Merci de réessayer.'
+        message: t('b2b.technicalError')
       });
     } finally {
       setIsCheckingAccess(false);
@@ -197,15 +209,15 @@ export const B2BSignup: React.FC<B2BSignupProps> = ({ onClose }) => {
         <div data-anim-item className="text-center mb-10">
           <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-blue-50 text-blue-600 border border-blue-100 mb-6">
             <Building2 size={20} />
-            <span className="text-sm font-semibold tracking-wide">Espace Professionnel</span>
+            <span className="text-sm font-semibold tracking-wide">{t('b2b.eyebrow')}</span>
           </div>
 
           <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4 tracking-tight">
-            Ouvrir un <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Compte Pro</span>
+            {t('b2b.titleLead')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">{t('b2b.titleAccent')}</span>
           </h1>
 
           <p className="text-slate-600 text-lg">
-            Accédez à notre catalogue de pièces détachées aux tarifs revendeurs
+            {t('b2b.description')}
           </p>
         </div>
 
@@ -223,14 +235,14 @@ export const B2BSignup: React.FC<B2BSignupProps> = ({ onClose }) => {
           <div>
             <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">
               <User className="inline mr-2" size={16} />
-              Nom complet <span className="text-red-500">*</span>
+              {t('b2b.fullName')} <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               required
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              placeholder="Jean Dupont"
+              placeholder={t('b2b.namePlaceholder')}
               className="w-full p-4 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all font-medium"
             />
           </div>
@@ -238,14 +250,14 @@ export const B2BSignup: React.FC<B2BSignupProps> = ({ onClose }) => {
           <div>
             <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">
               <Building2 className="inline mr-2" size={16} />
-              Nom de la Société <span className="text-red-500">*</span>
+              {t('b2b.company')} <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               required
               value={formData.company}
               onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-              placeholder="Ma Boutique Mobile"
+              placeholder={t('b2b.companyPlaceholder')}
               className="w-full p-4 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all font-medium"
             />
           </div>
@@ -254,7 +266,7 @@ export const B2BSignup: React.FC<B2BSignupProps> = ({ onClose }) => {
             <div>
               <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">
                 <Mail className="inline mr-2" size={16} />
-                Email <span className="text-red-500">*</span>
+                {t('b2b.email')} <span className="text-red-500">*</span>
               </label>
               <input
                 type="email"
@@ -264,14 +276,14 @@ export const B2BSignup: React.FC<B2BSignupProps> = ({ onClose }) => {
                   setFormData({ ...formData, email: e.target.value });
                   if (errors.email) setErrors({ ...errors, email: false });
                 }}
-                placeholder="contact@exemple.com"
+                placeholder={t('b2b.emailPlaceholder')}
                 className={`w-full p-4 rounded-xl bg-slate-50 border focus:bg-white outline-none transition-all font-medium ${
                   errors.email ? 'border-red-400 focus:border-red-500 bg-red-50' : 'border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10'
                 }`}
               />
               {errors.email && (
                 <p className="text-red-500 text-xs mt-1 font-semibold flex items-center gap-1">
-                  <AlertCircle size={12} /> Email invalide
+                  <AlertCircle size={12} /> {t('b2b.invalidEmail')}
                 </p>
               )}
             </div>
@@ -279,33 +291,45 @@ export const B2BSignup: React.FC<B2BSignupProps> = ({ onClose }) => {
             <div>
               <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">
                 <Phone className="inline mr-2" size={16} />
-                Téléphone <span className="text-slate-500 font-medium">(facultatif)</span>
+                {t('b2b.phone')} <span className="text-slate-500 font-medium">{t('b2b.optional')}</span>
               </label>
-              <input
-                type="tel"
-                value={formData.phone}
-                onChange={(e) => {
-                  setFormData({ ...formData, phone: e.target.value });
+              <InternationalPhoneInput
+                countryIso={phoneCountryIso}
+                localNumber={formData.phone}
+                onCountryIsoChange={setPhoneCountryIso}
+                onLocalNumberChange={(value) => {
+                  setFormData({ ...formData, phone: value });
                   if (errors.phone) setErrors({ ...errors, phone: false });
                 }}
-                placeholder="06 12 34 56 78"
-                className={`w-full p-4 rounded-xl bg-slate-50 border focus:bg-white outline-none transition-all font-medium ${
-                  errors.phone ? 'border-red-400 focus:border-red-500 bg-red-50' : 'border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10'
-                }`}
+                error={errors.phone}
+                placeholder={t('phoneInput.localPlaceholder')}
               />
               {errors.phone && (
                 <p className="text-red-500 text-xs mt-1 font-semibold flex items-center gap-1">
-                  <AlertCircle size={12} /> Numéro invalide
+                  <AlertCircle size={12} /> {t('b2b.invalidPhone')}
                 </p>
               )}
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">
-              <FileText className="inline mr-2" size={16} />
-              Numéro SIRET <span className="text-red-500">*</span>
-            </label>
+            <div className="flex items-center gap-2 mb-2 ml-1">
+              <label className="block text-sm font-bold text-slate-700">
+                <FileText className="inline mr-2" size={16} />
+                {t('b2b.siret')} <span className="text-red-500">*</span>
+              </label>
+              <span className="relative inline-flex group">
+                <span
+                  className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-blue-50 text-blue-600 border border-blue-100 cursor-help"
+                  aria-label={t('b2b.siretInfoAria')}
+                >
+                  <Info size={12} />
+                </span>
+                <span className="pointer-events-none absolute left-1/2 top-full z-20 mt-2 w-64 -translate-x-1/2 rounded-xl bg-slate-900 px-3 py-2 text-xs font-medium leading-relaxed text-white opacity-0 shadow-2xl transition-opacity duration-200 group-hover:opacity-100">
+                  {t('b2b.siretTooltip')}
+                </span>
+              </span>
+            </div>
             <input
               type="text"
               required
@@ -314,7 +338,7 @@ export const B2BSignup: React.FC<B2BSignupProps> = ({ onClose }) => {
                 setFormData({ ...formData, siret: e.target.value });
                 if (errors.siret) setErrors({ ...errors, siret: false });
               }}
-              placeholder="123 456 789 00010"
+              placeholder={t('b2b.siretPlaceholder')}
               maxLength={17}
               className={`w-full p-4 rounded-xl bg-slate-50 border focus:bg-white outline-none transition-all font-medium ${
                 errors.siret ? 'border-red-400 focus:border-red-500 bg-red-50' : 'border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10'
@@ -322,10 +346,10 @@ export const B2BSignup: React.FC<B2BSignupProps> = ({ onClose }) => {
             />
             {errors.siret && (
               <p className="text-red-500 text-xs mt-1 font-semibold flex items-center gap-1">
-                <AlertCircle size={12} /> SIRET invalide (14 chiffres requis)
+                <AlertCircle size={12} /> {t('b2b.invalidSiret')}
               </p>
             )}
-            <p className="text-xs text-slate-500 mt-1 ml-1">14 chiffres - Permet de vérifier votre activité professionnelle</p>
+            <p className="text-xs text-slate-500 mt-1 ml-1">{t('b2b.siretHelper')}</p>
           </div>
 
           <button
@@ -333,7 +357,7 @@ export const B2BSignup: React.FC<B2BSignupProps> = ({ onClose }) => {
             disabled={isSubmitting}
             className="w-full py-4 bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white rounded-full font-bold text-lg shadow-lg shadow-blue-600/30 flex items-center justify-center gap-3 transition-all transform hover:-translate-y-1"
           >
-            {isSubmitting ? 'Envoi en cours...' : 'Créer mon compte professionnel'}
+            {isSubmitting ? t('b2b.submitLoading') : t('b2b.submit')}
           </button>
 
           {submitFeedback && (
@@ -347,19 +371,19 @@ export const B2BSignup: React.FC<B2BSignupProps> = ({ onClose }) => {
           )}
 
           <p className="text-xs text-slate-500 text-center">
-            Le symbole <span className="text-red-500 font-bold">*</span> indique un champ obligatoire.
+            {t('b2b.requiredNote')}
           </p>
         </form>
 
         <div data-anim-item className="mt-8 pt-8 border-t border-slate-200 text-center">
-          <p className="text-slate-600 mb-4">Vous êtes déjà inscrit chez nous ?</p>
+          <p className="text-slate-600 mb-4">{t('b2b.accessPrompt')}</p>
           <form onSubmit={handleAccessShop} className="max-w-xl mx-auto space-y-3">
             <input
               type="email"
               required
               value={accessEmail}
               onChange={(e) => setAccessEmail(e.target.value)}
-              placeholder="Votre email professionnel"
+              placeholder={t('b2b.accessPlaceholder')}
               className="w-full p-4 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all font-medium"
             />
             <button
@@ -368,7 +392,7 @@ export const B2BSignup: React.FC<B2BSignupProps> = ({ onClose }) => {
               className="w-full inline-flex items-center justify-center gap-2 py-3 px-6 text-blue-600 hover:text-blue-700 border border-blue-200 hover:border-blue-300 rounded-full font-bold transition-colors disabled:opacity-60"
             >
               <Store size={18} />
-              {isCheckingAccess ? 'Vérification...' : 'Accéder à notre boutique'}
+              {isCheckingAccess ? t('b2b.accessChecking') : t('b2b.accessButton')}
             </button>
           </form>
           {accessFeedback && (
@@ -446,3 +470,23 @@ const submitToGoogleForm = (payload: Record<string, string>) =>
     document.body.appendChild(form);
     form.submit();
   });
+
+const getLocalizedAccessMessage = (
+  status: ProStatus,
+  t: (key: string, fallback?: string) => string
+) => {
+  switch (status) {
+    case 'pending':
+      return t('b2b.pending');
+    case 'rejected':
+      return t('b2b.rejected');
+    case 'not_found':
+      return t('b2b.notFound');
+    case 'unauthorized':
+      return t('b2b.unauthorized');
+    case 'invalid_email':
+      return t('b2b.invalidAccessEmail');
+    default:
+      return t('b2b.technicalError');
+  }
+};

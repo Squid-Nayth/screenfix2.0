@@ -13,6 +13,7 @@ import { PrivacyPolicy } from './components/PrivacyPolicy';
 import { B2BSignup } from './components/B2BSignup';
 import { guardCurrentBoutiqueAccess } from './lib/proAccess';
 import { initSiteAnimations } from './lib/siteAnimations';
+import { initAnalytics, trackPageView } from './lib/analytics';
 
 const App: React.FC = () => {
   const [showLegalNotice, setShowLegalNotice] = useState(false);
@@ -23,6 +24,35 @@ const App: React.FC = () => {
     if (typeof window === 'undefined') return;
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   }, []);
+  const navigateToSection = React.useCallback(
+    (targetId?: string) => {
+      const scrollToTarget = () => {
+        if (!targetId || targetId === 'top') {
+          scrollToPageTop();
+          return;
+        }
+
+        const element = document.getElementById(targetId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+          scrollToPageTop();
+        }
+      };
+
+      const hasOverlayPage = showLegalNotice || showPrivacyPolicy || showB2BSignup;
+      if (hasOverlayPage) {
+        setShowLegalNotice(false);
+        setShowPrivacyPolicy(false);
+        setShowB2BSignup(false);
+        window.setTimeout(scrollToTarget, 80);
+        return;
+      }
+
+      scrollToTarget();
+    },
+    [scrollToPageTop, showB2BSignup, showLegalNotice, showPrivacyPolicy]
+  );
 
   // Expose function to window for Footer to use
   React.useEffect(() => {
@@ -56,10 +86,17 @@ const App: React.FC = () => {
       setShowB2BSignup(false);
       scrollToPageTop();
     };
-  }, [scrollToPageTop]);
+    (window as any).navigateToSection = (targetId?: string) => {
+      navigateToSection(targetId);
+    };
+  }, [navigateToSection, scrollToPageTop]);
 
   React.useEffect(() => {
     void guardCurrentBoutiqueAccess();
+  }, []);
+
+  React.useEffect(() => {
+    initAnalytics();
   }, []);
 
   React.useEffect(() => {
@@ -70,6 +107,25 @@ const App: React.FC = () => {
   React.useEffect(() => {
     scrollToPageTop();
   }, [showLegalNotice, showPrivacyPolicy, showB2BSignup, scrollToPageTop]);
+
+  React.useEffect(() => {
+    if (showB2BSignup) {
+      trackPageView('/ouvrir-compte-pro', 'ScreenFix - Compte Pro');
+      return;
+    }
+
+    if (showPrivacyPolicy) {
+      trackPageView('/politique-de-confidentialite', 'ScreenFix - Politique de confidentialite');
+      return;
+    }
+
+    if (showLegalNotice) {
+      trackPageView('/mentions-legales', 'ScreenFix - Mentions legales');
+      return;
+    }
+
+    trackPageView('/', 'ScreenFix - Accueil');
+  }, [showB2BSignup, showLegalNotice, showPrivacyPolicy]);
 
   if (showB2BSignup) {
     return (

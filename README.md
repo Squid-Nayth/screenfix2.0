@@ -19,6 +19,19 @@ View your app in AI Studio: https://ai.studio/apps/drive/1Z6giUgGlMC8esnXkyyLwIN
 3. Run the app:
    `npm run dev`
 
+## Google Analytics 4 (GA4)
+
+1. Create a file named `.env.local` at the project root.
+2. Add:
+   - `VITE_GA_MEASUREMENT_ID=G-XXXXXXXXXX`
+3. Replace `G-XXXXXXXXXX` with your real GA4 Measurement ID.
+4. Restart the dev server:
+   - `npm run dev`
+5. Build again before deployment:
+   - `npm run build`
+
+If `VITE_GA_MEASUREMENT_ID` is missing, Google Analytics is disabled automatically.
+
 ## Pro access setup (Google Sheets + Apps Script)
 
 1. Open and deploy the Apps Script file:

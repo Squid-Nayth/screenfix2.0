@@ -1,7 +1,10 @@
 import React from 'react';
 import { Scale, Building2, Mail, Phone, Globe, AlertCircle } from 'lucide-react';
+import { useI18n } from '../lib/i18n';
 
 export const LegalNotice: React.FC = () => {
+  const { t } = useI18n();
+
   return (
     <section data-anim-section className="py-24 relative bg-transparent min-h-screen">
       <div className="max-w-4xl mx-auto px-6">
@@ -10,10 +13,10 @@ export const LegalNotice: React.FC = () => {
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-blue-50 text-blue-600 border border-blue-100 mb-6">
             <Scale size={20} />
-            <span className="text-[14px] font-semibold tracking-wide">Informations Légales</span>
+            <span className="text-[14px] font-semibold tracking-wide">{t('legal.badge')}</span>
           </div>
           <h1 className="text-4xl sm:text-5xl md:text-[64px] font-bold text-slate-900 tracking-tight mb-6">
-            Mentions <span className="text-blue-600">Légales</span>
+            {t('legal.titleLead')} <span className="text-blue-600">{t('legal.titleAccent')}</span>
           </h1>
         </div>
 
@@ -26,11 +29,11 @@ export const LegalNotice: React.FC = () => {
               <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
                 <Building2 className="w-5 h-5 text-blue-600" />
               </div>
-              <h2 className="text-2xl font-bold text-slate-900">Éditeur du site</h2>
+              <h2 className="text-2xl font-bold text-slate-900">{t('legal.publisherTitle')}</h2>
             </div>
             <div className="bg-slate-50 rounded-2xl p-6 space-y-2 text-slate-700 font-medium">
               <p className="font-bold text-slate-900">Dao Tien Phong</p>
-              <p>Auto-entrepreneur</p>
+              <p>{t('legal.publisherStatus')}</p>
               <p>SIRET : 930 951 355 00013</p>
               <p>27 Boulevard de Port Royal, 75005 Paris</p>
               <div className="flex items-center gap-2 pt-2">
@@ -54,7 +57,7 @@ export const LegalNotice: React.FC = () => {
               <div className="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center">
                 <Globe className="w-5 h-5 text-purple-600" />
               </div>
-              <h2 className="text-2xl font-bold text-slate-900">Responsable de la publication</h2>
+              <h2 className="text-2xl font-bold text-slate-900">{t('legal.editorTitle')}</h2>
             </div>
             <div className="bg-slate-50 rounded-2xl p-6 text-slate-700 font-medium">
               <a 
@@ -65,7 +68,7 @@ export const LegalNotice: React.FC = () => {
               >
                 Nathan Michel
               </a>
-              <p className="mt-2">Développeur web / Webmaster Freelance</p>
+              <p className="mt-2">{t('legal.editorRole')}</p>
             </div>
           </div>
 
@@ -75,7 +78,7 @@ export const LegalNotice: React.FC = () => {
               <div className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center">
                 <Globe className="w-5 h-5 text-green-600" />
               </div>
-              <h2 className="text-2xl font-bold text-slate-900">Hébergement</h2>
+              <h2 className="text-2xl font-bold text-slate-900">{t('legal.hostingTitle')}</h2>
             </div>
             <div className="bg-slate-50 rounded-2xl p-6 space-y-2 text-slate-700 font-medium">
               <p className="font-bold text-slate-900">Hostinger International Ltd.</p>
@@ -95,23 +98,12 @@ export const LegalNotice: React.FC = () => {
           <div data-anim-item className="bg-blue-50 border border-blue-200 rounded-2xl p-6 md:p-8">
             <div className="flex items-start gap-3 mb-4">
               <AlertCircle className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
-              <h3 className="text-xl font-bold text-slate-900">À propos des marques citées</h3>
+              <h3 className="text-xl font-bold text-slate-900">{t('legal.brandsTitle')}</h3>
             </div>
             <div className="text-slate-700 text-base leading-relaxed space-y-3">
-              <p>
-                <strong className="text-slate-900">Screenfix</strong> est une entreprise totalement indépendante, 
-                non affiliée, autorisée ou sponsorisée par Apple Inc.
-              </p>
-              <p>
-                Les noms <strong>iPhone</strong>, <strong>Apple</strong>, <strong>iOS</strong>, <strong>MacBook</strong>, 
-                le logo Apple et toutes les autres marques citées sur ce site sont la propriété exclusive d'Apple Inc. 
-                et servent uniquement à désigner clairement les appareils sur lesquels nous intervenons ou pour lesquels 
-                nous proposons des formations.
-              </p>
-              <p>
-                Nos services de réparation, de reconditionnement et de formation sont réalisés de façon indépendante, 
-                sans aucun lien commercial ou contractuel avec Apple Inc. ou ses filiales.
-              </p>
+              <p>{t('legal.brandParagraph1')}</p>
+              <p>{t('legal.brandParagraph2')}</p>
+              <p>{t('legal.brandParagraph3')}</p>
             </div>
           </div>
 
@@ -123,7 +115,7 @@ export const LegalNotice: React.FC = () => {
             onClick={() => (window as any).hideLegalNotice?.()}
             className="inline-flex items-center gap-2 px-8 py-4 bg-slate-900 text-white rounded-full font-bold hover:bg-black transition-all shadow-lg"
           >
-            Retour à l'accueil
+            {t('legal.back')}
           </button>
         </div>
 

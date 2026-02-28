@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Smartphone, Phone } from 'lucide-react';
+import { useI18n } from '../lib/i18n';
+import { LanguageSwitcher } from './ui/LanguageSwitcher';
 
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useI18n();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -13,22 +16,17 @@ export const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const navigateToSection = (targetId?: string) => {
+    (window as any).navigateToSection?.(targetId);
+  };
+
   const handleLogoClick = () => {
-    // Masquer toutes les pages spéciales
-    (window as any).hideLegalNotice?.();
-    (window as any).hidePrivacyPolicy?.();
-    (window as any).hideB2BSignup?.();
-    
-    // Scroller en haut de la page
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    navigateToSection('top');
   };
 
   const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     e.preventDefault();
-    const element = document.getElementById(targetId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    navigateToSection(targetId);
     setIsOpen(false);
   };
 
@@ -53,17 +51,19 @@ export const Navbar: React.FC = () => {
           </div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-8">
-            <a href="#boutique-pro" onClick={(e) => handleSmoothScroll(e, 'boutique-pro')} className="text-slate-600 hover:text-blue-600 transition-colors text-[15px] font-semibold cursor-pointer">Boutique Pro</a>
-            <a href="#services" onClick={(e) => handleSmoothScroll(e, 'services')} className="text-slate-600 hover:text-blue-600 transition-colors text-[15px] font-semibold cursor-pointer">Reconditionnement</a>
-            <a href="#formation" onClick={(e) => handleSmoothScroll(e, 'formation')} className="text-slate-600 hover:text-blue-600 transition-colors text-[15px] font-semibold cursor-pointer">Formation</a>
+          <div className="hidden md:flex items-center gap-6">
+            <a href="#boutique-pro" onClick={(e) => handleSmoothScroll(e, 'boutique-pro')} className="text-slate-600 hover:text-blue-600 transition-colors text-[15px] font-semibold cursor-pointer">{t('navbar.boutiquePro')}</a>
+            <a href="#services" onClick={(e) => handleSmoothScroll(e, 'services')} className="text-slate-600 hover:text-blue-600 transition-colors text-[15px] font-semibold cursor-pointer">{t('navbar.reconditioning')}</a>
+            <a href="#formation" onClick={(e) => handleSmoothScroll(e, 'formation')} className="text-slate-600 hover:text-blue-600 transition-colors text-[15px] font-semibold cursor-pointer">{t('navbar.training')}</a>
+            <LanguageSwitcher />
             
             <a 
-              href="https://wa.me/33622188574" 
+              href="#contact"
+              onClick={(e) => handleSmoothScroll(e, 'contact')}
               className="px-5 py-2.5 rounded-full bg-slate-900 hover:bg-black text-white text-base font-medium flex items-center gap-2 shadow-lg transition-all hover:-translate-y-0.5"
             >
               <Phone size={16} />
-              Prendre RDV
+              {t('navbar.contact')}
             </a>
           </div>
 
@@ -82,15 +82,17 @@ export const Navbar: React.FC = () => {
       {/* Mobile Menu Overlay */}
       {isOpen && (
         <div className="md:hidden absolute top-full left-0 w-full bg-white border-b border-gray-100 p-6 flex flex-col gap-6 shadow-xl">
-            <a href="#boutique-pro" onClick={(e) => handleSmoothScroll(e, 'boutique-pro')} className="text-slate-900 font-semibold text-lg cursor-pointer hover:text-blue-600 transition-colors">Boutique Pro</a>
-            <a href="#services" onClick={(e) => handleSmoothScroll(e, 'services')} className="text-slate-900 font-semibold text-lg cursor-pointer hover:text-blue-600 transition-colors">Reconditionnement</a>
-            <a href="#formation" onClick={(e) => handleSmoothScroll(e, 'formation')} className="text-slate-900 font-semibold text-lg cursor-pointer hover:text-blue-600 transition-colors">Formation</a>
+            <a href="#boutique-pro" onClick={(e) => handleSmoothScroll(e, 'boutique-pro')} className="text-slate-900 font-semibold text-lg cursor-pointer hover:text-blue-600 transition-colors">{t('navbar.boutiquePro')}</a>
+            <a href="#services" onClick={(e) => handleSmoothScroll(e, 'services')} className="text-slate-900 font-semibold text-lg cursor-pointer hover:text-blue-600 transition-colors">{t('navbar.reconditioning')}</a>
+            <a href="#formation" onClick={(e) => handleSmoothScroll(e, 'formation')} className="text-slate-900 font-semibold text-lg cursor-pointer hover:text-blue-600 transition-colors">{t('navbar.training')}</a>
+            <LanguageSwitcher mobile />
             <a 
-              href="https://wa.me/33622188574" 
+              href="#contact"
+              onClick={(e) => handleSmoothScroll(e, 'contact')}
               className="w-full py-4 rounded-xl bg-blue-600 font-medium text-white shadow-lg text-base text-center flex items-center justify-center gap-2 hover:bg-blue-700 transition-colors"
             >
               <Phone size={18} />
-              Prendre Rendez-vous
+              {t('navbar.contact')}
             </a>
         </div>
       )}
