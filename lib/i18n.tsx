@@ -62,10 +62,26 @@ const translations = {
   fr: {
     navbar: {
       boutiquePro: 'Boutique Pro',
+      actualites: 'Actualités',
       reconditioning: 'Reconditionnement',
       training: 'Formation',
       contact: 'Contactez-nous',
       language: 'Langue'
+    },
+    actualites: {
+      title: 'ACTUALITÉS',
+      subtitle: 'Découvrez nos dernières actualités et les innovations dans le monde de la réparation Apple',
+      loadMore: 'Voir plus d\'actualités',
+      readMore: 'Voir plus',
+      backToNews: 'Retour aux actualités',
+      backHome: "Retour à l'accueil",
+      latestEyebrow: 'Le journal ScreenFix',
+      latestTitle: 'Les derniers articles',
+      latestDescription:
+        "Guides, conseils atelier et actualités Apple : une vraie section éditoriale pour faire vivre le site.",
+      relatedEyebrow: 'À lire aussi',
+      relatedTitle: 'Articles similaires',
+      detailCta: 'Prendre rendez-vous'
     },
     hero: {
       open: 'Ouvert',
@@ -206,7 +222,7 @@ const translations = {
       chosenServices: 'Prestations choisies',
       confirmationEmail: 'Un email de confirmation a été envoyé à',
       totalLabel: 'Total',
-      backHome: "Retour à l'accueil",
+      backHome: 'Prendre un nouveau rendez-vous',
       back: 'Retour',
       next: 'Suivant',
       confirm: 'Confirmer le RDV',
@@ -346,10 +362,26 @@ const translations = {
   en: {
     navbar: {
       boutiquePro: 'Pro Shop',
+      actualites: 'News',
       reconditioning: 'Reconditioning',
       training: 'Training',
       contact: 'Contact us',
       language: 'Language'
+    },
+    actualites: {
+      title: 'NEWS',
+      subtitle: 'Discover our latest news and innovations in the Apple repair world',
+      loadMore: 'Load more news',
+      readMore: 'Read more',
+      backToNews: 'Back to news',
+      backHome: 'Back to home',
+      latestEyebrow: 'ScreenFix Journal',
+      latestTitle: 'Latest articles',
+      latestDescription:
+        'Guides, workshop advice and Apple updates: a real editorial section to keep the site alive.',
+      relatedEyebrow: 'Also read',
+      relatedTitle: 'Related articles',
+      detailCta: 'Book an appointment'
     },
     hero: {
       open: 'Open',
@@ -488,7 +520,7 @@ const translations = {
       chosenServices: 'Selected services',
       confirmationEmail: 'A confirmation email has been sent to',
       totalLabel: 'Total',
-      backHome: 'Back to home',
+      backHome: 'Book a new appointment',
       back: 'Back',
       next: 'Next',
       confirm: 'Confirm booking',
@@ -627,10 +659,16 @@ const translations = {
   de: {
     navbar: {
       boutiquePro: 'Pro-Shop',
+      actualites: 'Nachrichten',
       reconditioning: 'Refurbishment',
       training: 'Schulung',
       contact: 'Kontaktieren Sie uns',
       language: 'Sprache'
+    },
+    actualites: {
+      title: 'NACHRICHTEN',
+      subtitle: 'Entdecken Sie unsere neuesten Nachrichten und Innovationen in der Apple-Reparaturwelt',
+      loadMore: 'Mehr Nachrichten laden'
     },
     hero: {
       open: 'Geöffnet',
@@ -646,15 +684,24 @@ const translations = {
     footer: {
       legal: 'Impressum',
       privacy: 'Datenschutz'
+    },
+    booking: {
+      backHome: 'Neuen Termin buchen'
     }
   },
   es: {
     navbar: {
       boutiquePro: 'Tienda Pro',
+      actualites: 'Noticias',
       reconditioning: 'Reacondicionamiento',
       training: 'Formación',
       contact: 'Contáctanos',
       language: 'Idioma'
+    },
+    actualites: {
+      title: 'NOTICIAS',
+      subtitle: 'Descubre nuestras últimas noticias e innovaciones en el mundo de la reparación Apple',
+      loadMore: 'Cargar más noticias'
     },
     hero: {
       open: 'Abierto',
@@ -666,15 +713,24 @@ const translations = {
       description:
         'Especialista en reacondicionamiento de iPhone, iPad y Watch. Conserva tu pantalla original Apple y ahorra hasta un 60%.',
       cta: 'Reservar cita'
+    },
+    booking: {
+      backHome: 'Reservar una nueva cita'
     }
   },
   vi: {
     navbar: {
       boutiquePro: 'Cửa hàng Pro',
+      actualites: 'Tin tức',
       reconditioning: 'Tái tạo',
       training: 'Đào tạo',
       contact: 'Liên hệ',
       language: 'Ngôn ngữ'
+    },
+    actualites: {
+      title: 'TIN TỨC',
+      subtitle: 'Khám phá tin tức mới nhất và các đổi mới trong thế giới sửa chữa Apple',
+      loadMore: 'Xem thêm'
     },
     hero: {
       open: 'Đang mở',
@@ -686,15 +742,24 @@ const translations = {
       description:
         'Chuyên gia tái tạo iPhone, iPad và Watch. Giữ lại màn hình Apple chính hãng và tiết kiệm tới 60%.',
       cta: 'Đặt lịch'
+    },
+    booking: {
+      backHome: 'Đặt lịch hẹn mới'
     }
   },
   ja: {
     navbar: {
       boutiquePro: 'プロショップ',
+      actualites: 'ニュース',
       reconditioning: '再生修理',
       training: 'トレーニング',
       contact: 'お問い合わせ',
       language: '言語'
+    },
+    actualites: {
+      title: 'ニュース',
+      subtitle: 'Apple修理の世界における最新ニュースと革新をご覧ください',
+      loadMore: 'もっと読み込む'
     },
     hero: {
       open: '営業中',
@@ -706,15 +771,24 @@ const translations = {
       description:
         'iPhone・iPad・Watchの再生修理専門。Apple純正ディスプレイをそのまま活かし、最大60%節約できます。',
       cta: '予約する'
+    },
+    booking: {
+      backHome: '新しい予約をする'
     }
   },
   ko: {
     navbar: {
       boutiquePro: '프로 스토어',
+      actualites: '뉴스',
       reconditioning: '재생 수리',
       training: '교육',
       contact: '문의하기',
       language: '언어'
+    },
+    actualites: {
+      title: '뉴스',
+      subtitle: 'Apple 수리 세계의 최신 뉴스와 혁신을 확인하세요',
+      loadMore: '더 보기'
     },
     hero: {
       open: '영업 중',
@@ -726,15 +800,24 @@ const translations = {
       description:
         'iPhone, iPad, Watch 재생 수리 전문. Apple 정품 디스플레이를 유지하면서 최대 60% 절약하세요.',
       cta: '예약하기'
+    },
+    booking: {
+      backHome: '새 예약하기'
     }
   },
   zh: {
     navbar: {
       boutiquePro: '专业商城',
+      actualites: '新闻',
       reconditioning: '翻新修复',
       training: '培训',
       contact: '联系我们',
       language: '语言'
+    },
+    actualites: {
+      title: '新闻',
+      subtitle: '发现我们的最新新闻和Apple维修领域的创新',
+      loadMore: '加载更多'
     },
     hero: {
       open: '营业中',
@@ -746,15 +829,24 @@ const translations = {
       description:
         '专注于 iPhone、iPad 和 Watch 的翻新修复。保留原装 Apple 屏幕，最高可节省 60%。',
       cta: '预约时间'
+    },
+    booking: {
+      backHome: '预约新时间'
     }
   },
   zh_tw: {
     navbar: {
       boutiquePro: '專業商店',
+      actualites: '新聞',
       reconditioning: '翻新修復',
       training: '培訓',
       contact: '聯絡我們',
       language: '語言'
+    },
+    actualites: {
+      title: '新聞',
+      subtitle: '發現我們的最新新聞與Apple維修領域的創新',
+      loadMore: '載入更多'
     },
     hero: {
       open: '營業中',
@@ -766,15 +858,24 @@ const translations = {
       description:
         '專注於 iPhone、iPad 與 Watch 的翻新修復。保留 Apple 原廠螢幕，最高可節省 60%。',
       cta: '立即預約'
+    },
+    booking: {
+      backHome: '預約新時段'
     }
   },
   th: {
     navbar: {
       boutiquePro: 'ร้านค้าโปร',
+      actualites: 'ข่าวสาร',
       reconditioning: 'ซ่อมรีคอนดิชัน',
       training: 'การอบรม',
       contact: 'ติดต่อเรา',
       language: 'ภาษา'
+    },
+    actualites: {
+      title: 'ข่าวสาร',
+      subtitle: 'ค้นพบข่าวสารล่าสุดและนวัตกรรมในโลกของการซ่อม Apple',
+      loadMore: 'โหลดเพิ่มเติม'
     },
     hero: {
       open: 'เปิดอยู่',
@@ -786,15 +887,24 @@ const translations = {
       description:
         'ผู้เชี่ยวชาญด้านการรีคอนดิชัน iPhone, iPad และ Watch เก็บหน้าจอ Apple แท้ไว้และประหยัดได้สูงสุด 60%',
       cta: 'จองคิว'
+    },
+    booking: {
+      backHome: 'จองนัดหมายใหม่'
     }
   },
   id: {
     navbar: {
       boutiquePro: 'Toko Pro',
+      actualites: 'Berita',
       reconditioning: 'Rekondisi',
       training: 'Pelatihan',
       contact: 'Hubungi kami',
       language: 'Bahasa'
+    },
+    actualites: {
+      title: 'BERITA',
+      subtitle: 'Temukan berita terbaru dan inovasi kami di dunia perbaikan Apple',
+      loadMore: 'Muat lebih banyak'
     },
     hero: {
       open: 'Buka',
@@ -806,15 +916,24 @@ const translations = {
       description:
         'Spesialis rekondisi iPhone, iPad, dan Watch. Pertahankan layar Apple asli Anda dan hemat hingga 60%.',
       cta: 'Pesan jadwal'
+    },
+    booking: {
+      backHome: 'Buat janji baru'
     }
   },
   ms: {
     navbar: {
       boutiquePro: 'Kedai Pro',
+      actualites: 'Berita',
       reconditioning: 'Baik pulih',
       training: 'Latihan',
       contact: 'Hubungi kami',
       language: 'Bahasa'
+    },
+    actualites: {
+      title: 'BERITA',
+      subtitle: 'Ketahui berita terkini dan inovasi kami dalam dunia pembaikan Apple',
+      loadMore: 'Muat lebih banyak'
     },
     hero: {
       open: 'Dibuka',
@@ -826,15 +945,24 @@ const translations = {
       description:
         'Pakar baik pulih iPhone, iPad dan Watch. Kekalkan skrin asal Apple anda dan jimat sehingga 60%.',
       cta: 'Tempah slot'
+    },
+    booking: {
+      backHome: 'Tempah temujanji baru'
     }
   },
   hi: {
     navbar: {
       boutiquePro: 'प्रो शॉप',
+      actualites: 'समाचार',
       reconditioning: 'रीकंडीशनिंग',
       training: 'प्रशिक्षण',
       contact: 'संपर्क करें',
       language: 'भाषा'
+    },
+    actualites: {
+      title: 'समाचार',
+      subtitle: 'Apple मरम्मत की दुनिया में हमारी नवीनतम खबरें और नवाचार देखें',
+      loadMore: 'और लोड करें'
     },
     hero: {
       open: 'खुला है',
@@ -846,6 +974,9 @@ const translations = {
       description:
         'iPhone, iPad और Watch रीकंडीशनिंग विशेषज्ञ। अपनी मूल Apple स्क्रीन बचाइए और 60% तक बचत कीजिए।',
       cta: 'समय बुक करें'
+    },
+    booking: {
+      backHome: 'नया अपॉइंटमेंट बुक करें'
     }
   }
 } as const;

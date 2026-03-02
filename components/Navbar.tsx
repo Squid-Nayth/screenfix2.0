@@ -6,6 +6,7 @@ import { LanguageSwitcher } from './ui/LanguageSwitcher';
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [isOnOverlayPage, setIsOnOverlayPage] = useState(false);
   const { t } = useI18n();
 
   useEffect(() => {
@@ -14,6 +15,20 @@ export const Navbar: React.FC = () => {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Detect if we're on an overlay page (Actualites, Legal, Privacy, B2B)
+  useEffect(() => {
+    const checkOverlayPage = () => {
+      const hasOverlay = document.querySelector('[data-overlay-page]') !== null;
+      setIsOnOverlayPage(hasOverlay);
+    };
+    
+    checkOverlayPage();
+    const observer = new MutationObserver(checkOverlayPage);
+    observer.observe(document.body, { childList: true, subtree: true });
+    
+    return () => observer.disconnect();
   }, []);
 
   const navigateToSection = (targetId?: string) => {
@@ -30,11 +45,17 @@ export const Navbar: React.FC = () => {
     setIsOpen(false);
   };
 
+  const handleActualitesClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    (window as any).showActualites?.();
+    setIsOpen(false);
+  };
+
   return (
     <nav 
       data-anim-navbar
       className={`fixed w-full z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-white/80 backdrop-blur-xl border-b border-white/20 py-4 shadow-sm' : 'bg-transparent py-6'
+        isScrolled || isOnOverlayPage ? 'bg-white/80 backdrop-blur-xl border-b border-white/20 py-4 shadow-sm' : 'bg-transparent py-6'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -53,6 +74,7 @@ export const Navbar: React.FC = () => {
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-6">
             <a href="#boutique-pro" onClick={(e) => handleSmoothScroll(e, 'boutique-pro')} className="text-slate-600 hover:text-blue-600 transition-colors text-[15px] font-semibold cursor-pointer">{t('navbar.boutiquePro')}</a>
+            <a href="#actualites" onClick={handleActualitesClick} className="text-slate-600 hover:text-blue-600 transition-colors text-[15px] font-semibold cursor-pointer">{t('navbar.actualites')}</a>
             <a href="#services" onClick={(e) => handleSmoothScroll(e, 'services')} className="text-slate-600 hover:text-blue-600 transition-colors text-[15px] font-semibold cursor-pointer">{t('navbar.reconditioning')}</a>
             <a href="#formation" onClick={(e) => handleSmoothScroll(e, 'formation')} className="text-slate-600 hover:text-blue-600 transition-colors text-[15px] font-semibold cursor-pointer">{t('navbar.training')}</a>
             <LanguageSwitcher />
@@ -83,6 +105,7 @@ export const Navbar: React.FC = () => {
       {isOpen && (
         <div className="md:hidden absolute top-full left-0 w-full bg-white border-b border-gray-100 p-6 flex flex-col gap-6 shadow-xl">
             <a href="#boutique-pro" onClick={(e) => handleSmoothScroll(e, 'boutique-pro')} className="text-slate-900 font-semibold text-lg cursor-pointer hover:text-blue-600 transition-colors">{t('navbar.boutiquePro')}</a>
+            <a href="#actualites" onClick={handleActualitesClick} className="text-slate-900 font-semibold text-lg cursor-pointer hover:text-blue-600 transition-colors">{t('navbar.actualites')}</a>
             <a href="#services" onClick={(e) => handleSmoothScroll(e, 'services')} className="text-slate-900 font-semibold text-lg cursor-pointer hover:text-blue-600 transition-colors">{t('navbar.reconditioning')}</a>
             <a href="#formation" onClick={(e) => handleSmoothScroll(e, 'formation')} className="text-slate-900 font-semibold text-lg cursor-pointer hover:text-blue-600 transition-colors">{t('navbar.training')}</a>
             <LanguageSwitcher mobile />

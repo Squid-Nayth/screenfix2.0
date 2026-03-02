@@ -1,0 +1,41 @@
+{
+  "slug": "preparer-son-iphone-avant-reparation",
+  "title": "Comment preparer son iPhone avant de le confier en reparation",
+  "excerpt": "Sauvegarde, localisation, mot de passe et accessoires : la bonne preparation evite les retards et accelere la prise en charge en atelier.",
+  "category": "Guide pratique",
+  "author": "Equipe ScreenFix",
+  "publishedAt": "2026-02-08",
+  "readingTime": "5 min",
+  "featured": true,
+  "coverImage": "/iphones/chassis-iphone-12-removebg-preview.png",
+  "coverAlt": "iPhone prepare avant une reparation",
+  "sections": [
+    {
+      "title": "Sauvegarder les donnees utiles",
+      "paragraphs": [
+        "Avant toute intervention, il est preferable d'effectuer une sauvegarde iCloud ou locale. Cela evite les mauvaises surprises si un composant doit etre remplace ou si un test logiciel est necessaire.",
+        "Une sauvegarde recente permet aussi de restituer l'appareil plus sereinement."
+      ]
+    },
+    {
+      "title": "Desactiver Localiser mon iPhone si besoin",
+      "paragraphs": [
+        "Certaines operations techniques exigent la desactivation temporaire de Localiser mon iPhone. Si ce point est oublie, la prise en charge peut etre retardee.",
+        "Le plus simple est de verifier ce point avant le rendez-vous pour ne pas perdre de temps au comptoir."
+      ],
+      "image": "/iphones/iphone13_12_11.png",
+      "imageAlt": "Verification des reglages avant depot"
+    },
+    {
+      "title": "Retirer coque et accessoires non necessaires",
+      "paragraphs": [
+        "Mieux vaut venir sans accessoires superflus : coque, film magnetique, cordons personnels. Cela simplifie le diagnostic et reduit le risque d'oubli a la restitution.",
+        "En atelier, une preparation claire rend l'intervention plus rapide et plus fiable."
+      ]
+    }
+  ],
+  "relatedSlugs": [
+    "reconditionnement-ecran-original-iphone",
+    "accessoires-magsafe-utiles-au-quotidien"
+  ]
+}

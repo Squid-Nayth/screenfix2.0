@@ -7,6 +7,7 @@ import {
   createCalendarBooking,
   isCalendarBookingConfigured
 } from '../lib/calendarBooking';
+import { submitHiddenGoogleForm } from '../lib/googleForms';
 import { fetchSheetPriceMap, normalizeModelKey } from '../lib/sheetPrices';
 import { InternationalPhoneInput } from './ui/InternationalPhoneInput';
 import { useI18n } from '../lib/i18n';
@@ -60,6 +61,32 @@ const MODELS = [
   { name: 'iPhone XR', recond: 50, screen: 75, back: 65, battery: 45, camera: 75, charge: 55 },
   { name: 'iPhone SE 2022', recond: 50, screen: 65, back: 65, battery: 45, camera: 70, charge: 50 },
 ];
+
+const BOOKING_GOOGLE_FORM_CONFIG = {
+  formResponseUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSdaw7x71mbw1gNAy5imLo_BTJkXuVUvt9p8uwKLP-KM6bzm1w/formResponse',
+  entries: {
+    bookingId: 'entry.1563273857',
+    source: 'entry.376189256',
+    customerName: 'entry.1968833841',
+    customerEmail: 'entry.1444681175',
+    customerPhone: 'entry.1482758651',
+    brand: 'entry.91449145',
+    model: 'entry.111669192',
+    repairSummary: 'entry.1264380728',
+    priceDisplay: 'entry.1648652795',
+    priceAmount: 'entry.525021079',
+    grossAmount: 'entry.447549360',
+    reductionPercent: 'entry.1869298440',
+    bookingDateLabel: 'entry.1006047392',
+    bookingTimeLabel: 'entry.1494952681',
+    startIso: 'entry.1212709102',
+    endIso: 'entry.619519578'
+  }
+};
+
+const isBookingGoogleFormConfigured = () =>
+  /\/formResponse$/.test(BOOKING_GOOGLE_FORM_CONFIG.formResponseUrl) &&
+  Object.values(BOOKING_GOOGLE_FORM_CONFIG.entries).every((value) => /^entry\.\d+$/.test(value));
 
 // Function to get iPhone image based on model name
 const getIphoneImage = (modelName: string): string => {
@@ -267,14 +294,51 @@ export const BookingWizard: React.FC = () => {
       }) : '',
       time: selectedTime || '',
     };
+    const calendarBookingId = [
+      contact.email.trim().toLowerCase(),
+      (selectedModel || '').trim().toLowerCase(),
+      bookingWindow.startIso.trim()
+    ].join('|');
+    const sheetBookingId = `${calendarBookingId}|${Date.now()}`;
+    const bookingFormPayload: Record<string, string> = {
+      [BOOKING_GOOGLE_FORM_CONFIG.entries.bookingId]: sheetBookingId,
+      [BOOKING_GOOGLE_FORM_CONFIG.entries.source]: 'site_screenfix',
+      [BOOKING_GOOGLE_FORM_CONFIG.entries.customerName]: contact.name.trim(),
+      [BOOKING_GOOGLE_FORM_CONFIG.entries.customerEmail]: contact.email.trim(),
+      [BOOKING_GOOGLE_FORM_CONFIG.entries.customerPhone]: buildInternationalPhone(phoneCountryIso, contact.phone),
+      [BOOKING_GOOGLE_FORM_CONFIG.entries.brand]: 'Apple',
+      [BOOKING_GOOGLE_FORM_CONFIG.entries.model]: selectedModel || '',
+      [BOOKING_GOOGLE_FORM_CONFIG.entries.repairSummary]: Array.isArray(serviceNames)
+        ? serviceNames.join(' + ')
+        : serviceNames,
+      [BOOKING_GOOGLE_FORM_CONFIG.entries.priceDisplay]: priceDisplay,
+      [BOOKING_GOOGLE_FORM_CONFIG.entries.priceAmount]: isOther ? '' : String(pricingSummary.final),
+      [BOOKING_GOOGLE_FORM_CONFIG.entries.grossAmount]: isOther ? '' : String(pricingSummary.total),
+      [BOOKING_GOOGLE_FORM_CONFIG.entries.reductionPercent]: isOther ? '' : String(pricingSummary.percent),
+      [BOOKING_GOOGLE_FORM_CONFIG.entries.bookingDateLabel]: rdv.date,
+      [BOOKING_GOOGLE_FORM_CONFIG.entries.bookingTimeLabel]: selectedTime || '',
+      [BOOKING_GOOGLE_FORM_CONFIG.entries.startIso]: bookingWindow.startIso,
+      [BOOKING_GOOGLE_FORM_CONFIG.entries.endIso]: bookingWindow.endIso,
+      fvv: '1',
+      draftResponse: '[]',
+      pageHistory: '0',
+      fbzx: String(Date.now())
+    };
 
     console.log('=== Données envoyées à EmailJS ===');
     console.log('Evaluation:', evaluation);
     console.log('RDV:', rdv);
 
     try {
+      if (isBookingGoogleFormConfigured()) {
+        await submitHiddenGoogleForm(BOOKING_GOOGLE_FORM_CONFIG.formResponseUrl, bookingFormPayload);
+      } else {
+        console.warn('[BOOKINGS] Google Form rendez-vous non configure.');
+      }
+
       if (isCalendarBookingConfigured()) {
         await createCalendarBooking({
+          bookingId: calendarBookingId,
           customerName: contact.name,
           customerEmail: contact.email,
           customerPhone: buildInternationalPhone(phoneCountryIso, contact.phone),
@@ -298,8 +362,11 @@ export const BookingWizard: React.FC = () => {
 
       setStep(4);
     } catch (error) {
-      console.error("Erreur lors de la création du rendez-vous Google Calendar:", error);
-      alert(getCalendarErrorMessage(error));
+      console.error("Erreur lors de la synchronisation du rendez-vous:", error);
+      const errorMessage = error instanceof CalendarBookingError
+        ? getCalendarErrorMessage(error)
+        : "Impossible d'enregistrer les données client dans Google Forms. Vérifie l'URL formResponse et les entry.xxxxx du formulaire.";
+      alert(errorMessage);
     } finally {
       setIsSubmitting(false);
     }

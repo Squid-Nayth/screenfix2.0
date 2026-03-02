@@ -1,0 +1,41 @@
+{
+  "slug": "reconditionnement-ecran-original-iphone",
+  "title": "Reconditionnement d'ecran iPhone : pourquoi conserver l'afficheur d'origine",
+  "excerpt": "Changer uniquement la vitre permet de conserver la qualite Apple d'origine, de reduire le cout et d'allonger la duree de vie de l'appareil.",
+  "category": "Reparation Apple",
+  "author": "Equipe ScreenFix",
+  "publishedAt": "2026-02-22",
+  "readingTime": "4 min",
+  "featured": true,
+  "coverImage": "/iphones/Iphone-15.png",
+  "coverAlt": "Module d'ecran d'iPhone original reconditionne",
+  "sections": [
+    {
+      "title": "Conserver l'OLED Apple d'origine",
+      "paragraphs": [
+        "Quand seul le verre est casse, remplacer tout l'ecran est souvent inutile. Le reconditionnement permet de conserver la dalle OLED d'origine Apple, donc le rendu des couleurs, la luminosite et la precision tactile.",
+        "C'est aussi la meilleure solution pour eviter les copies d'ecrans qui vieillissent mal et qui degradent l'experience utilisateur."
+      ],
+      "image": "/iphones/iphone13_12_11.png",
+      "imageAlt": "Ecran original iPhone conserve lors d'un reconditionnement"
+    },
+    {
+      "title": "Une reparation plus rentable",
+      "paragraphs": [
+        "Le cout est inferieur a un remplacement complet, car on ne jette pas un module encore fonctionnel. Le client paye uniquement l'operation utile.",
+        "Pour une boutique ou un particulier, cela permet de garder une marge saine sans sacrifier la qualite finale."
+      ]
+    },
+    {
+      "title": "Une approche plus durable",
+      "paragraphs": [
+        "Le reconditionnement limite les dechets electroniques et prolonge la vie des composants d'origine. C'est une logique a la fois economique et responsable.",
+        "Sur les modeles premium, c'est souvent le choix le plus coherent quand l'affichage est intact."
+      ]
+    }
+  ],
+  "relatedSlugs": [
+    "signes-batterie-iphone-fatiguee",
+    "preparer-son-iphone-avant-reparation"
+  ]
+}

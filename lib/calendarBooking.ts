@@ -17,6 +17,7 @@ export class CalendarBookingError extends Error {
 }
 
 export interface CalendarBookingPayload {
+  bookingId?: string;
   customerName: string;
   customerEmail: string;
   customerPhone: string;
@@ -76,7 +77,7 @@ export const createCalendarBooking = async (payload: CalendarBookingPayload) => 
     return null;
   }
 
-  const bookingId = buildBookingId(payload);
+  const bookingId = payload.bookingId?.trim() || buildBookingId(payload);
   const body = new URLSearchParams({
     key: CALENDAR_BOOKING_CONFIG.apiKey,
     booking_id: bookingId,

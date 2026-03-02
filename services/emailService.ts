@@ -2,7 +2,7 @@ import emailjs from '@emailjs/browser';
 
 // Configuration EmailJS - Mêmes clés que dans email.js
 const EMAILJS_USER_ID = '9bBAaUfzPUgf6Ho1Z';
-const EMAILJS_SERVICE_ID = 'service_p9bl44a';
+const EMAILJS_SERVICE_ID = 'service_vocrjx9';
 const EMAILJS_TEMPLATE_USER = 'template_pvowh8p';
 const EMAILJS_TEMPLATE_ADMIN = 'template_szlgmdo';
 const ADMIN_EMAIL = 'cineeffrance@gmail.com';

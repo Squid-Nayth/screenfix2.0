@@ -1,0 +1,41 @@
+{
+  "slug": "choisir-bonne-reparation-vitre-arriere",
+  "title": "Vitre arriere d'iPhone casse : comment choisir la bonne reparation",
+  "excerpt": "Toutes les reparations de vitre arriere ne se valent pas. Voici les points a verifier pour eviter une finition mediocre ou une immobilisation trop longue.",
+  "category": "Diagnostic",
+  "author": "Atelier ScreenFix",
+  "publishedAt": "2026-01-19",
+  "readingTime": "4 min",
+  "featured": false,
+  "coverImage": "/iphones/iphone-X.png",
+  "coverAlt": "Vitre arriere d'iPhone casse",
+  "sections": [
+    {
+      "title": "Verifier la methode utilisee",
+      "paragraphs": [
+        "Selon le modele, la qualite de la depose et de la repose change beaucoup. Une methode mal maitrisee peut allonger les delais ou nuire a la finition.",
+        "Il faut privilegier un atelier qui explique clairement sa methode et ses delais."
+      ]
+    },
+    {
+      "title": "Observer la finition attendue",
+      "paragraphs": [
+        "Alignement, texture, tenue dans le temps : une belle finition ne se limite pas a coller une piece. Le resultat doit rester propre et coherent avec le châssis d'origine.",
+        "Demander des exemples ou des photos avant/apres aide beaucoup."
+      ],
+      "image": "/iphones/chassis-iphone-12-removebg-preview.png",
+      "imageAlt": "Finition propre apres remplacement de vitre arriere"
+    },
+    {
+      "title": "Comparer delai, garantie et prix",
+      "paragraphs": [
+        "Le meilleur choix n'est pas toujours le moins cher. Il faut lire le trio complet : prix, delai reel et garantie atelier.",
+        "Une intervention rapide avec une vraie garantie reste souvent l'option la plus rassurante."
+      ]
+    }
+  ],
+  "relatedSlugs": [
+    "reconditionnement-ecran-original-iphone",
+    "preparer-son-iphone-avant-reparation"
+  ]
+}

@@ -7,7 +7,7 @@ export const PrivacyPolicy: React.FC = () => {
   const dataItems = getPrivacyDataItems(locale);
 
   return (
-    <section data-anim-section className="py-24 relative bg-transparent min-h-screen">
+    <section data-overlay-page data-anim-section className="py-24 relative bg-transparent min-h-screen">
       <div className="max-w-4xl mx-auto px-6">
         
         {/* Header */}

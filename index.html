@@ -6,6 +6,30 @@
     <link rel="icon" type="image/png" href="/iphones/favicon.png" />
     <link rel="apple-touch-icon" href="/iphones/logo-apple.png" />
     <title>Screenfix | Expert Réparation Apple Paris 13</title>
+    <script>
+      window.__SCREENFIX_GA_ID__ = '%VITE_GA_MEASUREMENT_ID%';
+      (function () {
+        var measurementId = window.__SCREENFIX_GA_ID__;
+        if (!measurementId || measurementId === 'undefined' || measurementId === 'null') return;
+
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = window.gtag || function gtag() {
+          window.dataLayer.push(arguments);
+        };
+
+        var gaScript = document.createElement('script');
+        gaScript.async = true;
+        gaScript.id = 'screenfix-ga4-script';
+        gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(measurementId);
+        document.head.appendChild(gaScript);
+
+        window.gtag('js', new Date());
+        window.gtag('config', measurementId, {
+          send_page_view: false,
+          anonymize_ip: true
+        });
+      })();
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script>

@@ -15,6 +15,7 @@ import {
   isInternationalPhoneValid
 } from '../lib/phoneUtils';
 import { useI18n } from '../lib/i18n';
+import { submitHiddenGoogleForm } from '../lib/googleForms';
 
 interface B2BSignupProps {
   onClose: () => void;
@@ -119,7 +120,7 @@ export const B2BSignup: React.FC<B2BSignupProps> = ({ onClose }) => {
 
     setIsSubmitting(true);
     try {
-      await submitToGoogleForm(payload);
+      await submitHiddenGoogleForm(GOOGLE_FORM_CONFIG.formResponseUrl, payload);
 
       setSubmitFeedback({
         type: 'success',
@@ -204,7 +205,7 @@ export const B2BSignup: React.FC<B2BSignupProps> = ({ onClose }) => {
   };
 
   return (
-    <div data-anim-section className="max-w-3xl mx-auto px-6 pt-28 md:pt-32 pb-20 md:pb-24">
+    <div data-overlay-page data-anim-section className="max-w-3xl mx-auto px-6 pt-28 md:pt-32 pb-20 md:pb-24">
       <div data-anim-stagger className="bg-white/80 backdrop-blur-xl border border-white/60 rounded-[3rem] p-8 md:p-12 shadow-2xl">
         <div data-anim-item className="text-center mb-10">
           <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-blue-50 text-blue-600 border border-blue-100 mb-6">
@@ -409,67 +410,6 @@ export const B2BSignup: React.FC<B2BSignupProps> = ({ onClose }) => {
     </div>
   );
 };
-
-const submitToGoogleForm = (payload: Record<string, string>) =>
-  new Promise<void>((resolve, reject) => {
-    if (typeof document === 'undefined') {
-      reject(new Error('Document non disponible'));
-      return;
-    }
-
-    const iframeName = `google-form-target-${Date.now()}`;
-    const iframe = document.createElement('iframe');
-    iframe.name = iframeName;
-    iframe.style.display = 'none';
-
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = GOOGLE_FORM_CONFIG.formResponseUrl;
-    form.target = iframeName;
-    form.style.display = 'none';
-
-    Object.entries(payload).forEach(([name, value]) => {
-      const input = document.createElement('input');
-      input.type = 'hidden';
-      input.name = name;
-      input.value = value;
-      form.appendChild(input);
-    });
-
-    let settled = false;
-
-    const cleanup = () => {
-      form.remove();
-      iframe.remove();
-    };
-
-    const timeout = window.setTimeout(() => {
-      if (settled) return;
-      settled = true;
-      cleanup();
-      resolve();
-    }, 3000);
-
-    iframe.onload = () => {
-      if (settled) return;
-      settled = true;
-      window.clearTimeout(timeout);
-      cleanup();
-      resolve();
-    };
-
-    iframe.onerror = () => {
-      if (settled) return;
-      settled = true;
-      window.clearTimeout(timeout);
-      cleanup();
-      reject(new Error('Soumission Google Forms impossible.'));
-    };
-
-    document.body.appendChild(iframe);
-    document.body.appendChild(form);
-    form.submit();
-  });
 
 const getLocalizedAccessMessage = (
   status: ProStatus,

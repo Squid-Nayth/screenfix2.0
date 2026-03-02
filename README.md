@@ -32,6 +32,37 @@ View your app in AI Studio: https://ai.studio/apps/drive/1Z6giUgGlMC8esnXkyyLwIN
 
 If `VITE_GA_MEASUREMENT_ID` is missing, Google Analytics is disabled automatically.
 
+## Blog / TinaCMS
+
+The news section now uses editable content files in:
+- `content/articles/*.json`
+
+Each article has:
+- a list card
+- a detailed article page
+- `Voir plus` buttons linking to the detailed page
+
+TinaCMS preparation files:
+- `tina/config.ts`
+- `content/articles/*.json`
+- `public/uploads/`
+- `TINA_DEPLOYMENT.md`
+
+To prepare Tina locally:
+1. Copy `.env.example` to `.env.local` and fill:
+   - `NEXT_PUBLIC_TINA_CLIENT_ID`
+   - `TINA_TOKEN`
+   - `TINA_BRANCH`
+2. Run:
+   - `npm run tina:dev`
+3. To build Tina admin + the site:
+   - `npm run tina:build`
+
+Notes:
+- Tina is pinned in `devDependencies`, so the same Tina version is used locally and in CI.
+- The current app remains a Vite React site; Tina edits the JSON files used by the news pages.
+- For deployment, Git connection, and client workflow without local source code, see `TINA_DEPLOYMENT.md`.
+
 ## Pro access setup (Google Sheets + Apps Script)
 
 1. Open and deploy the Apps Script file:
@@ -102,3 +133,57 @@ VITE_GCAL_BOOKING_DURATION_MINUTES=60
    - `npm run build`
 
 The booking form will then create a Google Calendar event automatically before confirming the appointment.
+
+## Customer bookings database (Website -> Google Forms -> Google Sheets)
+
+1. Create a Google Form dedicated to customer appointments.
+2. Add these fields in this exact order:
+   - `Booking ID`
+   - `Source`
+   - `Nom client`
+   - `Email`
+   - `Telephone`
+   - `Marque`
+   - `Modele`
+   - `Services`
+   - `Prix affiche`
+   - `Montant numerique`
+   - `Montant brut`
+   - `Reduction %`
+   - `Date RDV`
+   - `Heure RDV`
+   - `Debut ISO`
+   - `Fin ISO`
+3. Link the Google Form to a Google Sheet.
+4. In the form, click:
+   - `⋮` -> `Obtenir un lien pre-rempli`
+5. Fill each field with a test value, generate the link, then copy all `entry.xxxxx` IDs from the URL.
+6. Update:
+   - [components/BookingWizard.tsx](components/BookingWizard.tsx)
+   - `BOOKING_GOOGLE_FORM_CONFIG.formResponseUrl`
+   - every `BOOKING_GOOGLE_FORM_CONFIG.entries.*`
+7. Restart the app:
+   - `npm run dev`
+8. For production:
+   - `npm run build`
+
+Recommended Google Sheet formulas (to the right of the linked response sheet):
+- add column `Statut RDV`
+- add column `Rendez-vous effectue` with checkboxes
+- add column `Chiffre d'affaires confirme` with:
+
+```gs
+=ARRAYFORMULA(IF(ROW(A:A)=1,"Chiffre d'affaires confirme",IF(S:S=TRUE,K:K,"")))
+```
+
+- add column `Mois` with:
+
+```gs
+=ARRAYFORMULA(IF(ROW(A:A)=1,"Mois",IF(P:P<>"",LEFT(P:P,7),"")))
+```
+
+- add column `Annee` with:
+
+```gs
+=ARRAYFORMULA(IF(ROW(A:A)=1,"Annee",IF(P:P<>"",LEFT(P:P,4),"")))
+```
