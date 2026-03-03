@@ -55,6 +55,7 @@ export const FloatingWhatsApp: React.FC = () => {
                 <span className="absolute right-full mr-4 top-1/2 -translate-y-1/2 bg-white/60 backdrop-blur-md px-3 py-1 rounded-xl text-slate-900 font-bold text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none border border-white/20 shadow-sm">
                     Devis Gratuit
                 </span>
+                {/* Contactez-nous sur WhatsApp */}
             </a>
         </>
     );
