@@ -26,12 +26,20 @@ export const Testimonials: React.FC = () => {
           {t('testimonials.description')}
         </p>
 
-        {/* EmbedSocial Hashtag Widget */}
-        <div
-          className="embedsocial-hashtag"
-          data-ref="4d2a6be078cda803950d3ec5fa0947d6a4db6a08"
-          data-lazyload="yes"
-        ></div>
+        {/* EmbedSocial Hashtag Widget - responsive zoom */}
+        <style>{`
+          .embedsocial-wrapper { zoom: 0.8; }
+          @media (max-width: 768px) {
+            .embedsocial-wrapper { zoom: 0.6; }
+          }
+        `}</style>
+        <div className="embedsocial-wrapper">
+          <div
+            className="embedsocial-hashtag"
+            data-ref="4d2a6be078cda803950d3ec5fa0947d6a4db6a08"
+            data-lazyload="yes"
+          ></div>
+        </div>
       </div>
     </section>
   );

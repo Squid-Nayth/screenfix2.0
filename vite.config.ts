@@ -9,10 +9,26 @@ export default defineConfig(({ mode }) => {
         port: 3000,
         host: '0.0.0.0',
       },
+      build: {
+        rollupOptions: {
+          input: {
+            main: path.resolve(__dirname, 'index.html'),
+            admin: path.resolve(__dirname, 'admin/index.html'),
+          }
+        }
+      },
       plugins: [react()],
       define: {
         'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-        'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
+        'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
+        'process.env.NEXT_PUBLIC_TINA_CLIENT_ID': JSON.stringify(env.NEXT_PUBLIC_TINA_CLIENT_ID || ''),
+        'process.env.TINA_CLIENT_ID': JSON.stringify(env.TINA_CLIENT_ID || env.NEXT_PUBLIC_TINA_CLIENT_ID || ''),
+        'process.env.TINA_TOKEN': JSON.stringify(env.TINA_TOKEN || ''),
+        'process.env.TINA_BRANCH': JSON.stringify(env.TINA_BRANCH || 'main'),
+        'process.env.NEXT_PUBLIC_TINA_BRANCH': JSON.stringify(env.NEXT_PUBLIC_TINA_BRANCH || env.TINA_BRANCH || 'main'),
+        'process.env.VERCEL_GIT_COMMIT_REF': JSON.stringify(env.VERCEL_GIT_COMMIT_REF || ''),
+        'process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_REF': JSON.stringify(env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_REF || ''),
+        'process.env.HEAD': JSON.stringify(env.HEAD || '')
       },
       resolve: {
         alias: {

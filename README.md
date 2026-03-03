@@ -57,11 +57,15 @@ To prepare Tina locally:
    - `npm run tina:dev`
 3. To build Tina admin + the site:
    - `npm run tina:build`
+4. The admin interface is generated in production at:
+   - `/admin/index.html`
 
 Notes:
 - Tina is pinned in `devDependencies`, so the same Tina version is used locally and in CI.
+- Local Tina commands load `.env.local` automatically through `scripts/run-tina.mjs`.
 - The current app remains a Vite React site; Tina edits the JSON files used by the news pages.
-- For deployment, Git connection, and client workflow without local source code, see `TINA_DEPLOYMENT.md`.
+- For production with automatic updates on Hostinger, use the GitHub workflow in `.github/workflows/deploy-hostinger.yml`.
+- See `TINA_DEPLOYMENT.md` for the exact TinaCloud -> GitHub -> Hostinger setup.
 
 ## Pro access setup (Google Sheets + Apps Script)
 

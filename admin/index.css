@@ -1,0 +1,18 @@
+@import "@tinacms/app/src/global.css";
+@import "@tinacms/app/src/preflight.css";
+@import "tailwindcss";
+
+@source "./**/*.{html,ts,tsx}";
+@source "../node_modules/tinacms/dist/**/*.js";
+@source "../node_modules/@tinacms/app/src/**/*.{js,jsx,ts,tsx}";
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--tina-color-grey-1);
+}

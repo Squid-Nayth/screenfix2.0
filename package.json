@@ -7,8 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "tina:dev": "tinacms dev -c \"vite\"",
-    "tina:build": "tinacms build && vite build"
+    "tina:dev": "node scripts/run-tina.mjs dev -c \"vite\"",
+    "tina:build": "node scripts/run-tina.mjs build && vite build"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
@@ -19,9 +19,13 @@
     "react-dom": "^19.2.3"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.2.1",
     "@tinacms/cli": "^2.1.7",
     "@types/node": "^22.14.0",
     "@vitejs/plugin-react": "^5.0.0",
+    "autoprefixer": "^10.4.27",
+    "postcss": "^8.5.8",
+    "tailwindcss": "^4.2.1",
     "tinacms": "^3.5.1",
     "typescript": "~5.8.2",
     "vite": "^6.2.0"

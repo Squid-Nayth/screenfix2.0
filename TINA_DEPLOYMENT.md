@@ -1,71 +1,72 @@
-# TinaCMS deployment, Git connection, and client workflow
+# TinaCMS automatic deployment to Hostinger with GitHub
 
-This project is ready for a TinaCMS content workflow, but Tina only becomes useful for a client if the site is deployed from Git.
+This is the correct production setup if you want:
 
-If you keep deploying the site manually by uploading `dist`, the client will not have a reliable editor workflow. Tina writes content back to the repository, then your host must rebuild automatically.
+1. your client edits content in TinaCMS
+2. Tina saves the changes into GitHub
+3. GitHub rebuilds the site automatically
+4. Hostinger receives the new `dist` automatically
 
-## Recommended architecture
+That is the only clean way to make Tina useful on a static Hostinger site.
 
-Use this stack:
+## How the flow works
 
-1. GitHub repository for the project
-2. TinaCloud connected to that GitHub repository
-3. Vercel connected to the same repository
-4. Client edits articles from `/admin/index.html`
-5. Tina commits content changes into `content/articles/*.json`
-6. Vercel redeploys the site automatically
+The full chain is:
 
-Content files used by the blog:
+1. client opens `https://screenfix.fr/admin/index.html`
+2. client edits an article in TinaCMS
+3. TinaCloud saves the change to the linked GitHub repository
+4. the push triggers GitHub Actions
+5. GitHub Actions runs `npm run tina:build`
+6. GitHub Actions uploads `dist` to Hostinger with FTP
+7. the site is updated online
+
+## What is already prepared in this repo
+
+Already present:
+
+1. Tina config in `tina/config.ts`
+2. Tina admin build in `npm run tina:build`
+3. static admin page generated at `dist/admin/index.html`
+4. automatic deployment workflow in `.github/workflows/deploy-hostinger.yml`
+
+## Content files used by the blog
 
 - `content/articles/*.json`
 - `public/uploads/*`
 
-## What the client needs
+## Step 1: put the project on GitHub
 
-The client does **not** need the project locally.
+TinaCloud writes content changes back to GitHub, so the repository must exist there.
 
-The client needs:
+Use:
 
-1. A TinaCloud account or an invited collaborator access
-2. Access to the deployed Tina admin
-3. Permission to edit content in the Tina project
+1. one repository for this site
+2. branch `main` as production branch
 
-The client does not need:
-
-1. VS Code
-2. `npm run tina:dev`
-3. direct manual edits inside the repository
-
-## Step 1: push this project to GitHub
-
-TinaCloud works against a Git repository. Use GitHub for the cleanest path.
-
-1. Create a GitHub repository
-2. Push this project to it
-3. Keep your production branch as `main`
-
-Important:
-
-- Tina will write article updates into the repo
-- the deployed site should rebuild from Git automatically
-
-## Step 2: create the TinaCloud project
+## Step 2: connect TinaCloud to the GitHub repository
 
 In TinaCloud:
 
-1. Create a new project
-2. Choose `Add existing GitHub project`
-3. Authorize Tina with GitHub if requested
-4. Select this repository
-5. Select branch `main`
+1. create or open the project
+2. connect the GitHub repository
+3. choose the branch `main`
+4. in `Site URL(s)`, add:
+   - `https://screenfix.fr`
+   - `https://www.screenfix.fr`
+   - `http://localhost:3000`
 
-At the end, TinaCloud gives you:
+Why:
 
-1. `Client ID`
-2. `Read only token` or project token
-3. the branch name used by Tina
+- TinaCloud uses GitHub as the source of truth
+- the admin route on your site uses the TinaCloud project to authenticate editors and save content
 
-## Step 3: set project environment variables
+Official docs:
+
+- https://tina.io/docs/tinacloud/dashboard/projects
+- https://tina.io/tinadocs/docs/going-live/tinacloud/configuring-tinacloud
+
+## Step 3: local environment variables
 
 This repo expects these variables:
 
@@ -81,108 +82,173 @@ Where they are used:
 - `TINA_TOKEN`: Tina build access
 - `TINA_BRANCH`: branch Tina writes to
 
-### Local development
-
 Create `.env.local` from `.env.example` and add the Tina values.
 
-### Vercel deployment
+This project loads `.env.local` automatically for:
 
-In Vercel:
+- `npm run tina:dev`
+- `npm run tina:build`
 
-1. Open the project
-2. Go to `Settings` -> `Environment Variables`
-3. Add:
-   - `NEXT_PUBLIC_TINA_CLIENT_ID`
-   - `TINA_TOKEN`
-   - `TINA_BRANCH`
-4. Save
+## Step 4: create the GitHub Secrets
 
-## Step 4: set the correct build command
+Open:
 
-For a Tina-enabled deployment, the host must build Tina admin before the site build.
+1. GitHub repository
+2. `Settings`
+3. `Secrets and variables`
+4. `Actions`
+5. `New repository secret`
 
-Use this build command in Vercel:
+Create these secrets:
 
-```bash
-npm run tina:build
+```txt
+NEXT_PUBLIC_TINA_CLIENT_ID
+TINA_TOKEN
+HOSTINGER_FTP_SERVER
+HOSTINGER_FTP_USERNAME
+HOSTINGER_FTP_PASSWORD
+HOSTINGER_FTP_PORT
+HOSTINGER_SERVER_DIR
+VITE_GA_MEASUREMENT_ID
+VITE_GCAL_BOOKING_WEBAPP_URL
+VITE_GCAL_BOOKING_API_KEY
+VITE_GCAL_BOOKING_DURATION_MINUTES
 ```
 
-Output directory:
+Recommended values for Hostinger:
 
-```bash
-dist
+```txt
+HOSTINGER_FTP_PORT=21
+HOSTINGER_SERVER_DIR=/public_html/
 ```
 
-Do not use only `npm run build` for the Tina-enabled production deployment, because that builds the site without generating Tina admin first.
+Where Hostinger FTP values come from:
 
-## Step 5: deploy and verify the admin
+In hPanel:
 
-After the first successful deployment:
+1. `Websites`
+2. website `Dashboard`
+3. `FTP Accounts`
 
-1. Open your site
-2. Go to `/admin/index.html`
+There you will find:
+
+1. FTP IP / server
+2. FTP username
+3. FTP port
+4. upload folder
+
+Official Hostinger doc:
+
+- https://www.hostinger.com/support/1714427-how-to-find-ftp-details-on-hpanel-at-hostinger/
+
+Official GitHub doc for secrets:
+
+- https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets
+
+## Step 5: use the workflow already added in this repo
+
+This file is already present:
+
+- `.github/workflows/deploy-hostinger.yml`
+
+What it does:
+
+1. triggers on every push to `main`
+2. installs dependencies with `npm ci`
+3. runs `npm run tina:build`
+4. uploads `dist` to Hostinger via FTP
+
+The FTP upload action used is:
+
+- https://github.com/SamKirkland/FTP-Deploy-Action
+
+## Step 6: first deployment test
+
+Once the GitHub secrets are set:
+
+1. commit and push to `main`
+2. open the `Actions` tab in GitHub
+3. wait for the workflow `Deploy ScreenFix to Hostinger`
+4. confirm that all steps are green
+
+If the workflow fails:
+
+1. check the failing step
+2. most common causes are:
+   - wrong FTP password
+   - wrong FTP server
+   - wrong Tina token
+   - missing environment secret
+
+## Step 7: verify the live site
+
+After the first successful workflow:
+
+1. open `https://screenfix.fr`
+2. open `https://screenfix.fr/admin/index.html`
 
 Expected result:
 
-- Tina admin loads
-- you can sign in
-- article collection `Articles` is visible
+1. site loads normally
+2. Tina admin loads
+3. login works
 
-If `/admin/index.html` is missing:
+## Step 8: verify the full editorial flow
 
-1. check that the build command is `npm run tina:build`
-2. check that Tina environment variables are present in Vercel
-3. trigger a new deployment
+This is the real end-to-end test:
 
-## Step 6: invite the client
+1. open `https://screenfix.fr/admin/index.html`
+2. log in to Tina
+3. edit one article title
+4. save
+5. verify that TinaCloud writes the change to GitHub
+6. check GitHub `Actions`
+7. wait for the workflow to finish
+8. refresh the public article page on `screenfix.fr`
 
-In TinaCloud:
+Expected result:
 
-1. Open the project
-2. Go to collaborators
-3. Invite the client
-4. Give a content editing role
+1. the article is updated online
+2. no manual upload to Hostinger is needed
 
-Recommended:
+## Step 9: what your client will do in practice
 
-- client = content editor
-- you = admin/technical owner
+Once everything is configured, your client does only this:
 
-This keeps the client in the editor UI and keeps project-level technical config under your control.
+1. open `/admin/index.html`
+2. sign in
+3. edit an article
+4. save
 
-## Step 7: client workflow
+Everything else happens automatically:
 
-Once deployed correctly, the client workflow is:
+1. Tina -> GitHub
+2. GitHub -> build
+3. build -> Hostinger
 
-1. Open `/admin/index.html`
-2. Sign in
-3. Open collection `Articles`
-4. Create or edit an article
-5. Save and publish
-6. Tina writes the JSON file to the Git branch
-7. Vercel redeploys automatically
-8. The updated article appears on the site
+## Step 10: what you still manage technically
 
-No local code access is required for the client.
+You still manage:
 
-## Step 8: recommended content workflow
+1. TinaCloud project configuration
+2. GitHub repository
+3. GitHub secrets
+4. Hostinger FTP credentials
 
-Use a simple production workflow:
+The client only manages content.
 
-1. `main` = production
-2. client edits directly in Tina
-3. Vercel deploys from `main`
+## Quick checklist
 
-If you want validation before publication:
+Before giving this to the client, confirm:
 
-1. use a second branch such as `staging`
-2. point Tina to `staging`
-3. review changes there
-4. merge into `main`
+1. TinaCloud project connected to GitHub
+2. `Site URL(s)` configured
+3. GitHub secrets configured
+4. workflow green on a test push
+5. `/admin/index.html` works online
+6. one article edit propagates to Hostinger automatically
 
-For a small business site, direct edits on `main` are usually enough.
-
-## Step 9: article structure already prepared in this repo
+## Article structure already prepared in this repo
 
 The article editor is already prepared for:
 
@@ -205,19 +271,6 @@ Relevant files:
 - `lib/articles.ts`
 - `components/Actualites.tsx`
 
-## Important limitation
-
-If you continue with a manual FTP/static upload workflow only:
-
-1. Tina can still edit content in Git
-2. but the live site will not update until a deployment runs
-
-So for the client workflow you asked for, the correct setup is:
-
-1. GitHub
-2. TinaCloud
-3. Vercel auto-deploy
-
 ## Local command summary
 
 Development with Tina:
@@ -237,5 +290,3 @@ npm run tina:build
 - Tina config: https://tina.io/docs/reference/config/
 - Tina schema: https://tina.io/docs/reference/schema/
 - Tina CLI usage: https://tina.io/docs/frameworks/11ty/
-- TinaCloud collaborators: https://tina.io/docs/tinacloud/projects/collaborators/
-- Add existing GitHub project: https://tina.io/docs/tinacloud/projects/add-existing-project/

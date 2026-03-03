@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, Star, ShieldCheck, Zap } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Zap } from 'lucide-react';
 import { useI18n } from '../lib/i18n';
 
 export const Hero: React.FC = () => {
@@ -11,18 +11,18 @@ export const Hero: React.FC = () => {
       const now = new Date();
       const day = now.getDay(); // 0 = Dimanche, 1 = Lundi, ..., 6 = Samedi
       const hour = now.getHours();
-      
+
       // Fermé le dimanche (jour 0) ou avant 10h ou après 18h
       const isClosed = day === 0 || hour < 10 || hour >= 18;
       setIsOpen(!isClosed);
     };
-    
+
     // Vérifier immédiatement
     checkOpenStatus();
-    
+
     // Vérifier toutes les minutes
     const interval = setInterval(checkOpenStatus, 60000);
-    
+
     return () => clearInterval(interval);
   }, []);
 
@@ -43,7 +43,7 @@ export const Hero: React.FC = () => {
       {/* Local Background Removed - Using Global App Background */}
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col items-center text-center">
-        
+
         {/* Content */}
         <div className="space-y-10 z-10 w-full flex flex-col items-center">
           <div data-hero-item className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/60 backdrop-blur-md border border-slate-200/60 shadow-sm w-fit">
@@ -62,7 +62,7 @@ export const Hero: React.FC = () => {
               </span>
             </h1>
             <h2 className="mt-6 text-2xl sm:text-[32px] md:text-[40px] font-bold text-slate-500 leading-tight max-w-3xl mx-auto">
-              {t('hero.subtitleLine1')} <br/> <span className="text-slate-900">{t('hero.subtitleLine2')}</span>
+              {t('hero.subtitleLine1')} <br /> <span className="text-slate-900">{t('hero.subtitleLine2')}</span>
             </h2>
           </div>
 
@@ -71,7 +71,7 @@ export const Hero: React.FC = () => {
           </p>
 
           <div data-hero-item className="flex flex-col sm:flex-row gap-4 pt-4 justify-center w-full">
-            <a 
+            <a
               href="#booking"
               onClick={handleBookingClick}
               className="group px-10 py-5 bg-slate-900 hover:bg-black text-white rounded-full shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 flex items-center justify-center gap-2 text-lg font-medium cursor-pointer"
@@ -92,14 +92,16 @@ export const Hero: React.FC = () => {
             </div>
             <div data-anim-item className="flex items-center gap-3">
               <div className="p-2 bg-purple-50/50 rounded-lg text-purple-600"><Zap size={24} /></div>
-               <div className="text-left">
+              <div className="text-left">
                 <p className="text-[13px] sm:text-[14px] font-semibold text-slate-500">{t('hero.speedLabel')}</p>
                 <p className="text-[16px] sm:text-[18px] font-bold text-slate-900">{t('hero.speedValue')}</p>
               </div>
             </div>
             <div data-anim-item className="flex items-center gap-3">
-              <div className="p-2 bg-yellow-50/50 rounded-lg text-yellow-600"><Star size={24} /></div>
-               <div className="text-left">
+              <div className="p-2 bg-yellow-50/50 rounded-lg">
+                <img src="/icones/icons8-google-48.png" alt="Google" className="w-6 h-6 object-contain" />
+              </div>
+              <div className="text-left">
                 <p className="text-[13px] sm:text-[14px] font-semibold text-slate-500">{t('hero.reviewsLabel')}</p>
                 <p className="text-[16px] sm:text-[18px] font-bold text-slate-900">{t('hero.reviewsValue')}</p>
               </div>

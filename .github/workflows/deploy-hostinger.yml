@@ -1,0 +1,45 @@
+name: Deploy ScreenFix to Hostinger
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      NEXT_PUBLIC_TINA_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_TINA_CLIENT_ID }}
+      TINA_TOKEN: ${{ secrets.TINA_TOKEN }}
+      TINA_BRANCH: main
+      VITE_GA_MEASUREMENT_ID: ${{ secrets.VITE_GA_MEASUREMENT_ID }}
+      VITE_GCAL_BOOKING_WEBAPP_URL: ${{ secrets.VITE_GCAL_BOOKING_WEBAPP_URL }}
+      VITE_GCAL_BOOKING_API_KEY: ${{ secrets.VITE_GCAL_BOOKING_API_KEY }}
+      VITE_GCAL_BOOKING_DURATION_MINUTES: ${{ secrets.VITE_GCAL_BOOKING_DURATION_MINUTES }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Tina admin and website
+        run: npm run tina:build
+
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.HOSTINGER_FTP_SERVER }}
+          username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
+          password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+          port: ${{ secrets.HOSTINGER_FTP_PORT }}
+          local-dir: ./dist/
+          server-dir: ${{ secrets.HOSTINGER_SERVER_DIR }}
