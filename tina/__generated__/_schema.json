@@ -1,1 +1,439 @@
-{"version":{"fullVersion":"2.1.3","major":"2","minor":"1","patch":"3"},"meta":{"flags":["experimentalData"]},"collections":[{"name":"articles","label":"Articles","path":"content/articles","format":"json","ui":{"filename":{}},"fields":[{"type":"string","name":"slug","label":"Slug","required":true,"namespace":["articles","slug"],"searchable":true,"uid":false},{"type":"string","name":"title","label":"Titre","required":true,"namespace":["articles","title"],"searchable":true,"uid":false},{"type":"string","name":"excerpt","label":"Extrait","required":true,"ui":{"component":"textarea"},"namespace":["articles","excerpt"],"searchable":true,"uid":false},{"type":"string","name":"category","label":"Categorie","required":true,"namespace":["articles","category"],"searchable":true,"uid":false},{"type":"string","name":"author","label":"Auteur","required":true,"namespace":["articles","author"],"searchable":true,"uid":false},{"type":"datetime","name":"publishedAt","label":"Date de publication","required":true,"namespace":["articles","publishedAt"],"searchable":true,"uid":false},{"type":"string","name":"readingTime","label":"Temps de lecture","required":true,"namespace":["articles","readingTime"],"searchable":true,"uid":false},{"type":"boolean","name":"featured","label":"Mettre en avant","namespace":["articles","featured"],"searchable":true,"uid":false},{"type":"image","name":"coverImage","label":"Image de couverture","required":true,"namespace":["articles","coverImage"],"searchable":false,"uid":false},{"type":"string","name":"coverAlt","label":"Texte alternatif","required":true,"namespace":["articles","coverAlt"],"searchable":true,"uid":false},{"type":"object","name":"sections","label":"Sections","list":true,"ui":{},"fields":[{"type":"string","name":"title","label":"Titre de section","required":true,"namespace":["articles","sections","title"],"searchable":true,"uid":false},{"type":"string","name":"paragraphs","label":"Paragraphes","list":true,"required":true,"ui":{"component":"textarea"},"namespace":["articles","sections","paragraphs"],"searchable":true,"uid":false},{"type":"image","name":"image","label":"Image optionnelle","namespace":["articles","sections","image"],"searchable":false,"uid":false},{"type":"string","name":"imageAlt","label":"Alt image","namespace":["articles","sections","imageAlt"],"searchable":true,"uid":false}],"namespace":["articles","sections"],"searchable":true,"uid":false},{"type":"string","name":"relatedSlugs","label":"Slugs lies","list":true,"namespace":["articles","relatedSlugs"],"searchable":true,"uid":false}],"namespace":["articles"]}],"config":{"media":{"tina":{"publicFolder":"public","mediaRoot":"uploads"}}}}
+{
+  "version": {
+    "fullVersion": "2.1.3",
+    "major": "2",
+    "minor": "1",
+    "patch": "3"
+  },
+  "meta": {
+    "flags": [
+      "experimentalData"
+    ]
+  },
+  "collections": [
+    {
+      "name": "repairServices",
+      "label": "Services de reparation",
+      "path": "content/repair-services",
+      "format": "json",
+      "ui": {
+        "filename": {}
+      },
+      "fields": [
+        {
+          "type": "string",
+          "name": "key",
+          "label": "Cle service",
+          "required": true,
+          "namespace": [
+            "repairServices",
+            "key"
+          ],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "string",
+          "name": "label",
+          "label": "Nom service",
+          "required": true,
+          "namespace": [
+            "repairServices",
+            "label"
+          ],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "string",
+          "name": "description",
+          "label": "Description courte",
+          "required": true,
+          "ui": {
+            "component": "textarea"
+          },
+          "namespace": [
+            "repairServices",
+            "description"
+          ],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "number",
+          "name": "order",
+          "label": "Ordre d affichage",
+          "namespace": [
+            "repairServices",
+            "order"
+          ],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "boolean",
+          "name": "recommended",
+          "label": "Service recommande",
+          "namespace": [
+            "repairServices",
+            "recommended"
+          ],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "boolean",
+          "name": "active",
+          "label": "Actif",
+          "namespace": [
+            "repairServices",
+            "active"
+          ],
+          "searchable": true,
+          "uid": false
+        }
+      ],
+      "namespace": [
+        "repairServices"
+      ]
+    },
+    {
+      "name": "iphoneModels",
+      "label": "Modeles iPhone",
+      "path": "content/iphone-models",
+      "format": "json",
+      "ui": {
+        "filename": {}
+      },
+      "fields": [
+        {
+          "type": "string",
+          "name": "brand",
+          "label": "Marque",
+          "required": true,
+          "namespace": [
+            "iphoneModels",
+            "brand"
+          ],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "string",
+          "name": "name",
+          "label": "Nom modele",
+          "required": true,
+          "namespace": [
+            "iphoneModels",
+            "name"
+          ],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "image",
+          "name": "image",
+          "label": "Image du modele",
+          "required": true,
+          "namespace": [
+            "iphoneModels",
+            "image"
+          ],
+          "searchable": false,
+          "uid": false
+        },
+        {
+          "type": "number",
+          "name": "order",
+          "label": "Ordre d affichage",
+          "namespace": [
+            "iphoneModels",
+            "order"
+          ],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "boolean",
+          "name": "active",
+          "label": "Actif",
+          "namespace": [
+            "iphoneModels",
+            "active"
+          ],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "object",
+          "name": "repairs",
+          "label": "Tarifs par reparation",
+          "list": true,
+          "ui": {},
+          "fields": [
+            {
+              "type": "string",
+              "name": "serviceKey",
+              "label": "Cle service",
+              "required": true,
+              "namespace": [
+                "iphoneModels",
+                "repairs",
+                "serviceKey"
+              ],
+              "searchable": true,
+              "uid": false
+            },
+            {
+              "type": "number",
+              "name": "price",
+              "label": "Prix EUR",
+              "required": true,
+              "namespace": [
+                "iphoneModels",
+                "repairs",
+                "price"
+              ],
+              "searchable": true,
+              "uid": false
+            }
+          ],
+          "namespace": [
+            "iphoneModels",
+            "repairs"
+          ],
+          "searchable": true,
+          "uid": false
+        }
+      ],
+      "namespace": [
+        "iphoneModels"
+      ]
+    },
+    {
+      "name": "articles",
+      "label": "Articles",
+      "path": "content/articles",
+      "format": "json",
+      "ui": {
+        "filename": {}
+      },
+      "fields": [
+        {
+          "type": "string",
+          "name": "slug",
+          "label": "Slug",
+          "required": true,
+          "namespace": [
+            "articles",
+            "slug"
+          ],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "string",
+          "name": "title",
+          "label": "Titre",
+          "required": true,
+          "namespace": [
+            "articles",
+            "title"
+          ],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "string",
+          "name": "excerpt",
+          "label": "Extrait",
+          "required": true,
+          "ui": {
+            "component": "textarea"
+          },
+          "namespace": [
+            "articles",
+            "excerpt"
+          ],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "string",
+          "name": "category",
+          "label": "Categorie",
+          "required": true,
+          "namespace": [
+            "articles",
+            "category"
+          ],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "string",
+          "name": "author",
+          "label": "Auteur",
+          "required": true,
+          "namespace": [
+            "articles",
+            "author"
+          ],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "datetime",
+          "name": "publishedAt",
+          "label": "Date de publication",
+          "required": true,
+          "namespace": [
+            "articles",
+            "publishedAt"
+          ],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "string",
+          "name": "readingTime",
+          "label": "Temps de lecture",
+          "required": true,
+          "namespace": [
+            "articles",
+            "readingTime"
+          ],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "boolean",
+          "name": "featured",
+          "label": "Mettre en avant",
+          "namespace": [
+            "articles",
+            "featured"
+          ],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "image",
+          "name": "coverImage",
+          "label": "Image de couverture",
+          "required": true,
+          "namespace": [
+            "articles",
+            "coverImage"
+          ],
+          "searchable": false,
+          "uid": false
+        },
+        {
+          "type": "string",
+          "name": "coverAlt",
+          "label": "Texte alternatif",
+          "required": true,
+          "namespace": [
+            "articles",
+            "coverAlt"
+          ],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "object",
+          "name": "sections",
+          "label": "Sections",
+          "list": true,
+          "ui": {},
+          "fields": [
+            {
+              "type": "string",
+              "name": "title",
+              "label": "Titre de section",
+              "required": true,
+              "namespace": [
+                "articles",
+                "sections",
+                "title"
+              ],
+              "searchable": true,
+              "uid": false
+            },
+            {
+              "type": "string",
+              "name": "paragraphs",
+              "label": "Paragraphes",
+              "list": true,
+              "required": true,
+              "ui": {
+                "component": "textarea"
+              },
+              "namespace": [
+                "articles",
+                "sections",
+                "paragraphs"
+              ],
+              "searchable": true,
+              "uid": false
+            },
+            {
+              "type": "image",
+              "name": "image",
+              "label": "Image optionnelle",
+              "namespace": [
+                "articles",
+                "sections",
+                "image"
+              ],
+              "searchable": false,
+              "uid": false
+            },
+            {
+              "type": "string",
+              "name": "imageAlt",
+              "label": "Alt image",
+              "namespace": [
+                "articles",
+                "sections",
+                "imageAlt"
+              ],
+              "searchable": true,
+              "uid": false
+            }
+          ],
+          "namespace": [
+            "articles",
+            "sections"
+          ],
+          "searchable": true,
+          "uid": false
+        },
+        {
+          "type": "string",
+          "name": "relatedSlugs",
+          "label": "Slugs lies",
+          "list": true,
+          "namespace": [
+            "articles",
+            "relatedSlugs"
+          ],
+          "searchable": true,
+          "uid": false
+        }
+      ],
+      "namespace": [
+        "articles"
+      ]
+    }
+  ],
+  "config": {
+    "media": {
+      "tina": {
+        "publicFolder": "public",
+        "mediaRoot": "uploads"
+      }
+    }
+  }
+}

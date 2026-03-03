@@ -7,8 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "tina:dev": "node scripts/run-tina.mjs dev -c \"vite\"",
-    "tina:build": "node scripts/run-tina.mjs build && vite build"
+    "tina:sync": "node scripts/sync-tina-generated.mjs",
+    "tina:dev": "npm run tina:sync && node scripts/run-tina.mjs dev -c \"vite\"",
+    "tina:build": "npm run tina:sync && node scripts/run-tina.mjs build && vite build"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",

@@ -1,1 +1,57 @@
-{"DocumentConnection":{"type":"DocumentConnection","resolveType":"multiCollectionDocumentList","collections":["articles"]},"Node":{"type":"Node","resolveType":"nodeDocument"},"DocumentNode":{"type":"DocumentNode","resolveType":"multiCollectionDocument","createDocument":"create","updateDocument":"update"},"Articles":{"type":"Articles","resolveType":"collectionDocument","collection":"articles","createArticles":"create","updateArticles":"update"},"ArticlesConnection":{"type":"ArticlesConnection","resolveType":"collectionDocumentList","collection":"articles"}}
+{
+  "DocumentConnection": {
+    "type": "DocumentConnection",
+    "resolveType": "multiCollectionDocumentList",
+    "collections": [
+      "repairServices",
+      "iphoneModels",
+      "articles"
+    ]
+  },
+  "Node": {
+    "type": "Node",
+    "resolveType": "nodeDocument"
+  },
+  "DocumentNode": {
+    "type": "DocumentNode",
+    "resolveType": "multiCollectionDocument",
+    "createDocument": "create",
+    "updateDocument": "update"
+  },
+  "RepairServices": {
+    "type": "RepairServices",
+    "resolveType": "collectionDocument",
+    "collection": "repairServices",
+    "createRepairServices": "create",
+    "updateRepairServices": "update"
+  },
+  "RepairServicesConnection": {
+    "type": "RepairServicesConnection",
+    "resolveType": "collectionDocumentList",
+    "collection": "repairServices"
+  },
+  "IphoneModels": {
+    "type": "IphoneModels",
+    "resolveType": "collectionDocument",
+    "collection": "iphoneModels",
+    "createIphoneModels": "create",
+    "updateIphoneModels": "update"
+  },
+  "IphoneModelsConnection": {
+    "type": "IphoneModelsConnection",
+    "resolveType": "collectionDocumentList",
+    "collection": "iphoneModels"
+  },
+  "Articles": {
+    "type": "Articles",
+    "resolveType": "collectionDocument",
+    "collection": "articles",
+    "createArticles": "create",
+    "updateArticles": "update"
+  },
+  "ArticlesConnection": {
+    "type": "ArticlesConnection",
+    "resolveType": "collectionDocumentList",
+    "collection": "articles"
+  }
+}
