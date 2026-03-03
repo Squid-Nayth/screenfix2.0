@@ -1,0 +1,8 @@
+{
+  "key": "back",
+  "label": "Vitre Arrière",
+  "description": "Le dos du téléphone est brisé",
+  "order": 30,
+  "recommended": false,
+  "active": true
+}

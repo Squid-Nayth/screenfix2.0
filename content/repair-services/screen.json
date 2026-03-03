@@ -1,0 +1,8 @@
+{
+  "key": "screen",
+  "label": "Écran Original Reconditionné",
+  "description": "Écran noir, lignes vertes ou tâches",
+  "order": 20,
+  "recommended": false,
+  "active": true
+}

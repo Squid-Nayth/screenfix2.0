@@ -1,0 +1,33 @@
+{
+  "brand": "Apple",
+  "name": "iPhone XS Max",
+  "image": "/iphones/iphone-X.png",
+  "order": 300,
+  "active": true,
+  "repairs": [
+    {
+      "serviceKey": "recond",
+      "price": 60
+    },
+    {
+      "serviceKey": "screen",
+      "price": 100
+    },
+    {
+      "serviceKey": "back",
+      "price": 65
+    },
+    {
+      "serviceKey": "battery",
+      "price": 60
+    },
+    {
+      "serviceKey": "camera",
+      "price": 90
+    },
+    {
+      "serviceKey": "charge",
+      "price": 70
+    }
+  ]
+}

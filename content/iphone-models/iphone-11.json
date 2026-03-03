@@ -1,0 +1,33 @@
+{
+  "brand": "Apple",
+  "name": "iPhone 11",
+  "image": "/iphones/iphone13_12_11.png",
+  "order": 250,
+  "active": true,
+  "repairs": [
+    {
+      "serviceKey": "recond",
+      "price": 50
+    },
+    {
+      "serviceKey": "screen",
+      "price": 75
+    },
+    {
+      "serviceKey": "back",
+      "price": 65
+    },
+    {
+      "serviceKey": "battery",
+      "price": 55
+    },
+    {
+      "serviceKey": "camera",
+      "price": 89
+    },
+    {
+      "serviceKey": "charge",
+      "price": 65
+    }
+  ]
+}

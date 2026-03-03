@@ -1,0 +1,33 @@
+{
+  "brand": "Apple",
+  "name": "iPhone 16 Plus",
+  "image": "/iphones/Iphone-15.png",
+  "order": 60,
+  "active": true,
+  "repairs": [
+    {
+      "serviceKey": "recond",
+      "price": 150
+    },
+    {
+      "serviceKey": "screen",
+      "price": 330
+    },
+    {
+      "serviceKey": "back",
+      "price": 150
+    },
+    {
+      "serviceKey": "battery",
+      "price": 95
+    },
+    {
+      "serviceKey": "camera",
+      "price": 145
+    },
+    {
+      "serviceKey": "charge",
+      "price": 130
+    }
+  ]
+}

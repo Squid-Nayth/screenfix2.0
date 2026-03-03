@@ -8,7 +8,6 @@ import {
   isCalendarBookingConfigured
 } from '../lib/calendarBooking';
 import { submitHiddenGoogleForm } from '../lib/googleForms';
-import { fetchSheetPriceMap, normalizeModelKey } from '../lib/sheetPrices';
 import { InternationalPhoneInput } from './ui/InternationalPhoneInput';
 import { useI18n } from '../lib/i18n';
 import {
@@ -16,51 +15,11 @@ import {
   buildInternationalPhone,
   isInternationalPhoneValid
 } from '../lib/phoneUtils';
-
-// --- DATABASE PRICES (Based on OCR) ---
-const SERVICES = [
-  { id: 'recond', label: 'Reconditionnement Écran', key: 'recond', desc: "Vitre fissurée mais l'image est intacte" },
-  { id: 'screen', label: 'Écran Original Reconditionné', key: 'screen', desc: 'Écran noir, lignes vertes ou tâches' },
-  { id: 'back', label: 'Vitre Arrière', key: 'back', desc: 'Le dos du téléphone est brisé' },
-  { id: 'battery', label: 'Batterie', key: 'battery', desc: "L'autonomie est faible" },
-  { id: 'camera', label: 'Appareil Photo', key: 'camera', desc: 'Photos floues ou caméra noire' },
-  { id: 'charge', label: 'Connecteur de Charge', key: 'charge', desc: 'Le téléphone ne charge plus' },
-];
-
-const MODELS = [
-  { name: 'iPhone 17', recond: 170, screen: 335, back: 150, battery: 90, camera: 145, charge: 140 },
-  { name: 'iPhone 17 Air', recond: 170, screen: 335, back: 150, battery: 95, camera: 145, charge: 150 },
-  { name: 'iPhone 17 Pro', recond: 190, screen: 435, back: 150, battery: 95, camera: 175, charge: 160 },
-  { name: 'iPhone 17 Pro Max', recond: 190, screen: 445, back: 150, battery: 95, camera: 175, charge: 160 },
-  { name: 'iPhone 16', recond: 140, screen: 280, back: 150, battery: 85, camera: 145, charge: 120 },
-  { name: 'iPhone 16 Plus', recond: 150, screen: 330, back: 150, battery: 95, camera: 145, charge: 130 },
-  { name: 'iPhone 16 Pro', recond: 160, screen: 350, back: 150, battery: 95, camera: 165, charge: 130 },
-  { name: 'iPhone 16 Pro Max', recond: 170, screen: 380, back: 150, battery: 95, camera: 165, charge: 130 },
-  { name: 'iPhone 15', recond: 100, screen: 225, back: 130, battery: 75, camera: 135, charge: 100 },
-  { name: 'iPhone 15 Plus', recond: 115, screen: 275, back: 150, battery: 85, camera: 135, charge: 100 },
-  { name: 'iPhone 15 Pro', recond: 160, screen: 295, back: 150, battery: 85, camera: 155, charge: 120 },
-  { name: 'iPhone 15 Pro Max', recond: 170, screen: 335, back: 150, battery: 95, camera: 155, charge: 130 },
-  { name: 'iPhone 14', recond: 90, screen: 195, back: 125, battery: 75, camera: 129, charge: 85 },
-  { name: 'iPhone 14 Plus', recond: 100, screen: 215, back: 125, battery: 85, camera: 135, charge: 95 },
-  { name: 'iPhone 14 Pro', recond: 130, screen: 245, back: 95, battery: 85, camera: 150, charge: 95 },
-  { name: 'iPhone 14 Pro Max', recond: 150, screen: 265, back: 95, battery: 85, camera: 150, charge: 95 },
-  { name: 'iPhone 13', recond: 80, screen: 125, back: 75, battery: 65, camera: 119, charge: 75 },
-  { name: 'iPhone 13 Mini', recond: 80, screen: 135, back: 75, battery: 65, camera: 110, charge: 75 },
-  { name: 'iPhone 13 Pro', recond: 95, screen: 175, back: 85, battery: 75, camera: 130, charge: 85 },
-  { name: 'iPhone 13 Pro Max', recond: 100, screen: 185, back: 85, battery: 85, camera: 140, charge: 85 },
-  { name: 'iPhone 12', recond: 50, screen: 115, back: 75, battery: 65, camera: 99, charge: 75 },
-  { name: 'iPhone 12 Mini', recond: 50, screen: 115, back: 75, battery: 65, camera: 90, charge: 75 },
-  { name: 'iPhone 12 Pro', recond: 50, screen: 115, back: 75, battery: 65, camera: 105, charge: 75 },
-  { name: 'iPhone 12 Pro Max', recond: 80, screen: 165, back: 85, battery: 75, camera: 120, charge: 75 },
-  { name: 'iPhone 11', recond: 50, screen: 75, back: 65, battery: 55, camera: 89, charge: 65 },
-  { name: 'iPhone 11 Pro', recond: 50, screen: 100, back: 65, battery: 55, camera: 95, charge: 70 },
-  { name: 'iPhone 11 Pro Max', recond: 70, screen: 110, back: 65, battery: 65, camera: 100, charge: 75 },
-  { name: 'iPhone X', recond: 50, screen: 85, back: 65, battery: 45, camera: 80, charge: 60 },
-  { name: 'iPhone XS', recond: 50, screen: 85, back: 65, battery: 45, camera: 85, charge: 65 },
-  { name: 'iPhone XS Max', recond: 60, screen: 100, back: 65, battery: 60, camera: 90, charge: 70 },
-  { name: 'iPhone XR', recond: 50, screen: 75, back: 65, battery: 45, camera: 75, charge: 55 },
-  { name: 'iPhone SE 2022', recond: 50, screen: 65, back: 65, battery: 45, camera: 70, charge: 50 },
-];
+import {
+  getActiveIphoneModels,
+  getActiveRepairServices,
+  getIphoneModelByName
+} from '../lib/repairCatalog';
 
 const BOOKING_GOOGLE_FORM_CONFIG = {
   formResponseUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSdaw7x71mbw1gNAy5imLo_BTJkXuVUvt9p8uwKLP-KM6bzm1w/formResponse',
@@ -99,11 +58,12 @@ const getIphoneImage = (modelName: string): string => {
 };
 
 export const BookingWizard: React.FC = () => {
-  const { t, raw, dateLocale } = useI18n();
+  const { t, dateLocale } = useI18n();
   const [step, setStep] = useState(1);
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
   const [phoneCountryIso, setPhoneCountryIso] = useState(DEFAULT_PHONE_COUNTRY);
-  const bookingServices = raw<typeof SERVICES>('booking.services', SERVICES);
+  const bookingServices = useMemo(() => getActiveRepairServices(), []);
+  const iphoneModels = useMemo(() => getActiveIphoneModels(), []);
   
   // Multi-select state
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
@@ -118,7 +78,6 @@ export const BookingWizard: React.FC = () => {
   const [contact, setContact] = useState({ name: '', email: '', phone: '' });
   const [errors, setErrors] = useState({ email: false, phone: false });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [sheetModelPrices, setSheetModelPrices] = useState<Record<string, number>>({});
 
   // Track first render to avoid auto-scroll on page load
   const isFirstRender = React.useRef(true);
@@ -139,16 +98,10 @@ export const BookingWizard: React.FC = () => {
   }, []);
 
   // Helpers
-  const currentModelData = MODELS.find(m => m.name === selectedModel);
+  const currentModelData = getIphoneModelByName(selectedModel);
   const getPrice = (serviceKey: string) => {
     if (!currentModelData) return 0;
-    // Remote Google Sheet prices override the "screen" service for each model.
-    if (serviceKey === 'screen') {
-      const remotePrice = sheetModelPrices[normalizeModelKey(currentModelData.name)];
-      if (typeof remotePrice === 'number') return remotePrice;
-    }
-    // @ts-ignore - dynamic key access
-    return currentModelData[serviceKey] || 0;
+    return currentModelData.priceMap[serviceKey] || 0;
   };
 
   // Pricing Logic with Multi-Select Discounts
@@ -157,7 +110,7 @@ export const BookingWizard: React.FC = () => {
     
     let baseTotal = 0;
     selectedServices.forEach(id => {
-      const service = SERVICES.find(s => s.id === id);
+      const service = bookingServices.find(s => s.id === id);
       if (service) {
         baseTotal += getPrice(service.key);
       }
@@ -179,7 +132,7 @@ export const BookingWizard: React.FC = () => {
       final: finalPrice,
       percent: discountPercent * 100
     };
-  }, [selectedServices, isOther, currentModelData]);
+  }, [bookingServices, selectedServices, isOther, currentModelData]);
 
   const toggleService = (id: string) => {
     if (isOther) {
@@ -381,27 +334,6 @@ export const BookingWizard: React.FC = () => {
     (window as any).navigateToSection?.('booking-card');
   }, [step]);
 
-  React.useEffect(() => {
-    let cancelled = false;
-
-    const loadPrices = async () => {
-      const map = await fetchSheetPriceMap();
-      if (!cancelled && Object.keys(map).length > 0) {
-        setSheetModelPrices(map);
-      }
-    };
-
-    void loadPrices();
-    const intervalId = window.setInterval(() => {
-      void loadPrices();
-    }, 60000);
-
-    return () => {
-      cancelled = true;
-      window.clearInterval(intervalId);
-    };
-  }, []);
-
   return (
     <div data-anim-stagger className="w-full max-w-5xl mx-auto relative z-20">
       
@@ -477,14 +409,14 @@ export const BookingWizard: React.FC = () => {
               {t('booking.modelQuestion')}
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4 max-h-[340px] sm:max-h-[400px] overflow-y-auto pr-1 sm:pr-2 custom-scrollbar">
-              {MODELS.map((m) => (
+              {iphoneModels.map((m) => (
                 <button
                   key={m.name}
                   onClick={() => { setSelectedModel(m.name); setStep(2); }}
                   className="p-3 sm:p-4 rounded-2xl border bg-white border-slate-100 hover:border-blue-500 hover:bg-blue-50 hover:shadow-md transition-all text-[13px] sm:text-sm md:text-base font-bold text-slate-700 hover:text-blue-700 flex flex-col items-center gap-2"
                 >
                   <img 
-                    src={getIphoneImage(m.name)} 
+                    src={m.image || getIphoneImage(m.name)} 
                     alt={m.name} 
                     className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 object-contain"
                   />
@@ -514,7 +446,7 @@ export const BookingWizard: React.FC = () => {
                 const price = getPrice(s.key);
                 const isSelected = selectedServices.includes(s.id);
                 // HIGHLIGHT LOGIC: Identify if it is the service to highlight
-                const isRecommended = s.id === 'recond';
+                const isRecommended = s.recommended;
 
                 return (
                   <button

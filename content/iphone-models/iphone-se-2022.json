@@ -1,0 +1,33 @@
+{
+  "brand": "Apple",
+  "name": "iPhone SE 2022",
+  "image": "/iphones/iphone-SE-2022.png",
+  "order": 320,
+  "active": true,
+  "repairs": [
+    {
+      "serviceKey": "recond",
+      "price": 50
+    },
+    {
+      "serviceKey": "screen",
+      "price": 65
+    },
+    {
+      "serviceKey": "back",
+      "price": 65
+    },
+    {
+      "serviceKey": "battery",
+      "price": 45
+    },
+    {
+      "serviceKey": "camera",
+      "price": 70
+    },
+    {
+      "serviceKey": "charge",
+      "price": 50
+    }
+  ]
+}

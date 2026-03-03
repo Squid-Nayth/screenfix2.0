@@ -1,0 +1,33 @@
+{
+  "brand": "Apple",
+  "name": "iPhone 14 Pro Max",
+  "image": "/iphones/Iphone-15.png",
+  "order": 160,
+  "active": true,
+  "repairs": [
+    {
+      "serviceKey": "recond",
+      "price": 150
+    },
+    {
+      "serviceKey": "screen",
+      "price": 265
+    },
+    {
+      "serviceKey": "back",
+      "price": 95
+    },
+    {
+      "serviceKey": "battery",
+      "price": 85
+    },
+    {
+      "serviceKey": "camera",
+      "price": 150
+    },
+    {
+      "serviceKey": "charge",
+      "price": 95
+    }
+  ]
+}

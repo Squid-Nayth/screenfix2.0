@@ -1,0 +1,33 @@
+{
+  "brand": "Apple",
+  "name": "iPhone 17 Air",
+  "image": "/iphones/Iphone-15.png",
+  "order": 20,
+  "active": true,
+  "repairs": [
+    {
+      "serviceKey": "recond",
+      "price": 170
+    },
+    {
+      "serviceKey": "screen",
+      "price": 335
+    },
+    {
+      "serviceKey": "back",
+      "price": 150
+    },
+    {
+      "serviceKey": "battery",
+      "price": 95
+    },
+    {
+      "serviceKey": "camera",
+      "price": 145
+    },
+    {
+      "serviceKey": "charge",
+      "price": 150
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "key": "charge",
+  "label": "Connecteur de Charge",
+  "description": "Le téléphone ne charge plus",
+  "order": 60,
+  "recommended": false,
+  "active": true
+}

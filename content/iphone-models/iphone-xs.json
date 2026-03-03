@@ -1,0 +1,33 @@
+{
+  "brand": "Apple",
+  "name": "iPhone XS",
+  "image": "/iphones/iphone-X.png",
+  "order": 290,
+  "active": true,
+  "repairs": [
+    {
+      "serviceKey": "recond",
+      "price": 50
+    },
+    {
+      "serviceKey": "screen",
+      "price": 85
+    },
+    {
+      "serviceKey": "back",
+      "price": 65
+    },
+    {
+      "serviceKey": "battery",
+      "price": 45
+    },
+    {
+      "serviceKey": "camera",
+      "price": 85
+    },
+    {
+      "serviceKey": "charge",
+      "price": 65
+    }
+  ]
+}

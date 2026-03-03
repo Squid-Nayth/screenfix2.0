@@ -8,6 +8,14 @@ const branch =
   process.env.HEAD ||
   'main';
 
+const slugifyValue = (value: string) =>
+  String(value || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
 export default defineConfig({
   branch,
   clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID || process.env.TINA_CLIENT_ID || '',
@@ -25,19 +33,71 @@ export default defineConfig({
   schema: {
     collections: [
       {
+        name: 'repairServices',
+        label: 'Services de reparation',
+        path: 'content/repair-services',
+        format: 'json',
+        ui: {
+          filename: {
+            slugify: (values) => slugifyValue(String(values?.key || values?.label || 'service'))
+          }
+        },
+        fields: [
+          { type: 'string', name: 'key', label: 'Cle service', required: true },
+          { type: 'string', name: 'label', label: 'Nom service', required: true },
+          {
+            type: 'string',
+            name: 'description',
+            label: 'Description courte',
+            required: true,
+            ui: { component: 'textarea' }
+          },
+          { type: 'number', name: 'order', label: 'Ordre d affichage' },
+          { type: 'boolean', name: 'recommended', label: 'Service recommande' },
+          { type: 'boolean', name: 'active', label: 'Actif' }
+        ]
+      },
+      {
+        name: 'iphoneModels',
+        label: 'Modeles iPhone',
+        path: 'content/iphone-models',
+        format: 'json',
+        ui: {
+          filename: {
+            slugify: (values) => slugifyValue(String(values?.name || 'iphone-modele'))
+          }
+        },
+        fields: [
+          { type: 'string', name: 'brand', label: 'Marque', required: true },
+          { type: 'string', name: 'name', label: 'Nom modele', required: true },
+          { type: 'image', name: 'image', label: 'Image du modele', required: true },
+          { type: 'number', name: 'order', label: 'Ordre d affichage' },
+          { type: 'boolean', name: 'active', label: 'Actif' },
+          {
+            type: 'object',
+            name: 'repairs',
+            label: 'Tarifs par reparation',
+            list: true,
+            ui: {
+              itemProps: (item) => ({
+                label: item?.serviceKey ? `${item.serviceKey} - ${item.price ?? ''}EUR` : 'Tarif'
+              })
+            },
+            fields: [
+              { type: 'string', name: 'serviceKey', label: 'Cle service', required: true },
+              { type: 'number', name: 'price', label: 'Prix EUR', required: true }
+            ]
+          }
+        ]
+      },
+      {
         name: 'articles',
         label: 'Articles',
         path: 'content/articles',
         format: 'json',
         ui: {
           filename: {
-            slugify: (values) =>
-              String(values?.slug || values?.title || 'article')
-                .toLowerCase()
-                .normalize('NFD')
-                .replace(/[\u0300-\u036f]/g, '')
-                .replace(/[^a-z0-9]+/g, '-')
-                .replace(/^-+|-+$/g, '')
+            slugify: (values) => slugifyValue(String(values?.slug || values?.title || 'article'))
           }
         },
         fields: [

@@ -1,0 +1,8 @@
+{
+  "key": "recond",
+  "label": "Reconditionnement Écran",
+  "description": "Vitre fissurée mais l'image est intacte",
+  "order": 10,
+  "recommended": true,
+  "active": true
+}

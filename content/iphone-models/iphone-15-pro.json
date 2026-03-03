@@ -1,0 +1,33 @@
+{
+  "brand": "Apple",
+  "name": "iPhone 15 Pro",
+  "image": "/iphones/Iphone-15.png",
+  "order": 110,
+  "active": true,
+  "repairs": [
+    {
+      "serviceKey": "recond",
+      "price": 160
+    },
+    {
+      "serviceKey": "screen",
+      "price": 295
+    },
+    {
+      "serviceKey": "back",
+      "price": 150
+    },
+    {
+      "serviceKey": "battery",
+      "price": 85
+    },
+    {
+      "serviceKey": "camera",
+      "price": 155
+    },
+    {
+      "serviceKey": "charge",
+      "price": 120
+    }
+  ]
+}

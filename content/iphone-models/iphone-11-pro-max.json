@@ -1,0 +1,33 @@
+{
+  "brand": "Apple",
+  "name": "iPhone 11 Pro Max",
+  "image": "/iphones/iphone13_12_11.png",
+  "order": 270,
+  "active": true,
+  "repairs": [
+    {
+      "serviceKey": "recond",
+      "price": 70
+    },
+    {
+      "serviceKey": "screen",
+      "price": 110
+    },
+    {
+      "serviceKey": "back",
+      "price": 65
+    },
+    {
+      "serviceKey": "battery",
+      "price": 65
+    },
+    {
+      "serviceKey": "camera",
+      "price": 100
+    },
+    {
+      "serviceKey": "charge",
+      "price": 75
+    }
+  ]
+}

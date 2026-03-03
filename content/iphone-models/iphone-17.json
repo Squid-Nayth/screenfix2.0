@@ -1,0 +1,33 @@
+{
+  "brand": "Apple",
+  "name": "iPhone 17",
+  "image": "/iphones/Iphone-15.png",
+  "order": 10,
+  "active": true,
+  "repairs": [
+    {
+      "serviceKey": "recond",
+      "price": 170
+    },
+    {
+      "serviceKey": "screen",
+      "price": 335
+    },
+    {
+      "serviceKey": "back",
+      "price": 150
+    },
+    {
+      "serviceKey": "battery",
+      "price": 90
+    },
+    {
+      "serviceKey": "camera",
+      "price": 145
+    },
+    {
+      "serviceKey": "charge",
+      "price": 140
+    }
+  ]
+}

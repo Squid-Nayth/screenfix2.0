@@ -1,0 +1,33 @@
+{
+  "brand": "Apple",
+  "name": "iPhone 13 Pro",
+  "image": "/iphones/iphone13_12_11.png",
+  "order": 190,
+  "active": true,
+  "repairs": [
+    {
+      "serviceKey": "recond",
+      "price": 95
+    },
+    {
+      "serviceKey": "screen",
+      "price": 175
+    },
+    {
+      "serviceKey": "back",
+      "price": 85
+    },
+    {
+      "serviceKey": "battery",
+      "price": 75
+    },
+    {
+      "serviceKey": "camera",
+      "price": 130
+    },
+    {
+      "serviceKey": "charge",
+      "price": 85
+    }
+  ]
+}

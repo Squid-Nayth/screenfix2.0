@@ -1,0 +1,33 @@
+{
+  "brand": "Apple",
+  "name": "iPhone XR",
+  "image": "/iphones/iphone-X.png",
+  "order": 310,
+  "active": true,
+  "repairs": [
+    {
+      "serviceKey": "recond",
+      "price": 50
+    },
+    {
+      "serviceKey": "screen",
+      "price": 75
+    },
+    {
+      "serviceKey": "back",
+      "price": 65
+    },
+    {
+      "serviceKey": "battery",
+      "price": 45
+    },
+    {
+      "serviceKey": "camera",
+      "price": 75
+    },
+    {
+      "serviceKey": "charge",
+      "price": 55
+    }
+  ]
+}

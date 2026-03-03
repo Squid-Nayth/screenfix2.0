@@ -1,0 +1,33 @@
+{
+  "brand": "Apple",
+  "name": "iPhone 14",
+  "image": "/iphones/Iphone-15.png",
+  "order": 130,
+  "active": true,
+  "repairs": [
+    {
+      "serviceKey": "recond",
+      "price": 90
+    },
+    {
+      "serviceKey": "screen",
+      "price": 195
+    },
+    {
+      "serviceKey": "back",
+      "price": 125
+    },
+    {
+      "serviceKey": "battery",
+      "price": 75
+    },
+    {
+      "serviceKey": "camera",
+      "price": 129
+    },
+    {
+      "serviceKey": "charge",
+      "price": 85
+    }
+  ]
+}

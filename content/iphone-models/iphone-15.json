@@ -1,0 +1,33 @@
+{
+  "brand": "Apple",
+  "name": "iPhone 15",
+  "image": "/iphones/Iphone-15.png",
+  "order": 90,
+  "active": true,
+  "repairs": [
+    {
+      "serviceKey": "recond",
+      "price": 100
+    },
+    {
+      "serviceKey": "screen",
+      "price": 225
+    },
+    {
+      "serviceKey": "back",
+      "price": 130
+    },
+    {
+      "serviceKey": "battery",
+      "price": 75
+    },
+    {
+      "serviceKey": "camera",
+      "price": 135
+    },
+    {
+      "serviceKey": "charge",
+      "price": 100
+    }
+  ]
+}

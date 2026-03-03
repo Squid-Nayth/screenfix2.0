@@ -1,0 +1,8 @@
+{
+  "key": "camera",
+  "label": "Appareil Photo",
+  "description": "Photos floues ou caméra noire",
+  "order": 50,
+  "recommended": false,
+  "active": true
+}

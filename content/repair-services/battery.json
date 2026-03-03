@@ -1,0 +1,8 @@
+{
+  "key": "battery",
+  "label": "Batterie",
+  "description": "L'autonomie est faible",
+  "order": 40,
+  "recommended": false,
+  "active": true
+}
