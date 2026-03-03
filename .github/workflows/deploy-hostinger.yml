@@ -35,6 +35,7 @@ jobs:
       - name: Build Tina admin and website
         run: npm run tina:build
 
+      - name: Deploy dist to Hostinger
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.HOSTINGER_FTP_SERVER }}
