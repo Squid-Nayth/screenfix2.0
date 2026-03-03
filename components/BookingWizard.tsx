@@ -378,8 +378,7 @@ export const BookingWizard: React.FC = () => {
       isFirstRender.current = false;
       return;
     }
-    const element = document.getElementById('booking-card');
-    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    (window as any).navigateToSection?.('booking-card');
   }, [step]);
 
   React.useEffect(() => {
@@ -407,7 +406,7 @@ export const BookingWizard: React.FC = () => {
     <div data-anim-stagger className="w-full max-w-5xl mx-auto relative z-20">
       
       {/* Promo Banner Enhanced */}
-      <div data-anim-item className="bg-gradient-to-r from-rose-500 via-pink-600 to-rose-500 bg-[length:200%_auto] animate-gradient text-white p-6 md:p-8 rounded-[2rem] mb-10 shadow-2xl shadow-rose-500/30 relative overflow-hidden border border-white/10">
+      <div data-anim-item className="bg-gradient-to-r from-rose-500 via-pink-600 to-rose-500 bg-[length:200%_auto] animate-gradient text-white p-4 sm:p-5 md:p-8 rounded-[1.5rem] md:rounded-[2rem] mb-6 sm:mb-8 md:mb-10 shadow-2xl shadow-rose-500/30 relative overflow-hidden border border-white/10">
          {/* Decorative Background Pattern */}
          <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
          <div className="absolute bottom-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 pointer-events-none"></div>
@@ -454,7 +453,7 @@ export const BookingWizard: React.FC = () => {
       </div>
 
       {/* Progress Bar */}
-      <div data-anim-item className="mb-8 md:mb-12 px-6 max-w-3xl mx-auto">
+      <div data-anim-item className="mb-6 md:mb-12 px-2 sm:px-4 md:px-6 max-w-3xl mx-auto">
         <div className="flex justify-between text-[12px] md:text-[14px] font-semibold text-gray-400 mb-4 tracking-wide uppercase">
           <span className={step >= 1 ? 'text-blue-600' : ''}>{t('booking.progressModel')}</span>
           <span className={step >= 2 ? 'text-blue-600' : ''}>{t('booking.progressIssue')}</span>
@@ -469,25 +468,25 @@ export const BookingWizard: React.FC = () => {
       </div>
 
       {/* Main Card */}
-      <div data-anim-item id="booking-card" className="bg-white/80 backdrop-blur-xl border border-white/60 rounded-2xl md:rounded-[3rem] p-5 sm:p-6 md:p-12 shadow-2xl relative overflow-hidden min-h-[500px]">
+      <div data-anim-item id="booking-card" className="bg-white/80 backdrop-blur-xl border border-white/60 rounded-2xl md:rounded-[3rem] p-4 sm:p-5 md:p-12 shadow-2xl relative overflow-hidden min-h-[440px] md:min-h-[500px]">
         
         {/* Step 1: Select Model */}
         {step === 1 && (
           <div className="animate-fade-in">
-            <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-slate-900 mb-6 md:mb-8 text-center tracking-tight">
+            <h2 className="text-[1.65rem] sm:text-3xl md:text-5xl font-bold text-slate-900 mb-5 md:mb-8 text-center tracking-tight leading-tight">
               {t('booking.modelQuestion')}
             </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4 max-h-[340px] sm:max-h-[400px] overflow-y-auto pr-1 sm:pr-2 custom-scrollbar">
               {MODELS.map((m) => (
                 <button
                   key={m.name}
                   onClick={() => { setSelectedModel(m.name); setStep(2); }}
-                  className="p-4 rounded-2xl border bg-white border-slate-100 hover:border-blue-500 hover:bg-blue-50 hover:shadow-md transition-all text-sm md:text-base font-bold text-slate-700 hover:text-blue-700 flex flex-col items-center gap-2"
+                  className="p-3 sm:p-4 rounded-2xl border bg-white border-slate-100 hover:border-blue-500 hover:bg-blue-50 hover:shadow-md transition-all text-[13px] sm:text-sm md:text-base font-bold text-slate-700 hover:text-blue-700 flex flex-col items-center gap-2"
                 >
                   <img 
                     src={getIphoneImage(m.name)} 
                     alt={m.name} 
-                    className="w-8 h-8 md:w-10 md:h-10 object-contain"
+                    className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 object-contain"
                   />
                   <span className="text-center">{m.name}</span>
                 </button>
@@ -501,16 +500,16 @@ export const BookingWizard: React.FC = () => {
 
         {/* Step 2: Select Service */}
         {step === 2 && (
-          <div className="animate-fade-in pb-20"> {/* Added padding bottom for fixed price bar on mobile if needed, or just space */}
-            <div className="flex items-center gap-2 mb-8 justify-center">
-                <span className="px-4 py-1 bg-slate-100 rounded-full text-xs font-bold text-slate-500 uppercase tracking-wide">{selectedModel}</span>
+          <div className="animate-fade-in pb-12 sm:pb-16 md:pb-20">
+            <div className="flex items-center gap-2 mb-6 sm:mb-8 justify-center">
+                <span className="px-4 py-1 bg-slate-100 rounded-full text-[11px] sm:text-xs font-bold text-slate-500 uppercase tracking-wide">{selectedModel}</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-2 text-center tracking-tight">
+            <h2 className="text-[1.65rem] sm:text-3xl md:text-4xl font-bold text-slate-900 mb-2 text-center tracking-tight leading-tight">
               {t('booking.issueQuestion')}
             </h2>
             <p className="text-center text-slate-400 mb-6 md:mb-8 text-xs sm:text-sm">{t('booking.issueHint')}</p>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
               {bookingServices.map((s) => {
                 const price = getPrice(s.key);
                 const isSelected = selectedServices.includes(s.id);
@@ -521,7 +520,7 @@ export const BookingWizard: React.FC = () => {
                   <button
                     key={s.id}
                     onClick={() => toggleService(s.id)}
-                    className={`p-6 rounded-2xl border flex items-center justify-between group transition-all relative overflow-hidden ${
+                    className={`p-4 sm:p-5 md:p-6 rounded-2xl border flex items-center justify-between group transition-all relative overflow-hidden ${
                         isSelected
                         ? 'bg-slate-900 border-slate-900 text-white shadow-xl'
                         : isRecommended 
@@ -541,11 +540,11 @@ export const BookingWizard: React.FC = () => {
                             {isSelected ? <Check size={14} className="text-white" /> : (isRecommended && <div className="w-2 h-2 bg-blue-500 rounded-full"></div>)}
                         </div>
                         <div className="flex flex-col items-start text-left">
-                           <span className={`font-bold text-lg leading-tight ${isSelected ? 'text-white' : 'text-slate-800'}`}>{s.label}</span>
+                           <span className={`font-bold text-base sm:text-lg leading-tight ${isSelected ? 'text-white' : 'text-slate-800'}`}>{s.label}</span>
                            <span className={`text-xs font-medium mt-1 ${isSelected ? 'text-blue-200' : 'text-slate-400'}`}>{s.desc}</span>
                         </div>
                     </div>
-                    <span className={`font-bold text-xl ${isSelected ? 'text-blue-400' : 'text-blue-600'}`}>{price}€</span>
+                    <span className={`font-bold text-lg sm:text-xl ${isSelected ? 'text-blue-400' : 'text-blue-600'}`}>{price}€</span>
                   </button>
                 )
               })}
@@ -553,7 +552,7 @@ export const BookingWizard: React.FC = () => {
               {/* Option Autre */}
               <button
                 onClick={selectOther}
-                className={`p-6 rounded-2xl border flex flex-col items-start justify-center group transition-all md:col-span-2 ${
+                className={`p-4 sm:p-5 md:p-6 rounded-2xl border flex flex-col items-start justify-center group transition-all md:col-span-2 ${
                     isOther
                     ? 'bg-slate-900 border-slate-900 text-white shadow-xl'
                     : 'bg-white border-slate-100 hover:border-blue-300 hover:bg-blue-50/50'
@@ -565,12 +564,12 @@ export const BookingWizard: React.FC = () => {
                             {isOther && <Check size={14} className="text-white" />}
                         </div>
                         <div className="flex flex-col items-start text-left">
-                            <span className={`font-bold text-lg ${isOther ? 'text-white' : 'text-slate-800'}`}>{t('booking.otherProblem')}</span>
+                            <span className={`font-bold text-base sm:text-lg ${isOther ? 'text-white' : 'text-slate-800'}`}>{t('booking.otherProblem')}</span>
                              <span className={`text-xs font-medium mt-1 ${isOther ? 'text-blue-200' : 'text-slate-400'}`}>{t('booking.otherSubtitle')}</span>
                         </div>
                     </div>
                     <div className="flex flex-col items-end">
-                        <span className={`font-bold text-xl ${isOther ? 'text-blue-400' : 'text-blue-600'}`}>35€</span>
+                        <span className={`font-bold text-lg sm:text-xl ${isOther ? 'text-blue-400' : 'text-blue-600'}`}>35€</span>
                         <span className={`text-xs font-medium ${isOther ? 'text-gray-300' : 'text-gray-400'}`}>{t('booking.quote')}</span>
                     </div>
                  </div>
@@ -590,7 +589,7 @@ export const BookingWizard: React.FC = () => {
 
             {/* Price Summary Live Update */}
             {!isOther && selectedServices.length > 0 && (
-                <div className="mt-8 bg-blue-50 border border-blue-100 rounded-2xl p-6 flex flex-col sm:flex-row justify-between items-center animate-fade-in">
+                <div className="mt-6 sm:mt-8 bg-blue-50 border border-blue-100 rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row justify-between items-center animate-fade-in">
                     <div className="flex items-center gap-3 mb-4 sm:mb-0">
                         <div className="bg-blue-600 text-white p-2 rounded-lg">
                             <Tag size={20} />
@@ -605,7 +604,7 @@ export const BookingWizard: React.FC = () => {
                     </div>
                     <div className="text-center sm:text-right">
                         <p className="text-slate-500 text-sm font-medium">{t('booking.totalEstimated')}</p>
-                        <p className="text-3xl font-bold text-blue-700">{pricingSummary.final}€</p>
+                        <p className="text-2xl sm:text-3xl font-bold text-blue-700">{pricingSummary.final}€</p>
                     </div>
                 </div>
             )}
@@ -614,11 +613,11 @@ export const BookingWizard: React.FC = () => {
 
         {/* Step 3: Schedule & Contact */}
         {step === 3 && (
-          <div className="animate-fade-in grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="animate-fade-in grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
             
             {/* Left: Scheduling */}
             <div>
-                 <h3 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+                 <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-5 sm:mb-6 flex items-center gap-2">
                     <Calendar className="w-6 h-6 text-blue-600" />
                     {t('booking.scheduleTitle')}
                  </h3>
@@ -632,7 +631,7 @@ export const BookingWizard: React.FC = () => {
                                 <button
                                     key={i}
                                     onClick={() => setSelectedDate(d.toDateString())}
-                                    className={`min-w-[80px] p-3 rounded-2xl border flex flex-col items-center justify-center transition-all ${
+                                    className={`min-w-[74px] sm:min-w-[80px] p-2.5 sm:p-3 rounded-2xl border flex flex-col items-center justify-center transition-all ${
                                         isSelected ? 'bg-blue-600 text-white border-blue-600 shadow-lg' : 'bg-white border-slate-200 text-slate-600 hover:border-blue-400'
                                     }`}
                                 >
@@ -664,7 +663,7 @@ export const BookingWizard: React.FC = () => {
                  )}
 
                  {/* Order Summary Recap */}
-                 <div className="mt-8 bg-slate-50 rounded-2xl p-6 border border-slate-100">
+                 <div className="mt-6 sm:mt-8 bg-slate-50 rounded-2xl p-4 sm:p-6 border border-slate-100">
                     <h4 className="font-bold text-slate-900 mb-4">{t('booking.summary')}</h4>
                     <ul className="space-y-2 mb-4">
                         {isOther ? (
@@ -695,7 +694,7 @@ export const BookingWizard: React.FC = () => {
 
             {/* Right: Contact Form */}
             <div className={`transition-opacity duration-500 ${selectedDate && selectedTime ? 'opacity-100' : 'opacity-50 pointer-events-none'}`}>
-                <h3 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+                <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-5 sm:mb-6 flex items-center gap-2">
                     <Smartphone className="w-6 h-6 text-blue-600" />
                     {t('booking.contactTitle')}
                  </h3>
@@ -708,7 +707,7 @@ export const BookingWizard: React.FC = () => {
                             value={contact.name}
                             onChange={(e) => setContact({...contact, name: e.target.value})}
                             placeholder={t('booking.namePlaceholder')}
-                            className="w-full p-4 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all font-medium"
+                            className="w-full p-3.5 sm:p-4 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all font-medium"
                         />
                     </div>
                     
@@ -722,7 +721,7 @@ export const BookingWizard: React.FC = () => {
                                 if (errors.email) setErrors({...errors, email: false});
                             }}
                             placeholder={t('booking.emailPlaceholder')}
-                            className={`w-full p-4 rounded-xl bg-slate-50 border focus:bg-white outline-none transition-all font-medium ${
+                            className={`w-full p-3.5 sm:p-4 rounded-xl bg-slate-50 border focus:bg-white outline-none transition-all font-medium ${
                                 errors.email ? 'border-red-400 focus:border-red-500 bg-red-50' : 'border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10'
                             }`}
                         />
@@ -748,7 +747,7 @@ export const BookingWizard: React.FC = () => {
                  </div>
                  
                  {/* Privacy Policy Notice */}
-                 <div className="mt-6 p-4 bg-blue-50/50 border border-blue-100 rounded-xl">
+                 <div className="mt-5 sm:mt-6 p-3.5 sm:p-4 bg-blue-50/50 border border-blue-100 rounded-xl">
                     <p className="text-xs text-slate-600 text-center">
                         {t('booking.privacyPrefix')}{' '}
                         <button 
@@ -765,12 +764,12 @@ export const BookingWizard: React.FC = () => {
 
         {/* Step 4: Success */}
         {step === 4 && (
-             <div className="text-center py-10 animate-fade-in max-w-lg mx-auto">
-                <div className="w-24 h-24 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-10 shadow-2xl shadow-green-500/30 animate-bounce-slow">
-                    <Check className="w-12 h-12 text-white" />
+             <div className="text-center py-8 sm:py-10 animate-fade-in max-w-lg mx-auto">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-8 sm:mb-10 shadow-2xl shadow-green-500/30 animate-bounce-slow">
+                    <Check className="w-10 h-10 sm:w-12 sm:h-12 text-white" />
                 </div>
-                <h2 className="text-4xl font-bold text-slate-900 mb-4 tracking-tight">{t('booking.successThanks')}, {contact.name.split(' ')[0]} !</h2>
-                <p className="text-slate-600 mb-6 text-lg font-normal">
+                <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4 tracking-tight">{t('booking.successThanks')}, {contact.name.split(' ')[0]} !</h2>
+                <p className="text-slate-600 mb-6 text-base sm:text-lg font-normal">
                     {t('booking.successConfirmed')} <span className="text-slate-900 font-bold">{selectedModel}</span> {t('booking.successConfirmed2')} <br/>
                     <span className="text-blue-600 font-bold text-xl">{selectedDate && new Date(selectedDate).toLocaleDateString(dateLocale, {day: 'numeric', month: 'long'})} {t('booking.hour').toLowerCase()} {selectedTime}</span>.
                 </p>
@@ -802,11 +801,11 @@ export const BookingWizard: React.FC = () => {
 
         {/* Navigation Buttons */}
         {step < 4 && (
-             <div className="mt-12 flex justify-between items-center pt-8 border-t border-slate-100">
+             <div className="mt-8 sm:mt-12 flex justify-between items-center pt-6 sm:pt-8 border-t border-slate-100 gap-3">
                 {step > 1 ? (
                     <button 
                         onClick={() => setStep(step - 1)}
-                        className="px-6 py-3 rounded-full hover:bg-slate-50 text-slate-500 font-bold text-sm transition-colors flex items-center gap-2"
+                        className="px-4 sm:px-6 py-3 rounded-full hover:bg-slate-50 text-slate-500 font-bold text-sm transition-colors flex items-center gap-2"
                     >
                         <ChevronLeft size={18} /> {t('booking.back')}
                     </button>
@@ -816,7 +815,7 @@ export const BookingWizard: React.FC = () => {
                      <button 
                      onClick={() => setStep(2)}
                      disabled={!selectedModel}
-                     className="px-8 py-4 bg-slate-900 hover:bg-black disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-full font-bold text-base shadow-lg flex items-center gap-2 transition-all"
+                     className="px-6 sm:px-8 py-3.5 sm:py-4 bg-slate-900 hover:bg-black disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-full font-bold text-sm sm:text-base shadow-lg flex items-center gap-2 transition-all"
                  >
                      {t('booking.next')} <ChevronRight size={18} />
                  </button>
@@ -826,7 +825,7 @@ export const BookingWizard: React.FC = () => {
                      <button 
                      onClick={() => setStep(3)}
                      disabled={(!isOther && selectedServices.length === 0) || (isOther && customIssue.length < 3)}
-                     className="px-8 py-4 bg-slate-900 hover:bg-black disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-full font-bold text-base shadow-lg flex items-center gap-2 transition-all"
+                     className="px-6 sm:px-8 py-3.5 sm:py-4 bg-slate-900 hover:bg-black disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-full font-bold text-sm sm:text-base shadow-lg flex items-center gap-2 transition-all"
                  >
                      {t('booking.next')} <ChevronRight size={18} />
                  </button>
@@ -836,7 +835,7 @@ export const BookingWizard: React.FC = () => {
                     <button 
                         onClick={submitToGoogleSheets}
                         disabled={!selectedDate || !selectedTime || !contact.email || !contact.phone || isSubmitting}
-                        className="px-10 py-4 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-full font-bold text-base shadow-lg shadow-blue-600/30 flex items-center gap-3 transition-all transform hover:-translate-y-1"
+                        className="px-7 sm:px-10 py-3.5 sm:py-4 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-full font-bold text-sm sm:text-base shadow-lg shadow-blue-600/30 flex items-center gap-3 transition-all transform hover:-translate-y-1"
                     >
                         {isSubmitting ? <Loader2 className="animate-spin" /> : t('booking.confirm')} 
                     </button>

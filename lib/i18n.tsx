@@ -78,7 +78,7 @@ const translations = {
       latestEyebrow: 'Le journal ScreenFix',
       latestTitle: 'Les derniers articles',
       latestDescription:
-        "Guides, conseils atelier et actualités Apple : une vraie section éditoriale pour faire vivre le site.",
+        "Guides, conseils atelier et actualités Apple par l'équipe de ScreenFix.",
       relatedEyebrow: 'À lire aussi',
       relatedTitle: 'Articles similaires',
       detailCta: 'Prendre rendez-vous'

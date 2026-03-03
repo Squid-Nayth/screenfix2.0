@@ -43,14 +43,14 @@ export const FloatingWhatsApp: React.FC = () => {
                 href="https://wa.me/33622188574"
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`fixed bottom-6 right-6 z-50 cursor-pointer group ${isNearBottom ? 'wa-btn-hidden' : 'wa-btn-visible'
+                className={`fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50 cursor-pointer group ${isNearBottom ? 'wa-btn-hidden' : 'wa-btn-visible'
                     }`}
                 aria-label="Contactez-nous sur WhatsApp"
             >
                 <img
                     src="/icones/whatsapp.png"
                     alt="WhatsApp"
-                    className="w-16 h-16 drop-shadow-lg hover:scale-110 transition-transform"
+                    className="w-14 h-14 sm:w-16 sm:h-16 drop-shadow-lg hover:scale-110 transition-transform"
                 />
                 <span className="absolute right-full mr-4 top-1/2 -translate-y-1/2 bg-white/60 backdrop-blur-md px-3 py-1 rounded-xl text-slate-900 font-bold text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none border border-white/20 shadow-sm">
                     Devis Gratuit

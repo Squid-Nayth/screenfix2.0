@@ -109,7 +109,7 @@ export const InternationalPhoneInput: React.FC<InternationalPhoneInputProps> = (
   };
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-[112px_minmax(0,1fr)] gap-3">
+    <div className="grid grid-cols-[96px_minmax(0,1fr)] sm:grid-cols-[112px_minmax(0,1fr)] gap-3">
       <div className="relative">
         <button
           ref={triggerRef}

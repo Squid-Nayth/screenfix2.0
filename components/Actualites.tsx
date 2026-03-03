@@ -111,7 +111,7 @@ export const Actualites: React.FC<ActualitesProps> = ({ selectedSlug, onOpenArti
 
   if (selectedArticle) {
     return (
-      <div data-overlay-page data-anim-section className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30 pt-24">
+      <div data-overlay-page data-anim-section className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30 pt-20 sm:pt-24">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
           <button
             onClick={() => onOpenArticle('')}
@@ -123,14 +123,14 @@ export const Actualites: React.FC<ActualitesProps> = ({ selectedSlug, onOpenArti
 
           <article className="bg-white/85 backdrop-blur-xl border border-white/60 rounded-[2.5rem] shadow-2xl overflow-hidden">
             <div className="grid lg:grid-cols-[1.15fr_0.85fr] gap-0">
-              <div className="p-8 md:p-12 lg:p-14">
+              <div className="p-5 sm:p-7 md:p-12 lg:p-14">
                 <span className="inline-flex px-4 py-2 rounded-full bg-blue-50 text-blue-700 border border-blue-100 text-sm font-bold mb-5">
                   {selectedArticle.category}
                 </span>
-                <h1 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight leading-tight mb-5">
+                <h1 className="text-[2rem] sm:text-4xl md:text-5xl font-bold text-slate-900 tracking-tight leading-tight mb-5">
                   {selectedArticle.title}
                 </h1>
-                <p className="text-lg text-slate-600 leading-relaxed mb-6">
+                <p className="text-[15px] sm:text-lg text-slate-600 leading-relaxed mb-6">
                   {selectedArticle.excerpt}
                 </p>
                 <ArticleMeta article={selectedArticle} dateLocale={dateLocale} />
@@ -163,7 +163,7 @@ export const Actualites: React.FC<ActualitesProps> = ({ selectedSlug, onOpenArti
               </div>
             </div>
 
-            <div className="px-8 md:px-12 lg:px-14 pb-12">
+            <div className="px-5 sm:px-7 md:px-12 lg:px-14 pb-10 md:pb-12">
               <div className="h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent mb-10" />
 
               <div className="space-y-12">
@@ -225,8 +225,8 @@ export const Actualites: React.FC<ActualitesProps> = ({ selectedSlug, onOpenArti
   }
 
   return (
-    <div data-overlay-page data-anim-section className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30 pt-20">
-      <div className="relative bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white py-16 overflow-hidden">
+      <div data-overlay-page data-anim-section className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30 pt-16 sm:pt-20">
+      <div className="relative bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white py-12 sm:py-16 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div
             className="absolute inset-0"
@@ -243,15 +243,15 @@ export const Actualites: React.FC<ActualitesProps> = ({ selectedSlug, onOpenArti
               {t('actualites.title')}
             </span>
           </div>
-          <p className="text-center text-lg text-blue-100 max-w-3xl mx-auto">
+          <p className="text-center text-[15px] sm:text-lg text-blue-100 max-w-3xl mx-auto">
             {t('actualites.subtitle')}
           </p>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 mb-16 relative z-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 sm:-mt-16 mb-12 sm:mb-16 relative z-20">
         <div data-anim-item className="relative rounded-[2rem] overflow-hidden shadow-2xl bg-white border border-white/60">
-          <div className="relative h-[420px] md:h-[520px]">
+          <div className="relative h-[320px] sm:h-[420px] md:h-[520px]">
             {featuredArticles.map((article, index) => (
               <div
                 key={article.slug}
@@ -339,7 +339,7 @@ export const Actualites: React.FC<ActualitesProps> = ({ selectedSlug, onOpenArti
           <p className="text-slate-600 max-w-xl">
             {t(
               'actualites.latestDescription',
-              "Guides, conseils atelier et actualites Apple : ton client accede a une vraie section contenu, pas a une simple liste d'articles."
+              "Guides, conseils atelier et actualites Apple par l'equipe de ScreenFix."
             )}
           </p>
         </div>

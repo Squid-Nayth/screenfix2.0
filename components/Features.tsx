@@ -38,11 +38,11 @@ export const Features: React.FC = () => {
   const cards = raw<Array<{ title: string; subtitle: string; desc: string }>>('features.cards', []);
 
   return (
-    <section id="expertise" data-anim-section className="py-24 relative overflow-hidden bg-transparent">
+    <section id="expertise" data-anim-section className="py-14 sm:py-16 md:py-24 relative overflow-hidden bg-transparent">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-20" data-anim-stagger>
+        <div className="text-center mb-10 sm:mb-14 md:mb-20" data-anim-stagger>
             <span className="text-blue-600 font-semibold tracking-wide text-[14px] uppercase block mb-4">{t('features.eyebrow')}</span>
-          <h2 data-anim-item className="text-3xl sm:text-4xl md:text-5xl lg:text-[64px] font-bold text-slate-900 mb-4 md:mb-6 tracking-tight">
+          <h2 data-anim-item className="text-[2rem] sm:text-4xl md:text-5xl lg:text-[64px] font-bold text-slate-900 mb-4 md:mb-6 tracking-tight">
             {t('features.headingLead').toUpperCase()} <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">{t('features.headingAccent').toUpperCase()}</span>
           </h2>
           <p data-anim-item className="text-slate-500 max-w-2xl mx-auto font-normal text-sm sm:text-base md:text-[20px] leading-relaxed">
@@ -50,14 +50,14 @@ export const Features: React.FC = () => {
           </p>
         </div>
 
-        <div data-anim-stagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div data-anim-stagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
           {features.map((feature, idx) => (
-            <div data-anim-item key={idx} className="group relative bg-white/60 backdrop-blur-xl border border-white/60 rounded-[2.5rem] p-8 hover:shadow-2xl hover:shadow-blue-900/5 transition-all duration-300 hover:-translate-y-2 overflow-hidden">
+            <div data-anim-item key={idx} className="group relative bg-white/60 backdrop-blur-xl border border-white/60 rounded-[1.75rem] sm:rounded-[2rem] md:rounded-[2.5rem] p-5 sm:p-6 md:p-8 hover:shadow-2xl hover:shadow-blue-900/5 transition-all duration-300 hover:-translate-y-2 overflow-hidden">
               {/* Hover Gradient */}
               <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
               
               <div className="relative z-10 flex flex-col h-full">
-                <div className={`w-16 h-16 ${feature.bg} rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform`}>
+                <div className={`w-14 h-14 sm:w-16 sm:h-16 ${feature.bg} rounded-2xl flex items-center justify-center mb-6 sm:mb-8 group-hover:scale-110 transition-transform`}>
                     {feature.icon}
                 </div>
                 

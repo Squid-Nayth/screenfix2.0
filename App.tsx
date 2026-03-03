@@ -18,53 +18,88 @@ import { initSiteAnimations } from './lib/siteAnimations';
 import { initAnalytics, trackPageView } from './lib/analytics';
 import { getArticleBySlug } from './lib/articles';
 
+const SECTION_SCROLL_GAP = 18;
+const SECTION_EXTRA_GAPS: Record<string, number> = {
+  booking: 12,
+  'booking-card': 10,
+  'boutique-pro': 22,
+  expertise: 22,
+  services: 22,
+  formation: 22,
+  avis: 22,
+  contact: 12
+};
+
 const App: React.FC = () => {
   const [showLegalNotice, setShowLegalNotice] = useState(false);
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
   const [showB2BSignup, setShowB2BSignup] = useState(false);
   const [showActualites, setShowActualites] = useState(false);
   const [activeArticleSlug, setActiveArticleSlug] = useState<string | null>(null);
+  const [pendingSectionTarget, setPendingSectionTarget] = useState<string | null>(null);
   const appRootRef = React.useRef<HTMLDivElement | null>(null);
+
+  const clearOverlayPages = React.useCallback(() => {
+    setShowLegalNotice(false);
+    setShowPrivacyPolicy(false);
+    setShowB2BSignup(false);
+    setShowActualites(false);
+    setActiveArticleSlug(null);
+  }, []);
+
   const scrollToPageTop = React.useCallback(() => {
     if (typeof window === 'undefined') return;
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    window.history.replaceState({}, '', window.location.pathname);
   }, []);
+
+  const scrollToTarget = React.useCallback((targetId?: string, behavior: ScrollBehavior = 'smooth') => {
+    if (typeof window === 'undefined' || !targetId || targetId === 'top') {
+      scrollToPageTop();
+      return;
+    }
+
+    const element = document.getElementById(targetId);
+    if (!element) {
+      scrollToPageTop();
+      return;
+    }
+
+    const navbar = document.querySelector('[data-navbar-root]') as HTMLElement | null;
+    const navbarHeight = navbar?.offsetHeight ?? 84;
+    const targetTop =
+      element.getBoundingClientRect().top +
+      window.scrollY -
+      navbarHeight -
+      (SECTION_EXTRA_GAPS[targetId] ?? SECTION_SCROLL_GAP);
+
+    window.scrollTo({
+      top: Math.max(0, targetTop),
+      left: 0,
+      behavior
+    });
+    window.history.replaceState({}, '', `${window.location.pathname}#${targetId}`);
+  }, [scrollToPageTop]);
+
   const navigateToSection = React.useCallback(
     (targetId?: string) => {
-      const scrollToTarget = () => {
-        if (!targetId || targetId === 'top') {
-          scrollToPageTop();
-          return;
-        }
-
-        const element = document.getElementById(targetId);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        } else {
-          scrollToPageTop();
-        }
-      };
-
       const hasOverlayPage = showLegalNotice || showPrivacyPolicy || showB2BSignup || showActualites;
       if (hasOverlayPage) {
-        setShowLegalNotice(false);
-        setShowPrivacyPolicy(false);
-        setShowB2BSignup(false);
-        setShowActualites(false);
-        setActiveArticleSlug(null);
-        window.setTimeout(scrollToTarget, 80);
+        clearOverlayPages();
+        setPendingSectionTarget(targetId || 'top');
         return;
       }
 
-      scrollToTarget();
+      scrollToTarget(targetId);
     },
-    [scrollToPageTop, showB2BSignup, showLegalNotice, showPrivacyPolicy, showActualites]
+    [clearOverlayPages, scrollToTarget, showB2BSignup, showLegalNotice, showPrivacyPolicy, showActualites]
   );
 
   // Expose function to window for Footer to use
   React.useEffect(() => {
     (window as any).showLegalNotice = () => {
       scrollToPageTop();
+      setPendingSectionTarget(null);
       setShowLegalNotice(true);
       setShowPrivacyPolicy(false);
       setShowB2BSignup(false);
@@ -77,6 +112,7 @@ const App: React.FC = () => {
     };
     (window as any).showPrivacyPolicy = () => {
       scrollToPageTop();
+      setPendingSectionTarget(null);
       setShowPrivacyPolicy(true);
       setShowLegalNotice(false);
       setShowB2BSignup(false);
@@ -89,6 +125,7 @@ const App: React.FC = () => {
     };
     (window as any).showB2BSignup = () => {
       scrollToPageTop();
+      setPendingSectionTarget(null);
       setShowB2BSignup(true);
       setShowLegalNotice(false);
       setShowPrivacyPolicy(false);
@@ -101,6 +138,7 @@ const App: React.FC = () => {
     };
     (window as any).showActualites = (slug?: string) => {
       scrollToPageTop();
+      setPendingSectionTarget(null);
       setShowActualites(true);
       setShowLegalNotice(false);
       setShowPrivacyPolicy(false);
@@ -109,6 +147,7 @@ const App: React.FC = () => {
     };
     (window as any).showActualiteArticle = (slug: string) => {
       scrollToPageTop();
+      setPendingSectionTarget(null);
       setShowActualites(true);
       setShowLegalNotice(false);
       setShowPrivacyPolicy(false);
@@ -138,9 +177,45 @@ const App: React.FC = () => {
     return initSiteAnimations(appRootRef.current);
   }, [activeArticleSlug, showLegalNotice, showPrivacyPolicy, showB2BSignup, showActualites]);
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     scrollToPageTop();
   }, [activeArticleSlug, showLegalNotice, showPrivacyPolicy, showB2BSignup, showActualites, scrollToPageTop]);
+
+  React.useEffect(() => {
+    if (!pendingSectionTarget) return;
+    if (showB2BSignup || showLegalNotice || showPrivacyPolicy || showActualites) return;
+
+    const frame = window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        scrollToTarget(pendingSectionTarget);
+        setPendingSectionTarget(null);
+      });
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [
+    pendingSectionTarget,
+    scrollToTarget,
+    showActualites,
+    showB2BSignup,
+    showLegalNotice,
+    showPrivacyPolicy
+  ]);
+
+  React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const syncHashNavigation = () => {
+      const hash = window.location.hash.replace('#', '');
+      if (!hash) return;
+      if (showB2BSignup || showLegalNotice || showPrivacyPolicy || showActualites) return;
+      window.requestAnimationFrame(() => scrollToTarget(hash, 'auto'));
+    };
+
+    syncHashNavigation();
+    window.addEventListener('hashchange', syncHashNavigation);
+    return () => window.removeEventListener('hashchange', syncHashNavigation);
+  }, [scrollToTarget, showActualites, showB2BSignup, showLegalNotice, showPrivacyPolicy]);
 
   React.useEffect(() => {
     if (showB2BSignup) {
@@ -299,7 +374,7 @@ const App: React.FC = () => {
         <Hero />
 
         {/* Booking Section */}
-        <section id="booking" data-anim-section className="py-12 px-4">
+        <section id="booking" data-anim-section className="py-8 sm:py-10 md:py-12 px-4">
           <BookingWizard />
         </section>
 

@@ -8,27 +8,27 @@ export const Services: React.FC = () => {
   const rows = raw<Array<{ label: string; bad: string; good: string }>>('services.rows', []);
 
   return (
-    <section id="services" data-anim-section className="py-24 relative overflow-hidden bg-transparent">
+    <section id="services" data-anim-section className="py-14 sm:py-16 md:py-24 relative overflow-hidden bg-transparent">
        {/* Background gradient spot removed - relying on global App bg */}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div data-anim-stagger className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 lg:gap-20 items-center">
+        <div data-anim-stagger className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-16 lg:gap-20 items-center">
           
           <div data-anim-item>
             <span className="text-blue-600 font-semibold tracking-wide text-[14px] uppercase block mb-6">{t('services.eyebrow')}</span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[64px] font-bold text-slate-900 mb-6 md:mb-8 leading-[1.1] tracking-tight">
+            <h2 className="text-[2rem] sm:text-4xl md:text-5xl lg:text-[64px] font-bold text-slate-900 mb-5 md:mb-8 leading-[1.1] tracking-tight">
               {t('services.heading1')} <br/> <span className="text-slate-400">VS</span> <br/> {t('services.heading2')}
             </h2>
-            <p className="text-slate-600 text-sm sm:text-base md:text-[20px] mb-8 md:mb-10 leading-relaxed font-normal">
+            <p className="text-slate-600 text-[15px] sm:text-base md:text-[20px] mb-6 sm:mb-8 md:mb-10 leading-relaxed font-normal">
               {t('services.paragraph1')}
               <br/><br/>
               {t('services.paragraph2')}
             </p>
             
-            <div data-anim-stagger className="space-y-6">
+            <div data-anim-stagger className="space-y-4 sm:space-y-5 md:space-y-6">
                {steps.map((stepText, index) => (
                <div data-anim-item key={`${index}-${stepText}`} className="flex items-center gap-6 group">
-                 <div className="w-14 h-14 rounded-2xl bg-white/60 border border-slate-200/60 backdrop-blur-sm flex items-center justify-center text-blue-600 shadow-sm group-hover:scale-110 transition-transform">
+                 <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/60 border border-slate-200/60 backdrop-blur-sm flex items-center justify-center text-blue-600 shadow-sm group-hover:scale-110 transition-transform">
                     <span className="font-bold text-xl">{String(index + 1).padStart(2, '0')}</span>
                  </div>
                  <p className="text-slate-900 font-bold text-base md:text-[18px]">{stepText}</p>
@@ -38,10 +38,10 @@ export const Services: React.FC = () => {
           </div>
 
           {/* Comparison Card - Pro Inventory Style */}
-          <div data-anim-item className="bg-white/70 backdrop-blur-xl rounded-2xl md:rounded-[3rem] p-5 sm:p-6 md:p-10 shadow-2xl border border-white/60 relative overflow-hidden">
+          <div data-anim-item className="bg-white/70 backdrop-blur-xl rounded-2xl md:rounded-[3rem] p-4 sm:p-5 md:p-10 shadow-2xl border border-white/60 relative overflow-hidden">
              <div className="absolute top-0 right-0 w-64 h-64 bg-slate-50/50 rounded-full mix-blend-multiply filter blur-3xl opacity-70"></div>
             
-            <div className="flex justify-between items-end mb-10 relative z-10">
+            <div className="flex justify-between items-end mb-6 sm:mb-8 md:mb-10 relative z-10 gap-3">
                 <div>
                     <h3 className="text-2xl md:text-[32px] font-bold text-slate-900 tracking-tight">{t('services.comparisonTitle')}</h3>
                     <p className="text-slate-400 text-xs md:text-[14px] font-semibold mt-1">{t('services.comparisonSubtitle')}</p>

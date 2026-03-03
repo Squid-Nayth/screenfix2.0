@@ -16,13 +16,13 @@ export const Testimonials: React.FC = () => {
   }, []);
 
   return (
-    <section id="avis" data-anim-section className="py-24 relative bg-transparent">
-      <div className="max-w-7xl mx-auto px-6">
-        <h2 className="text-3xl sm:text-5xl md:text-[64px] font-bold text-center mb-6 text-slate-900 tracking-tight">
+    <section id="avis" data-anim-section className="py-14 sm:py-16 md:py-24 relative bg-transparent">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <h2 className="text-[2rem] sm:text-5xl md:text-[64px] font-bold text-center mb-5 sm:mb-6 text-slate-900 tracking-tight">
           {t('testimonials.headingLead').toUpperCase()} <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-orange-600">{t('testimonials.headingAccent').toUpperCase()}</span>
         </h2>
 
-        <p className="text-center text-slate-600 text-lg md:text-xl font-normal mb-20 max-w-2xl mx-auto">
+        <p className="text-center text-slate-600 text-[15px] sm:text-lg md:text-xl font-normal mb-10 sm:mb-14 md:mb-20 max-w-2xl mx-auto">
           {t('testimonials.description')}
         </p>
 
@@ -30,7 +30,7 @@ export const Testimonials: React.FC = () => {
         <style>{`
           .embedsocial-wrapper { zoom: 0.8; }
           @media (max-width: 768px) {
-            .embedsocial-wrapper { zoom: 0.6; }
+            .embedsocial-wrapper { zoom: 0.52; }
           }
         `}</style>
         <div className="embedsocial-wrapper">

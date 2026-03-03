@@ -53,9 +53,10 @@ export const Navbar: React.FC = () => {
 
   return (
     <nav 
+      data-navbar-root
       data-anim-navbar
       className={`fixed w-full z-50 transition-all duration-300 ${
-        isScrolled || isOnOverlayPage ? 'bg-white/80 backdrop-blur-xl border-b border-white/20 py-4 shadow-sm' : 'bg-transparent py-6'
+        isScrolled || isOnOverlayPage ? 'bg-white/80 backdrop-blur-xl border-b border-white/20 py-3 md:py-4 shadow-sm' : 'bg-transparent py-4 md:py-6'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -75,7 +76,7 @@ export const Navbar: React.FC = () => {
           <div className="hidden md:flex items-center gap-6">
             <a href="#boutique-pro" onClick={(e) => handleSmoothScroll(e, 'boutique-pro')} className="text-slate-600 hover:text-blue-600 transition-colors text-[15px] font-semibold cursor-pointer">{t('navbar.boutiquePro')}</a>
             <a href="#actualites" onClick={handleActualitesClick} className="text-slate-600 hover:text-blue-600 transition-colors text-[15px] font-semibold cursor-pointer">{t('navbar.actualites')}</a>
-            <a href="#services" onClick={(e) => handleSmoothScroll(e, 'services')} className="text-slate-600 hover:text-blue-600 transition-colors text-[15px] font-semibold cursor-pointer">{t('navbar.reconditioning')}</a>
+            <a href="#expertise" onClick={(e) => handleSmoothScroll(e, 'expertise')} className="text-slate-600 hover:text-blue-600 transition-colors text-[15px] font-semibold cursor-pointer">{t('navbar.reconditioning')}</a>
             <a href="#formation" onClick={(e) => handleSmoothScroll(e, 'formation')} className="text-slate-600 hover:text-blue-600 transition-colors text-[15px] font-semibold cursor-pointer">{t('navbar.training')}</a>
             <LanguageSwitcher />
             
@@ -103,16 +104,16 @@ export const Navbar: React.FC = () => {
 
       {/* Mobile Menu Overlay */}
       {isOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-white border-b border-gray-100 p-6 flex flex-col gap-6 shadow-xl">
+        <div className="md:hidden absolute top-full left-0 w-full bg-white border-b border-gray-100 p-5 flex flex-col gap-5 shadow-xl">
             <a href="#boutique-pro" onClick={(e) => handleSmoothScroll(e, 'boutique-pro')} className="text-slate-900 font-semibold text-lg cursor-pointer hover:text-blue-600 transition-colors">{t('navbar.boutiquePro')}</a>
             <a href="#actualites" onClick={handleActualitesClick} className="text-slate-900 font-semibold text-lg cursor-pointer hover:text-blue-600 transition-colors">{t('navbar.actualites')}</a>
-            <a href="#services" onClick={(e) => handleSmoothScroll(e, 'services')} className="text-slate-900 font-semibold text-lg cursor-pointer hover:text-blue-600 transition-colors">{t('navbar.reconditioning')}</a>
+            <a href="#expertise" onClick={(e) => handleSmoothScroll(e, 'expertise')} className="text-slate-900 font-semibold text-lg cursor-pointer hover:text-blue-600 transition-colors">{t('navbar.reconditioning')}</a>
             <a href="#formation" onClick={(e) => handleSmoothScroll(e, 'formation')} className="text-slate-900 font-semibold text-lg cursor-pointer hover:text-blue-600 transition-colors">{t('navbar.training')}</a>
             <LanguageSwitcher mobile />
             <a 
               href="#contact"
               onClick={(e) => handleSmoothScroll(e, 'contact')}
-              className="w-full py-4 rounded-xl bg-blue-600 font-medium text-white shadow-lg text-base text-center flex items-center justify-center gap-2 hover:bg-blue-700 transition-colors"
+              className="w-full py-3.5 rounded-xl bg-blue-600 font-medium text-white shadow-lg text-base text-center flex items-center justify-center gap-2 hover:bg-blue-700 transition-colors"
             >
               <Phone size={18} />
               {t('navbar.contact')}

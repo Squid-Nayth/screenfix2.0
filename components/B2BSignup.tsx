@@ -205,19 +205,19 @@ export const B2BSignup: React.FC<B2BSignupProps> = ({ onClose }) => {
   };
 
   return (
-    <div data-overlay-page data-anim-section className="max-w-3xl mx-auto px-6 pt-28 md:pt-32 pb-20 md:pb-24">
-      <div data-anim-stagger className="bg-white/80 backdrop-blur-xl border border-white/60 rounded-[3rem] p-8 md:p-12 shadow-2xl">
+    <div data-overlay-page data-anim-section className="max-w-3xl mx-auto px-4 sm:px-6 pt-24 md:pt-32 pb-16 md:pb-24">
+      <div data-anim-stagger className="bg-white/80 backdrop-blur-xl border border-white/60 rounded-[2rem] md:rounded-[3rem] p-5 sm:p-6 md:p-12 shadow-2xl">
         <div data-anim-item className="text-center mb-10">
           <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-blue-50 text-blue-600 border border-blue-100 mb-6">
             <Building2 size={20} />
             <span className="text-sm font-semibold tracking-wide">{t('b2b.eyebrow')}</span>
           </div>
 
-          <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4 tracking-tight">
+          <h1 className="text-[2rem] sm:text-4xl md:text-5xl font-bold text-slate-900 mb-4 tracking-tight">
             {t('b2b.titleLead')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">{t('b2b.titleAccent')}</span>
           </h1>
 
-          <p className="text-slate-600 text-lg">
+          <p className="text-slate-600 text-[15px] sm:text-lg">
             {t('b2b.description')}
           </p>
         </div>
