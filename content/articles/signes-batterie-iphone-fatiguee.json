@@ -1,20 +1,19 @@
 {
   "slug": "signes-batterie-iphone-fatiguee",
-  "title": "5 signes qu'une batterie d'iPhone doit etre remplacee",
-  "excerpt": "Autonomie qui chute, appareil lent, chauffe anormale : voici les signaux qui indiquent qu'un remplacement de batterie devient necessaire.",
+  "title": "5 signes qu'une batterie d'iPhone doit être remplacée.",
+  "excerpt": "Autonomie qui chute, appareil lent, chauffe anormale : voici les signaux qui indiquent qu'un remplacement de batterie devient nécessaire pour votre Iphone.",
   "category": "Conseils",
-  "author": "Atelier ScreenFix",
-  "publishedAt": "2026-02-15",
+  "author": "ScreenFix",
+  "publishedAt": "2026-02-15T00:00:00.000Z",
   "readingTime": "3 min",
   "featured": true,
-  "coverImage": "/iphones/iphone-SE-2022.png",
-  "coverAlt": "iPhone necessitant un changement de batterie",
+  "coverImage": "/uploads/iphones/iphone-SE-2022.png",
+  "coverAlt": "iPhone nécessitant un changement de batterie.",
   "sections": [
     {
       "title": "Une autonomie qui s'effondre",
       "paragraphs": [
-        "Si votre iPhone passe de 80% a 20% en quelques heures sans usage intensif, la batterie est probablement en fin de cycle.",
-        "Un comportement instable sur plusieurs jours est un signal bien plus fiable qu'une baisse ponctuelle."
+        "Si votre iPhone passe de 80% a 20% en quelques heures sans usage intensif, de sa batterie cela veut dire qu'elle est probablement en fin de cycle, si elle a également un comportement instable sur plusieurs jours, c'est un signal bien plus fiable qu'une baisse ponctuelle."
       ]
     },
     {
@@ -23,7 +22,7 @@
         "Une batterie fatiguee peut provoquer des baisses de performance et des extinctions a froid. Le systeme iOS tente parfois de stabiliser l'appareil en bridant certaines performances.",
         "Quand cela devient regulier, le remplacement de batterie est souvent la meilleure correction."
       ],
-      "image": "/iphones/iphone-X.png",
+      "image": "/uploads/iphones/iphone-X.png",
       "imageAlt": "iPhone avec autonomie instable"
     },
     {
