@@ -7,14 +7,15 @@
   "publishedAt": "2026-02-15T00:00:00.000Z",
   "readingTime": "3 min",
   "featured": true,
-  "coverImage": "/uploads/iphones/iphone-SE-2022.png",
+  "coverImage": "/uploads/favicon.png",
   "coverAlt": "iPhone nécessitant un changement de batterie.",
   "sections": [
     {
       "title": "Une autonomie qui s'effondre",
       "paragraphs": [
         "Si votre iPhone passe de 80% a 20% en quelques heures sans usage intensif, de sa batterie cela veut dire qu'elle est probablement en fin de cycle, si elle a également un comportement instable sur plusieurs jours, c'est un signal bien plus fiable qu'une baisse ponctuelle."
-      ]
+      ],
+      "image": "/uploads/Capture d’écran 2025-08-07 à 18.26.08.png"
     },
     {
       "title": "Des ralentissements ou des extinctions",
@@ -22,7 +23,7 @@
         "Une batterie fatiguee peut provoquer des baisses de performance et des extinctions a froid. Le systeme iOS tente parfois de stabiliser l'appareil en bridant certaines performances.",
         "Quand cela devient regulier, le remplacement de batterie est souvent la meilleure correction."
       ],
-      "image": "/uploads/iphones/iphone-X.png",
+      "image": "/uploads/Capture d’écran 2025-08-07 à 13.59.20.png",
       "imageAlt": "iPhone avec autonomie instable"
     },
     {
@@ -30,7 +31,8 @@
       "paragraphs": [
         "Une chaleur excessive en charge ou pendant un usage classique doit attirer l'attention. Cela ne veut pas toujours dire que la batterie est seule en cause, mais elle doit etre verifiee rapidement.",
         "Plus on attend, plus le risque d'inconfort et de degradation interne augmente."
-      ]
+      ],
+      "image": "/uploads/Capture d’écran 2025-08-12 à 14.47.34.png"
     }
   ],
   "relatedSlugs": [
