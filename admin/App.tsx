@@ -8,7 +8,7 @@ const graphQlVersion = tinaSchema.version.fullVersion || `${apiVersion}.0`;
 const clientId = tinaConfig.clientId || '';
 const branch = tinaConfig.branch || 'main';
 const apiUrl = clientId
-  ? `https://content.tinajs.io/${apiVersion}/content/${clientId}/github/${branch}`
+  ? `https://content.tinajs.io/${graphQlVersion}/content/${clientId}/github/${branch}`
   : '';
 
 const MissingConfigState = () => (
@@ -53,11 +53,13 @@ export default function AdminApp() {
   }
 
   const schema = { ...tinaConfig.schema, config: tinaConfig };
+  const client = { apiUrl };
 
   return (
     <TinaCMSProvider
       {...tinaConfig}
-      client={{ apiUrl } as any}
+      client={client as any}
+      branch={branch}
       schema={schema as any}
       tinaGraphQLVersion={graphQlVersion}
     >

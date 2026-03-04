@@ -1,4 +1,5 @@
 import { defineConfig } from 'tinacms';
+import { NativeImageFieldPlugin } from './NativeImageField';
 
 const branch =
   process.env.NEXT_PUBLIC_TINA_BRANCH ||
@@ -146,5 +147,11 @@ export default defineConfig({
         ]
       }
     ]
+  },
+  cmsCallback(cms) {
+    // Remplace le champ image par une version qui ouvre la boîte de dialogue native
+    // (utile si le picker Tina ne s’ouvre pas sur certains navigateurs).
+    cms.fields.add(NativeImageFieldPlugin);
+    return cms;
   }
 });
