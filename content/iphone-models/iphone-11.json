@@ -1,13 +1,13 @@
 {
   "brand": "Apple",
   "name": "iPhone 11",
-  "image": "/iphones/iphone13_12_11.png",
+  "image": "/uploads/iphone-X.png",
   "order": 250,
   "active": true,
   "repairs": [
     {
       "serviceKey": "recond",
-      "price": 50
+      "price": 60
     },
     {
       "serviceKey": "screen",
