@@ -10,10 +10,23 @@ export default defineConfig(({ mode }) => {
         host: '0.0.0.0',
       },
       build: {
+        target: 'es2018',
+        sourcemap: false,
+        minify: 'esbuild',
+        cssCodeSplit: true,
+        esbuild: {
+          drop: ['console', 'debugger']
+        },
         rollupOptions: {
           input: {
             main: path.resolve(__dirname, 'index.html'),
             admin: path.resolve(__dirname, 'admin/index.html'),
+          },
+          output: {
+            manualChunks: {
+              react: ['react', 'react-dom'],
+              gsap: ['gsap']
+            }
           }
         }
       },

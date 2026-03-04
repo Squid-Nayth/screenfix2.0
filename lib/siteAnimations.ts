@@ -103,3 +103,9 @@ export const initSiteAnimations = (root: HTMLElement) => {
     ctx.revert();
   };
 };
+
+export const refreshSiteAnimations = () => {
+  if (typeof window === 'undefined') return;
+  ensureGsapPlugins();
+  ScrollTrigger.refresh();
+};

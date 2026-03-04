@@ -49,6 +49,7 @@ const ArticleCard: React.FC<{
           src={article.coverImage}
           alt={article.coverAlt}
           className="w-full h-full object-contain drop-shadow-xl group-hover:scale-105 transition-transform duration-300"
+          loading="lazy"
         />
       </div>
       <span className="absolute top-4 left-4 px-3 py-1 bg-blue-600 text-white text-xs font-bold rounded-full">
@@ -82,8 +83,31 @@ const ArticleCard: React.FC<{
 export const Actualites: React.FC<ActualitesProps> = ({ selectedSlug, onOpenArticle, onClose }) => {
   const { t, dateLocale } = useI18n();
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState<string>('Toutes');
 
   const articles = useMemo(() => getAllArticles(), []);
+  const categoryOptions = useMemo(() => {
+    const preset = [
+      'Conseils',
+      'Tutoriels',
+      'Réparations',
+      'Bons plans',
+      'Sécurité',
+      'Batterie',
+      'Accessoires',
+      'iOS',
+      'Mac',
+      'Apple Watch',
+      'Android'
+    ];
+    const fromContent = Array.from(new Set(articles.map((a) => a.category))).filter(Boolean);
+    const merged = Array.from(new Set([...fromContent, ...preset]));
+    return ['Toutes', ...merged];
+  }, [articles]);
+  const filteredArticles = useMemo(
+    () => (selectedCategory === 'Toutes' ? articles : articles.filter((a) => a.category === selectedCategory)),
+    [articles, selectedCategory]
+  );
   const featuredArticles = useMemo(() => {
     const featured = getFeaturedArticles(3);
     return featured.length > 0 ? featured : articles.slice(0, 3);
@@ -158,6 +182,7 @@ export const Actualites: React.FC<ActualitesProps> = ({ selectedSlug, onOpenArti
                     src={selectedArticle.coverImage}
                     alt={selectedArticle.coverAlt}
                     className="w-full h-full object-contain drop-shadow-2xl"
+                    loading="lazy"
                   />
                 </div>
               </div>
@@ -180,11 +205,12 @@ export const Actualites: React.FC<ActualitesProps> = ({ selectedSlug, onOpenArti
 
                     {section.image ? (
                       <div className="rounded-[2rem] bg-slate-50 border border-slate-100 p-6">
-                        <img
-                          src={section.image}
-                          alt={section.imageAlt || section.title}
-                          className="w-full h-64 object-contain"
-                        />
+                      <img
+                        src={section.image}
+                        alt={section.imageAlt || section.title}
+                        className="w-full h-64 object-contain"
+                        loading="lazy"
+                      />
                       </div>
                     ) : (
                       <div className="hidden lg:block" />
@@ -266,6 +292,7 @@ export const Actualites: React.FC<ActualitesProps> = ({ selectedSlug, onOpenArti
                         src={article.coverImage}
                         alt={article.coverAlt}
                         className="w-full h-full object-contain drop-shadow-2xl"
+                        loading="lazy"
                       />
                     </div>
                   </div>
@@ -336,16 +363,28 @@ export const Actualites: React.FC<ActualitesProps> = ({ selectedSlug, onOpenArti
               {t('actualites.latestTitle', 'Les derniers articles')}
             </h2>
           </div>
-          <p className="text-slate-600 max-w-xl">
-            {t(
-              'actualites.latestDescription',
-              "Guides, conseils atelier et actualites Apple par l'equipe de ScreenFix."
-            )}
-          </p>
+          <div className="flex flex-wrap items-center gap-3 justify-start md:justify-end mt-2">
+            {categoryOptions.map((category) => {
+              const isActive = category === selectedCategory;
+              return (
+                <button
+                  key={category}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`px-4 py-2 rounded-full text-sm font-semibold border transition-all shadow-sm ${
+                    isActive
+                      ? 'bg-blue-600 text-white border-blue-600 shadow-md'
+                      : 'bg-white text-slate-700 border-slate-200 hover:border-blue-400 hover:text-blue-700'
+                  }`}
+                >
+                  {category}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         <div data-anim-stagger className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {articles.map((article) => (
+          {filteredArticles.map((article) => (
             <ArticleCard
               key={article.slug}
               article={article}

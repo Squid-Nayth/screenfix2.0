@@ -14,7 +14,7 @@ import { LegalNotice } from './components/LegalNotice';
 import { PrivacyPolicy } from './components/PrivacyPolicy';
 import { B2BSignup } from './components/B2BSignup';
 import { guardCurrentBoutiqueAccess } from './lib/proAccess';
-import { initSiteAnimations } from './lib/siteAnimations';
+import { initSiteAnimations, refreshSiteAnimations } from './lib/siteAnimations';
 import { initAnalytics, trackPageView } from './lib/analytics';
 import { getArticleBySlug } from './lib/articles';
 
@@ -175,7 +175,7 @@ const App: React.FC = () => {
   React.useEffect(() => {
     if (!appRootRef.current) return;
     return initSiteAnimations(appRootRef.current);
-  }, [activeArticleSlug, showLegalNotice, showPrivacyPolicy, showB2BSignup, showActualites]);
+  }, []);
 
   React.useLayoutEffect(() => {
     scrollToPageTop();
@@ -201,6 +201,11 @@ const App: React.FC = () => {
     showLegalNotice,
     showPrivacyPolicy
   ]);
+
+  // Refresh ScrollTrigger layout when overlays open/close
+  React.useEffect(() => {
+    refreshSiteAnimations();
+  }, [showActualites, showB2BSignup, showLegalNotice, showPrivacyPolicy]);
 
   React.useEffect(() => {
     if (typeof window === 'undefined') return;

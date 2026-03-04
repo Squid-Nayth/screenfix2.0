@@ -1,5 +1,6 @@
 import { defineConfig } from 'tinacms';
 import { NativeImageFieldPlugin } from './NativeImageField';
+import { PlainDateFieldPlugin } from './PlainDateField';
 
 const branch =
   process.env.NEXT_PUBLIC_TINA_BRANCH ||
@@ -105,9 +106,42 @@ export default defineConfig({
           { type: 'string', name: 'slug', label: 'Slug', required: true },
           { type: 'string', name: 'title', label: 'Titre', required: true },
           { type: 'string', name: 'excerpt', label: 'Extrait', required: true, ui: { component: 'textarea' } },
-          { type: 'string', name: 'category', label: 'Categorie', required: true },
+          {
+            type: 'string',
+            name: 'category',
+            label: 'Categorie',
+            required: true,
+            ui: {
+              component: 'select',
+              options: [
+                'Conseils',
+                'Tutoriels',
+                'Réparations',
+                'Bons plans',
+                'Sécurité',
+                'Batterie',
+                'Accessoires',
+                'iOS',
+                'Mac',
+                'Apple Watch',
+                'Android',
+                'Actualités',
+                'Guides',
+                'Diagnostics',
+                'Optimisation',
+                'Logiciels',
+                'Matériel'
+              ]
+            }
+          },
           { type: 'string', name: 'author', label: 'Auteur', required: true },
-          { type: 'datetime', name: 'publishedAt', label: 'Date de publication', required: true },
+          {
+            type: 'datetime',
+            name: 'publishedAt',
+            label: 'Date de publication',
+            required: true,
+            ui: { component: 'date' }
+          },
           { type: 'string', name: 'readingTime', label: 'Temps de lecture', required: true },
           { type: 'boolean', name: 'featured', label: 'Mettre en avant' },
           { type: 'image', name: 'coverImage', label: 'Image de couverture', required: true },
@@ -152,6 +186,8 @@ export default defineConfig({
     // Remplace le champ image par une version qui ouvre la boîte de dialogue native
     // (utile si le picker Tina ne s’ouvre pas sur certains navigateurs).
     cms.fields.add(NativeImageFieldPlugin);
+    // Remplace le datetime par une saisie texte simple.
+    cms.fields.add(PlainDateFieldPlugin);
     return cms;
   }
 });
