@@ -10,6 +10,13 @@ export const submitHiddenGoogleForm = (
     }
 
     const body = new URLSearchParams(payload);
+    const blob = new Blob([body], { type: 'application/x-www-form-urlencoded' });
+
+    // Try beacon first (non-blocking, often more fiable cross-origin)
+    if (navigator.sendBeacon && navigator.sendBeacon(formResponseUrl, blob)) {
+      window.setTimeout(() => resolve(), successDelayMs);
+      return;
+    }
 
     fetch(formResponseUrl, {
       method: 'POST',

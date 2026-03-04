@@ -22,7 +22,9 @@ interface B2BSignupProps {
 }
 
 const GOOGLE_FORM_CONFIG = {
-  formResponseUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSdzP3v1DP4BlE_N7mBwa75Fha3CD6oygipJ-B-aVj2ElvncYw/formResponse',
+  formResponseUrl:
+    import.meta.env.VITE_B2B_FORM_URL?.trim() ||
+    'https://docs.google.com/forms/d/e/1FAIpQLSdzP3v1DP4BlE_N7mBwa75Fha3CD6oygipJ-B-aVj2ElvncYw/formResponse',
   entries: {
     email: 'entry.1646931193',
     fullName: 'entry.1999217010',

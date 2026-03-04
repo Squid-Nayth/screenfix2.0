@@ -22,7 +22,9 @@ import {
 } from '../lib/repairCatalog';
 
 const BOOKING_GOOGLE_FORM_CONFIG = {
-  formResponseUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSdaw7x71mbw1gNAy5imLo_BTJkXuVUvt9p8uwKLP-KM6bzm1w/formResponse',
+  formResponseUrl:
+    import.meta.env.VITE_BOOKING_FORM_URL?.trim() ||
+    'https://docs.google.com/forms/d/e/1FAIpQLSdaw7x71mbw1gNAy5imLo_BTJkXuVUvt9p8uwKLP-KM6bzm1w/formResponse',
   entries: {
     bookingId: 'entry.1563273857',
     source: 'entry.376189256',
